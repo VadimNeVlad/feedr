@@ -2,11 +2,14 @@ import React from "react";
 import { useFormContext } from "react-hook-form";
 import { AuthFormProps } from "../../features/types/props";
 import { AuthData } from "../../features/types/auth";
-import { Button, TextField, Typography } from "@mui/material";
+import { TextField, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 export const AuthForm: React.FC<AuthFormProps> = ({
   title,
   text,
+  isPending,
   onSubmit,
 }) => {
   const {
@@ -52,9 +55,18 @@ export const AuthForm: React.FC<AuthFormProps> = ({
           {errors.password && <p>{errors.password?.message}</p>}
         </div>
 
-        <Button type="submit" variant="contained">
+        <LoadingButton type="submit" variant="contained" loading={isPending}>
           {title === "Register" ? "Register" : "Login"}
-        </Button>
+        </LoadingButton>
+
+        <Typography variant="subtitle1">
+          {title === "Register"
+            ? "Already have an account? "
+            : "Don't have an account? "}
+          <Link to={title === "Register" ? "/login" : "/register"}>
+            {title === "Register" ? "Login" : "Register"}
+          </Link>
+        </Typography>
       </form>
     </>
   );
