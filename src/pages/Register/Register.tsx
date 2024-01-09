@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useRegisterMutation } from "../../features/auth/authApi";
 import { setUser } from "../../features/auth/authSlice";
-import { AuthData } from "../../features/types/auth";
+import { AuthData } from "../../utils/types/auth";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { registerSchema } from "../../utils/validators/registerSchema";
 import { ToastContainer, toast } from "react-toastify";

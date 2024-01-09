@@ -1,7 +1,7 @@
 import React from "react";
 import { useFormContext } from "react-hook-form";
-import { AuthFormProps } from "../../features/types/props";
-import { AuthData } from "../../features/types/auth";
+import { AuthFormProps } from "../../utils/types/props";
+import { AuthData } from "../../utils/types/auth";
 import { TextField, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import LoadingButton from "@mui/lab/LoadingButton";

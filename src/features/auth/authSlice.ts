@@ -1,11 +1,11 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { AuthResponse, AuthState } from "../types/auth";
+import { AuthResponse, AuthState } from "../../utils/types/auth";
 
 const authSlice = createSlice({
   name: "auth",
   initialState: {
     user: null,
-    token: null,
+    token: JSON.parse(localStorage.getItem("token") || "null"),
   } as AuthState,
   reducers: {
     setUser: (state, action: PayloadAction<AuthResponse>) => {

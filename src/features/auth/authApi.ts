@@ -1,5 +1,5 @@
 import { api } from "../../app/services";
-import { AuthData, AuthResponse } from "../types/auth";
+import { AuthData, AuthResponse } from "../../utils/types/auth";
 
 export const authApi = api.injectEndpoints({
   endpoints: (build) => ({

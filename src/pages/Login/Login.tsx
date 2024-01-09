@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { AuthForm } from "../../components/AuthForm/AuthForm";
 import { FormProvider, useForm } from "react-hook-form";
 import { loginSchema } from "../../utils/validators/loginSchema";
-import { AuthData } from "../../features/types/auth";
+import { AuthData } from "../../utils/types/auth";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useLoginMutation } from "../../features/auth/authApi";
 import { setUser } from "../../features/auth/authSlice";

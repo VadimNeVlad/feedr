@@ -9,12 +9,11 @@
 }
 
 a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+  color: inherit;
+  text-decoration: none;
 }
-a:hover {
-  color: #535bf2;
+button a {
+  color: inherit;
 }
 
 body {
