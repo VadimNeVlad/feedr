@@ -7,15 +7,20 @@ import {
   ListItemIcon,
   ListItemText,
   Popover,
+  Typography,
 } from "@mui/material";
+import styles from "./UserDropdown.module.scss";
 import LogoutIcon from "@mui/icons-material/Logout";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useDispatch } from "react-redux";
 import { logout } from "../../features/auth/authSlice";
+import { UserDropdownProps } from "../../utils/types/props";
+import { trimFirstLetter } from "../../utils/helpers/trimString";
 
-export const UserDropdown: React.FC = () => {
+export const UserDropdown: React.FC<UserDropdownProps> = ({ userName }) => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const dispatch = useDispatch();
+  const trimmedName = trimFirstLetter(userName);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -34,8 +39,11 @@ export const UserDropdown: React.FC = () => {
   const id = open ? "simple-popover" : undefined;
   return (
     <div>
-      <span onClick={handleClick}>
-        <Avatar aria-describedby={id}>H</Avatar>
+      <span className={styles.userDropdown} onClick={handleClick}>
+        <Avatar aria-describedby={id}>{trimmedName}</Avatar>
+        <Typography variant="body2" sx={{ ml: 1 }}>
+          {userName}
+        </Typography>
       </span>
 
       <Popover

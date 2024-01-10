@@ -8,13 +8,14 @@ import { RootState } from "../../app/store";
 
 export const Header: React.FC = () => {
   const token = useSelector((state: RootState) => state.auth.token);
+  const user = useSelector((state: RootState) => state.auth.user);
 
   return (
     <header className={styles.header}>
       <div>FeedR</div>
 
-      {token ? (
-        <UserDropdown />
+      {token && user ? (
+        <UserDropdown userName={user.name} />
       ) : (
         <div>
           <Button variant="outlined">

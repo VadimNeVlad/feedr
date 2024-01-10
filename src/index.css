@@ -52,6 +52,11 @@ button:focus-visible {
   padding-right: 15px;
 }
 
+.ProseMirror {
+  min-height: 300px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

@@ -4,7 +4,7 @@ import { AuthResponse, AuthState } from "../../utils/types/auth";
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-    user: null,
+    user: JSON.parse(localStorage.getItem("user") || "null"),
     token: JSON.parse(localStorage.getItem("token") || "null"),
   } as AuthState,
   reducers: {

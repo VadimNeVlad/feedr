@@ -1,5 +1,6 @@
 import { BaseSyntheticEvent } from "react";
 import { Article } from "./articles";
+import { Editor } from "@tiptap/react";
 
 export interface AuthFormProps {
   title: string;
@@ -10,4 +11,16 @@ export interface AuthFormProps {
 
 export interface ArticleItemProps {
   article: Article;
+}
+
+export interface UserDropdownProps {
+  userName: string;
+}
+
+export interface EditorToolbarProps {
+  editor: Editor;
+}
+
+export interface EditorProps {
+  content: string;
 }
