@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./Header.module.scss";
 import { UserDropdown } from "../UserDropdown/UserDropdown";
 import { useSelector } from "react-redux";
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { RootState } from "../../app/store";
 
@@ -12,9 +12,11 @@ export const Header: React.FC = () => {
 
   return (
     <header className={styles.header}>
-      <div>
-        <Link to={"/"}>FeedR</Link>
-      </div>
+      <Typography variant="h5">
+        <Link to={"/"}>
+          Feed<span style={{ color: "#1976d2" }}>R</span>
+        </Link>
+      </Typography>
 
       {token && user ? (
         <div className={styles.header__panel}>

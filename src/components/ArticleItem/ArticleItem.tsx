@@ -19,8 +19,10 @@ import {
 import { trimFirstLetter } from "../../utils/helpers/trimString";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
+import { useNavigate } from "react-router-dom";
 
 export const ArticleItem: React.FC<ArticleItemProps> = ({ article }) => {
+  const navigate = useNavigate();
   const [favoriteArticle] = useFavoriteArticleMutation();
   const [unfavoriteArticle] = useUnfavoriteArticleMutation();
   const user = useSelector((state: RootState) => state.auth.user);
@@ -43,8 +45,12 @@ export const ArticleItem: React.FC<ArticleItemProps> = ({ article }) => {
         subheader={formatDate(article.createdAt)}
       />
       <CardContent>
-        <Typography variant="h5">{article.title}</Typography>
-        <Typography variant="body2">{article.body}</Typography>
+        <Typography variant="h5" sx={{ mb: 2 }}>
+          {article.title}
+        </Typography>
+        <Typography variant="body2" sx={{ mb: 3 }}>
+          {article.body}
+        </Typography>
 
         <div style={{ display: "flex" }}>
           {article.tagList.map((tag) => (
@@ -57,7 +63,7 @@ export const ArticleItem: React.FC<ArticleItemProps> = ({ article }) => {
       <CardActions>
         <IconButton
           aria-label="add to favorites"
-          onClick={handleFavoriteArticle}
+          onClick={user ? handleFavoriteArticle : () => navigate("/login")}
         >
           {exists ? <BookmarkIcon /> : <BookmarkBorderOutlinedIcon />}
           <Typography variant="body2">{article.favoritesCount}</Typography>

@@ -7,7 +7,7 @@ export const Home: React.FC = () => {
   return (
     <>
       <Header />
-      <Container maxWidth="lg">
+      <Container maxWidth="lg" sx={{ mt: 12 }}>
         <Articles />
       </Container>
     </>

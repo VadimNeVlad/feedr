@@ -8,6 +8,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+body {
+  background: rgb(245, 245, 245);
+}
+
 a {
   color: inherit;
   text-decoration: none;

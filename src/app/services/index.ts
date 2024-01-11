@@ -7,12 +7,14 @@ import {
 } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store";
 import { logout, setUser } from "../../features/auth/authSlice";
+import { AuthResponse } from "../../utils/types/auth";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: "http://localhost:3000/api/",
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.token;
     if (token) headers.set("authorization", `Bearer ${token}`);
+
     return headers;
   },
 });
@@ -22,30 +24,29 @@ const baseQueryWithReauth: BaseQueryFn<
   unknown,
   FetchBaseQueryError
 > = async (args, api, extraOptions) => {
-  const token = (api.getState() as RootState).auth.token;
-
+  const refreshToken = localStorage.getItem("refreshToken");
   let result = await baseQuery(args, api, extraOptions);
+
   if (result.error && result.error.status === 401) {
     const refreshResult = await baseQuery(
       {
         url: "auth/refresh-token",
         method: "POST",
-        body: { refreshToken: token },
+        body: { refreshToken: refreshToken },
       },
       api,
       extraOptions
     );
-    if (refreshResult.data) {
-      // store the new token
-      console.log(refreshResult);
 
-      // api.dispatch(setUser(refreshResult.data));
-      // api.dispatch(tokenReceived(refreshResult.data))
+    if (refreshResult.data) {
+      const data = refreshResult.data as AuthResponse;
+      api.dispatch(setUser(data));
       result = await baseQuery(args, api, extraOptions);
     } else {
       api.dispatch(logout());
     }
   }
+
   return result;
 };
 
