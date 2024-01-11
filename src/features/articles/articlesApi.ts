@@ -15,7 +15,26 @@ export const articlesApi = api.injectEndpoints({
       }),
       invalidatesTags: ["Article"],
     }),
+    favoriteArticle: build.mutation<Article, string>({
+      query: (slug) => ({
+        url: `/articles/${slug}/favorite`,
+        method: "POST",
+      }),
+      invalidatesTags: ["Article"],
+    }),
+    unfavoriteArticle: build.mutation<Article, string>({
+      query: (slug) => ({
+        url: `/articles/${slug}/favorite`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Article"],
+    }),
   }),
 });
 
-export const { useGetArticlesQuery, useCreateArticleMutation } = articlesApi;
+export const {
+  useGetArticlesQuery,
+  useCreateArticleMutation,
+  useFavoriteArticleMutation,
+  useUnfavoriteArticleMutation,
+} = articlesApi;

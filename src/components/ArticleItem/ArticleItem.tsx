@@ -11,12 +11,34 @@ import {
 } from "@mui/material";
 import { formatDate } from "../../utils/helpers/formatDate";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
+import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlined";
+import {
+  useFavoriteArticleMutation,
+  useUnfavoriteArticleMutation,
+} from "../../features/articles/articlesApi";
+import { trimFirstLetter } from "../../utils/helpers/trimString";
+import { useSelector } from "react-redux";
+import { RootState } from "../../app/store";
 
 export const ArticleItem: React.FC<ArticleItemProps> = ({ article }) => {
+  const [favoriteArticle] = useFavoriteArticleMutation();
+  const [unfavoriteArticle] = useUnfavoriteArticleMutation();
+  const user = useSelector((state: RootState) => state.auth.user);
+  const trimmedName = trimFirstLetter(article.author.name);
+
+  const exists = article.favorited.some((userItem) =>
+    user ? userItem.id === user.id : null
+  );
+
+  const handleFavoriteArticle = () => {
+    if (!exists) favoriteArticle(article.slug);
+    else unfavoriteArticle(article.slug);
+  };
+
   return (
-    <Card>
+    <Card sx={{ mb: 5 }}>
       <CardHeader
-        avatar={<Avatar>A</Avatar>}
+        avatar={<Avatar>{trimmedName}</Avatar>}
         title={article.author.name}
         subheader={formatDate(article.createdAt)}
       />
@@ -33,8 +55,11 @@ export const ArticleItem: React.FC<ArticleItemProps> = ({ article }) => {
         </div>
       </CardContent>
       <CardActions>
-        <IconButton aria-label="add to favorites">
-          <BookmarkIcon />
+        <IconButton
+          aria-label="add to favorites"
+          onClick={handleFavoriteArticle}
+        >
+          {exists ? <BookmarkIcon /> : <BookmarkBorderOutlinedIcon />}
           <Typography variant="body2">{article.favoritesCount}</Typography>
         </IconButton>
       </CardActions>

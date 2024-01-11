@@ -5,12 +5,13 @@ const authSlice = createSlice({
   name: "auth",
   initialState: {
     user: JSON.parse(localStorage.getItem("user") || "null"),
-    token: JSON.parse(localStorage.getItem("token") || "null"),
+    token: localStorage.getItem("token") || "null",
   } as AuthState,
   reducers: {
     setUser: (state, action: PayloadAction<AuthResponse>) => {
       localStorage.setItem("user", JSON.stringify(action.payload.user));
-      localStorage.setItem("token", JSON.stringify(action.payload.accessToken));
+      localStorage.setItem("token", action.payload.accessToken);
+      localStorage.setItem("refreshToken", action.payload.refreshToken);
       state.user = action.payload.user;
       state.token = action.payload.accessToken;
     },
