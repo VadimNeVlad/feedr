@@ -14,7 +14,7 @@ import Superscript from "@tiptap/extension-superscript";
 import Subscript from "@tiptap/extension-subscript";
 import { EditorProps } from "../../utils/types/props";
 
-export const Editor: React.FC<EditorProps> = ({ content }) => {
+export const Editor: React.FC<EditorProps> = ({ content, setContent }) => {
   const limit = 5000;
   const editor = useEditor({
     extensions: [
@@ -42,6 +42,9 @@ export const Editor: React.FC<EditorProps> = ({ content }) => {
       }),
     ],
     content,
+    onBlur: ({ editor }) => {
+      setContent(editor.getHTML());
+    },
   });
 
   const percentage = editor

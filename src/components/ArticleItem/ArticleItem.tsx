@@ -22,8 +22,15 @@ export const ArticleItem: React.FC<ArticleItemProps> = ({ article }) => {
       />
       <CardContent>
         <Typography variant="h5">{article.title}</Typography>
-        <Typography variant="subtitle1">{article.description}</Typography>
         <Typography variant="body2">{article.body}</Typography>
+
+        <div style={{ display: "flex" }}>
+          {article.tagList.map((tag) => (
+            <Typography key={tag.name} variant="body1" sx={{ mr: 1 }}>
+              #{tag.name}
+            </Typography>
+          ))}
+        </div>
       </CardContent>
       <CardActions>
         <IconButton aria-label="add to favorites">

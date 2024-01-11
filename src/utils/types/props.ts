@@ -23,4 +23,5 @@ export interface EditorToolbarProps {
 
 export interface EditorProps {
   content: string;
+  setContent: (content: string) => void;
 }

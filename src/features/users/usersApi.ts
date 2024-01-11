@@ -5,6 +5,7 @@ export const usersApi = api.injectEndpoints({
   endpoints: (build) => ({
     getCurrentUser: build.query<User, void>({
       query: () => "user",
+      providesTags: [{ type: "User", id: "LIST" }],
     }),
   }),
 });

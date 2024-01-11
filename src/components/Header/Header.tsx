@@ -12,10 +12,17 @@ export const Header: React.FC = () => {
 
   return (
     <header className={styles.header}>
-      <div>FeedR</div>
+      <div>
+        <Link to={"/"}>FeedR</Link>
+      </div>
 
       {token && user ? (
-        <UserDropdown userName={user.name} />
+        <div className={styles.header__panel}>
+          <Button variant="outlined" sx={{ mr: 2 }}>
+            <Link to={"/add-article"}>Create Article</Link>
+          </Button>
+          <UserDropdown userName={user.name} />
+        </div>
       ) : (
         <div>
           <Button variant="outlined">

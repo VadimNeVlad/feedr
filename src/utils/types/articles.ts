@@ -5,7 +5,6 @@ export interface Article {
   id?: string;
   slug: string;
   title: string;
-  description: string;
   body: string;
   tagList: Tag[];
   createdAt: Date;
@@ -14,4 +13,10 @@ export interface Article {
   author: User;
   authorId: string;
   favorited: User[];
+}
+
+export interface ArticleData {
+  title: string;
+  body: string;
+  tagList: Tag[];
 }
