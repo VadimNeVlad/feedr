@@ -9,6 +9,13 @@ export interface AuthFormProps {
   onSubmit: (data: BaseSyntheticEvent) => void;
 }
 
+export interface ArticleListProps {
+  articles: Article[] | undefined;
+  isLoading: boolean;
+  isSuccess: boolean;
+  isError: boolean;
+}
+
 export interface ArticleItemProps {
   article: Article;
 }

@@ -1,6 +1,6 @@
 import moment from "moment";
 
-export const formatDate = (timestamp: Date, momented = true) => {
+export const formatDate = (timestamp: Date, momented = true): string => {
   const date = new Date(timestamp).toLocaleDateString("en-us", {
     month: "short",
     day: "numeric",

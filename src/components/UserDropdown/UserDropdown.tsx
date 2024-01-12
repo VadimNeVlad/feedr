@@ -20,7 +20,6 @@ import { trimFirstLetter } from "../../utils/helpers/trimString";
 export const UserDropdown: React.FC<UserDropdownProps> = ({ userName }) => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const dispatch = useDispatch();
-  const trimmedName = trimFirstLetter(userName);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -40,7 +39,7 @@ export const UserDropdown: React.FC<UserDropdownProps> = ({ userName }) => {
   return (
     <div>
       <span className={styles.userDropdown} onClick={handleClick}>
-        <Avatar aria-describedby={id}>{trimmedName}</Avatar>
+        <Avatar aria-describedby={id}>{trimFirstLetter(userName)}</Avatar>
         <Typography variant="body2" sx={{ ml: 1 }}>
           {userName}
         </Typography>

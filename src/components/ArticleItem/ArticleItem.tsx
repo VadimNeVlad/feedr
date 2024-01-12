@@ -20,13 +20,13 @@ import { trimFirstLetter } from "../../utils/helpers/trimString";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { useNavigate } from "react-router-dom";
+import { removeTags } from "../../utils/helpers/removeTags";
 
 export const ArticleItem: React.FC<ArticleItemProps> = ({ article }) => {
   const navigate = useNavigate();
   const [favoriteArticle] = useFavoriteArticleMutation();
   const [unfavoriteArticle] = useUnfavoriteArticleMutation();
   const user = useSelector((state: RootState) => state.auth.user);
-  const trimmedName = trimFirstLetter(article.author.name);
 
   const exists = article.favorited.some((userItem) =>
     user ? userItem.id === user.id : null
@@ -40,7 +40,7 @@ export const ArticleItem: React.FC<ArticleItemProps> = ({ article }) => {
   return (
     <Card sx={{ mb: 5 }}>
       <CardHeader
-        avatar={<Avatar>{trimmedName}</Avatar>}
+        avatar={<Avatar>{trimFirstLetter(article.author.name)}</Avatar>}
         title={article.author.name}
         subheader={formatDate(article.createdAt)}
       />
@@ -49,7 +49,7 @@ export const ArticleItem: React.FC<ArticleItemProps> = ({ article }) => {
           {article.title}
         </Typography>
         <Typography variant="body2" sx={{ mb: 3 }}>
-          {article.body}
+          {removeTags(article.body)}
         </Typography>
 
         <div style={{ display: "flex" }}>

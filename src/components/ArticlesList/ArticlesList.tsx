@@ -1,26 +1,33 @@
-import React, { useEffect } from "react";
-import { useGetArticlesQuery } from "../../features/articles/articlesApi";
+import React from "react";
 import { ArticleItem } from "../ArticleItem/ArticleItem";
-import { ToastContainer, toast } from "react-toastify";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
+import { ArticleListProps } from "../../utils/types/props";
 
-export const Articles: React.FC = () => {
-  const { data: articles, isLoading, isSuccess, error } = useGetArticlesQuery();
-
-  useEffect(() => {
-    if (error) {
-      const err = (error as FetchBaseQueryError).data as Error;
-      toast.error(err?.message);
-    }
-  }, [error]);
-
+export const ArticlesList: React.FC<ArticleListProps> = ({
+  articles,
+  isLoading,
+  isSuccess,
+  isError,
+}) => {
   return (
     <>
-      {isLoading && <div>Loading...</div>}
+      {isLoading && (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "calc(100vh - 96px)",
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      )}
 
       {!isLoading &&
         isSuccess &&
+        articles &&
         (articles.length > 0 ? (
           articles.map((article) => (
             <ArticleItem key={article.id} article={article} />
@@ -29,13 +36,11 @@ export const Articles: React.FC = () => {
           <div>No articles found</div>
         ))}
 
-      {!isLoading && error && (
+      {!isLoading && isError && (
         <Typography variant="h3" sx={{ textAlign: "center" }} fontWeight={700}>
           Something went wrong! Please try again later
         </Typography>
       )}
-
-      <ToastContainer />
     </>
   );
 };
