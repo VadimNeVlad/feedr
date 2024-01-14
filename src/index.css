@@ -58,6 +58,10 @@ button:focus-visible {
 
 .ProseMirror {
   min-height: 300px;
+  outline: none;
+}
+
+.editor__frame {
   padding: 5px 14px;
   border: 1px solid rgba(0, 0, 0, 0.12);
 }

@@ -7,14 +7,18 @@ import TypographyExtension from "@tiptap/extension-typography";
 import UnderlineExtension from "@tiptap/extension-underline";
 import CharacterCount from "@tiptap/extension-character-count";
 import Link from "@tiptap/extension-link";
-
 import TextAlign from "@tiptap/extension-text-align";
 import Focus from "@tiptap/extension-focus";
 import Superscript from "@tiptap/extension-superscript";
 import Subscript from "@tiptap/extension-subscript";
 import { EditorProps } from "../../utils/types/props";
 
-export const Editor: React.FC<EditorProps> = ({ content, setContent }) => {
+export const Editor: React.FC<EditorProps> = ({
+  content,
+  setContent,
+  showToolbar,
+  isEditable,
+}) => {
   const limit = 5000;
   const editor = useEditor({
     extensions: [
@@ -24,11 +28,6 @@ export const Editor: React.FC<EditorProps> = ({ content, setContent }) => {
       Highlight,
       TypographyExtension,
       UnderlineExtension,
-      // Document,
-      // Paragraph,
-      // Text,
-      // Dropcursor,
-      // Code,
       Link,
       CharacterCount.configure({
         limit,
@@ -42,8 +41,9 @@ export const Editor: React.FC<EditorProps> = ({ content, setContent }) => {
       }),
     ],
     content,
+    editable: isEditable,
     onBlur: ({ editor }) => {
-      setContent(editor.getHTML());
+      if (setContent) setContent(editor.getHTML());
     },
   });
 
@@ -53,9 +53,12 @@ export const Editor: React.FC<EditorProps> = ({ content, setContent }) => {
 
   return (
     <>
-      {editor && <EditorToolbar editor={editor} />}
-      <EditorContent editor={editor} />
-      {editor && (
+      {editor && showToolbar && <EditorToolbar editor={editor} />}
+      <div className={`${isEditable ? "editor__frame" : ""}`}>
+        <EditorContent editor={editor} />
+      </div>
+
+      {editor && isEditable && (
         <div
           className={`character-count ${
             editor.storage.characterCount.characters() === limit

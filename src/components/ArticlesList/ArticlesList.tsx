@@ -30,7 +30,7 @@ export const ArticlesList: React.FC<ArticleListProps> = ({
         articles &&
         (articles.length > 0 ? (
           articles.map((article) => (
-            <ArticleItem key={article.id} article={article} />
+            <ArticleItem article={article} key={article.id} />
           ))
         ) : (
           <div>No articles found</div>

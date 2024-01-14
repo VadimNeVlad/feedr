@@ -68,7 +68,7 @@ export const AddArticle: React.FC = () => {
           </div>
 
           <div className="form-field">
-            <Editor content="" setContent={setContent} />
+            <Editor content="" setContent={setContent} isEditable showToolbar />
             <TextField
               type="hidden"
               sx={{ display: "none" }}

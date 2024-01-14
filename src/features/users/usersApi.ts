@@ -5,9 +5,26 @@ export const usersApi = api.injectEndpoints({
   endpoints: (build) => ({
     getCurrentUser: build.query<User, void>({
       query: () => "user",
-      providesTags: [{ type: "User", id: "LIST" }],
+    }),
+    followUser: build.mutation<User, string>({
+      query: (id) => ({
+        url: `user/${id}/follow`,
+        method: "POST",
+      }),
+      invalidatesTags: [{ type: "Article", id: "LIST" }],
+    }),
+    unfollowUser: build.mutation<User, string>({
+      query: (id) => ({
+        url: `user/${id}/follow`,
+        method: "DELETE",
+      }),
+      invalidatesTags: [{ type: "Article", id: "LIST" }],
     }),
   }),
 });
 
-export const { useGetCurrentUserQuery } = usersApi;
+export const {
+  useGetCurrentUserQuery,
+  useFollowUserMutation,
+  useUnfollowUserMutation,
+} = usersApi;

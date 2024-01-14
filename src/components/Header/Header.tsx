@@ -27,7 +27,7 @@ export const Header: React.FC = () => {
         </div>
       ) : (
         <div>
-          <Button variant="outlined">
+          <Button variant="text">
             <Link to={"/login"}>Login</Link>
           </Button>
           <Button variant="contained">

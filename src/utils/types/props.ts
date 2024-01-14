@@ -30,5 +30,20 @@ export interface EditorToolbarProps {
 
 export interface EditorProps {
   content: string;
-  setContent: (content: string) => void;
+  showToolbar: boolean;
+  isEditable: boolean;
+  setContent?: (content: string) => void;
+}
+
+export interface ArticleContentProps {
+  article: Article;
+}
+
+export interface ArticleReactionsProps {
+  article: Article;
+}
+
+export interface ArticleUserProps {
+  article: Article;
+  isFetching: boolean;
 }

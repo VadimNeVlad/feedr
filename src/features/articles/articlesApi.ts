@@ -7,6 +7,10 @@ export const articlesApi = api.injectEndpoints({
       query: () => "/articles",
       providesTags: [{ type: "Article", id: "LIST" }],
     }),
+    getSingleArticle: build.query<Article, string>({
+      query: (slug) => `/articles/${slug}`,
+      providesTags: [{ type: "Article", id: "LIST" }],
+    }),
     createArticle: build.mutation<Article, ArticleData>({
       query: (body) => ({
         url: "/articles",
@@ -34,6 +38,7 @@ export const articlesApi = api.injectEndpoints({
 
 export const {
   useGetArticlesQuery,
+  useGetSingleArticleQuery,
   useCreateArticleMutation,
   useFavoriteArticleMutation,
   useUnfavoriteArticleMutation,

@@ -4,6 +4,7 @@ import PrivateRoutes from "./PrivateRoutes";
 import { Login } from "../pages/Login/Login";
 import { Register } from "../pages/Register/Register";
 import { AddArticle } from "../pages/AddArticle/AddArticle";
+import { Article } from "../pages/Article/Article";
 
 export const Routes = () => {
   return (
@@ -17,6 +18,7 @@ export const Routes = () => {
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/articles/:slug" element={<Article />} />
     </RouterRoutes>
   );
 };

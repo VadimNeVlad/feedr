@@ -2,6 +2,7 @@ import React from "react";
 import { ArticleItemProps } from "../../utils/types/props";
 import {
   Avatar,
+  Box,
   Card,
   CardActions,
   CardContent,
@@ -38,36 +39,44 @@ export const ArticleItem: React.FC<ArticleItemProps> = ({ article }) => {
   };
 
   return (
-    <Card sx={{ mb: 5 }}>
+    <Card sx={{ mb: 3 }}>
       <CardHeader
         avatar={<Avatar>{trimFirstLetter(article.author.name)}</Avatar>}
         title={article.author.name}
         subheader={formatDate(article.createdAt)}
       />
+
       <CardContent>
-        <Typography variant="h5" sx={{ mb: 2 }}>
+        <Typography
+          variant="h5"
+          sx={{ display: "block", mb: 2, cursor: "pointer" }}
+          onClick={() => navigate(`/articles/${article.slug}`)}
+        >
           {article.title}
         </Typography>
         <Typography variant="body2" sx={{ mb: 3 }}>
           {removeTags(article.body)}
         </Typography>
 
-        <div style={{ display: "flex" }}>
+        <Box sx={{ display: "flex" }}>
           {article.tagList.map((tag) => (
             <Typography key={tag.name} variant="body1" sx={{ mr: 1 }}>
               #{tag.name}
             </Typography>
           ))}
-        </div>
+        </Box>
       </CardContent>
+
       <CardActions>
         <IconButton
           aria-label="add to favorites"
           onClick={user ? handleFavoriteArticle : () => navigate("/login")}
         >
           {exists ? <BookmarkIcon /> : <BookmarkBorderOutlinedIcon />}
-          <Typography variant="body2">{article.favoritesCount}</Typography>
         </IconButton>
+        <Typography variant="body2" style={{ marginLeft: "-8px" }}>
+          {article.favoritesCount}
+        </Typography>
       </CardActions>
     </Card>
   );

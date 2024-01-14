@@ -1,5 +1,8 @@
+import { Article } from "./articles";
+import { Follow } from "./follow";
+
 export interface User {
-  id?: string;
+  id: string;
   email: string;
   name: string;
   password: string;
@@ -7,8 +10,8 @@ export interface User {
   image: string;
   createdAt: Date;
   updatedAt: Date;
-  // articles: Article[];
-  // favorites: Article[];
-  // following: Follow[];
-  // followers: Follow[];
+  articles: Article[];
+  favorites: Article[];
+  following: Follow[];
+  followers: Follow[];
 }
