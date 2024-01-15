@@ -1,6 +1,7 @@
 import { BaseSyntheticEvent } from "react";
 import { Article } from "./articles";
 import { Editor } from "@tiptap/react";
+import { Comment } from "./comment";
 
 export interface AuthFormProps {
   title: string;
@@ -46,4 +47,12 @@ export interface ArticleReactionsProps {
 export interface ArticleUserProps {
   article: Article;
   isFetching: boolean;
+}
+
+export interface CommentItemProps {
+  comment: Comment;
+}
+
+export interface CommentFormProps {
+  articleId: string;
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Header } from "../../components/Header/Header";
-import { Container, TextField, Typography } from "@mui/material";
+import { Box, Container, TextField, Typography } from "@mui/material";
 import { Editor } from "../../components/Editor/Editor";
 import { useForm } from "react-hook-form";
 import { ArticleData } from "../../utils/types/articles";
@@ -55,7 +55,7 @@ export const AddArticle: React.FC = () => {
         </Typography>
 
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="form-field">
+          <Box className="form-field">
             <TextField
               fullWidth
               error={!!errors.title}
@@ -65,9 +65,9 @@ export const AddArticle: React.FC = () => {
               helperText={errors.title ? "Title is required" : null}
               {...register("title", { required: true })}
             />
-          </div>
+          </Box>
 
-          <div className="form-field">
+          <Box className="form-field">
             <Editor content="" setContent={setContent} isEditable showToolbar />
             <TextField
               type="hidden"
@@ -75,9 +75,9 @@ export const AddArticle: React.FC = () => {
               value={content}
               {...register("body", { required: true })}
             />
-          </div>
+          </Box>
 
-          <div className="form-field">
+          <Box className="form-field">
             <Typography variant="body2" sx={{ mb: 1 }}>
               Tags separated by commas, word by either dashes or underscores
             </Typography>
@@ -92,7 +92,7 @@ export const AddArticle: React.FC = () => {
               {...register("tagList", { required: true })}
               onChange={(e) => setTags(e.target.value.replace(/ /g, ""))}
             />
-          </div>
+          </Box>
 
           <LoadingButton
             type="submit"

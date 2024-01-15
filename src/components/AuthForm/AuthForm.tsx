@@ -2,7 +2,7 @@ import React from "react";
 import { useFormContext } from "react-hook-form";
 import { AuthFormProps } from "../../utils/types/props";
 import { AuthData } from "../../utils/types/auth";
-import { TextField, Typography } from "@mui/material";
+import { Box, TextField, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import LoadingButton from "@mui/lab/LoadingButton";
 
@@ -23,7 +23,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({
       <Typography variant="subtitle1">{text}</Typography>
 
       <form onSubmit={onSubmit}>
-        <div className="form-field">
+        <Box className="form-field">
           <TextField
             label="Email"
             variant="outlined"
@@ -31,7 +31,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({
             {...register("email", { required: true })}
           />
           {errors.email && <p>{errors.email?.message}</p>}
-        </div>
+        </Box>
 
         {title === "Register" && (
           <div className="form-field">
@@ -45,7 +45,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({
           </div>
         )}
 
-        <div className="form-field">
+        <Box className="form-field">
           <TextField
             label="Password"
             variant="outlined"
@@ -53,7 +53,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({
             {...register("password", { required: true })}
           />
           {errors.password && <p>{errors.password?.message}</p>}
-        </div>
+        </Box>
 
         <LoadingButton type="submit" variant="contained" loading={isPending}>
           {title === "Register" ? "Register" : "Login"}

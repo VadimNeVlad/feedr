@@ -6,6 +6,10 @@ import { ArticleContent } from "../../components/ArticleContent/ArticleContent";
 import { useParams } from "react-router-dom";
 import { ArticleReactions } from "../../components/ArticleReactions/ArticleReactions";
 import { ArticleAuthor } from "../../components/ArticleAuthor/ArticleAuthor";
+import { CommentForm } from "../../components/CommentForm/CommentForm";
+import { CommentItem } from "../../components/CommentItem/CommentItem";
+import { useGetCommentsQuery } from "../../features/comments/commentsApi";
+import { skipToken } from "@reduxjs/toolkit/query";
 
 export const Article: React.FC = () => {
   const { slug } = useParams();
@@ -15,6 +19,7 @@ export const Article: React.FC = () => {
     isSuccess,
     isFetching,
   } = useGetSingleArticleQuery(slug || "");
+  const { data: comments } = useGetCommentsQuery(article?.id ?? skipToken);
 
   return (
     <>
@@ -32,14 +37,18 @@ export const Article: React.FC = () => {
         </Box>
       )}
 
-      {!isLoading && isSuccess && article && (
-        <Container maxWidth="lg" sx={{ mt: 11 }}>
+      {!isLoading && isSuccess && article && comments && (
+        <Container maxWidth="lg" sx={{ mt: 11, pb: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={1}>
               <ArticleReactions article={article} />
             </Grid>
             <Grid item xs={8}>
               <ArticleContent article={article} />
+              <CommentForm articleId={article.id!} />
+              {comments.map((comment) => (
+                <CommentItem key={comment.id} comment={comment} />
+              ))}
             </Grid>
             <Grid item xs={3}>
               <ArticleAuthor article={article} isFetching={isFetching} />
