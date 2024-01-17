@@ -18,7 +18,7 @@ export const ArticlesList: React.FC<ArticleListProps> = ({
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            height: "calc(100vh - 96px)",
+            height: "calc(100vh - 112px)",
           }}
         >
           <CircularProgress />

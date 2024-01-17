@@ -65,7 +65,11 @@ export const Article: React.FC = () => {
               ))}
             </Grid>
             <Grid item xs={3}>
-              <ArticleAuthor author={author} isFetching={isFetchingAuthor} />
+              <ArticleAuthor
+                author={author}
+                slug={slug || ""}
+                isFetching={isFetchingAuthor}
+              />
             </Grid>
           </Grid>
         </Container>

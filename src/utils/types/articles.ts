@@ -21,3 +21,9 @@ export interface ArticleData {
   body: string;
   tagList: Tag[];
 }
+
+export interface UpdateArticleData {
+  slug: string;
+  title: string;
+  body: string;
+}

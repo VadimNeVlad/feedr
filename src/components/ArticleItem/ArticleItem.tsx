@@ -26,8 +26,10 @@ import CommentOutlinedIcon from "@mui/icons-material/CommentOutlined";
 
 export const ArticleItem: React.FC<ArticleItemProps> = ({ article }) => {
   const navigate = useNavigate();
-  const [favoriteArticle] = useFavoriteArticleMutation();
-  const [unfavoriteArticle] = useUnfavoriteArticleMutation();
+  const [favoriteArticle, { isLoading: isLoadingFavorite }] =
+    useFavoriteArticleMutation();
+  const [unfavoriteArticle, { isLoading: isLoadingUnfavorite }] =
+    useUnfavoriteArticleMutation();
   const user = useSelector((state: RootState) => state.auth.user);
 
   const exists = article.favorited.some((userItem) =>
@@ -73,6 +75,7 @@ export const ArticleItem: React.FC<ArticleItemProps> = ({ article }) => {
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <IconButton
             aria-label="add to favorites"
+            disabled={isLoadingFavorite || isLoadingUnfavorite}
             onClick={user ? handleFavoriteArticle : () => navigate("/login")}
           >
             {exists ? <BookmarkIcon /> : <BookmarkBorderOutlinedIcon />}

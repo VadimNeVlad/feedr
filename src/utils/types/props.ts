@@ -46,8 +46,9 @@ export interface ArticleReactionsProps {
   handleScroll: () => void;
 }
 
-export interface ArticleUserProps {
+export interface ArticleAuthorProps {
   author: User;
+  slug: string;
   isFetching: boolean;
 }
 
@@ -58,4 +59,13 @@ export interface CommentItemProps {
 export interface CommentFormProps {
   articleId: string;
   isFetching: boolean;
+}
+
+export interface ModalProps {
+  open: boolean;
+  title: string;
+  isDeleting?: boolean;
+  children: React.ReactNode;
+  handleClose: () => void;
+  deleteAction?: () => void;
 }

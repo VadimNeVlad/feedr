@@ -1,5 +1,9 @@
 import { api } from "../../app/services";
-import { Article, ArticleData } from "../../utils/types/articles";
+import {
+  Article,
+  ArticleData,
+  UpdateArticleData,
+} from "../../utils/types/articles";
 
 export const articlesApi = api.injectEndpoints({
   endpoints: (build) => ({
@@ -25,6 +29,21 @@ export const articlesApi = api.injectEndpoints({
       }),
       invalidatesTags: [{ type: "Article", id: "LIST" }],
     }),
+    updateArticle: build.mutation<Article, UpdateArticleData>({
+      query: ({ slug, ...body }) => ({
+        url: `/articles/${slug}`,
+        method: "PUT",
+        body,
+      }),
+      invalidatesTags: ["Article"],
+    }),
+    deleteArticle: build.mutation<Article, string>({
+      query: (slug) => ({
+        url: `/articles/${slug}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: [{ type: "Article", id: "LIST" }],
+    }),
     favoriteArticle: build.mutation<Article, string>({
       query: (slug) => ({
         url: `/articles/${slug}/favorite`,
@@ -46,6 +65,8 @@ export const {
   useGetArticlesQuery,
   useGetSingleArticleQuery,
   useCreateArticleMutation,
+  useUpdateArticleMutation,
+  useDeleteArticleMutation,
   useFavoriteArticleMutation,
   useUnfavoriteArticleMutation,
 } = articlesApi;

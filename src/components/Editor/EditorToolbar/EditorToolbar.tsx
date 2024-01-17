@@ -39,7 +39,7 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({ editor }) => {
           mb: 2,
           position: "sticky",
           top: 10,
-          zIndex: 9999,
+          zIndex: 10,
         }}
       >
         <HeadingToolbarButtons editor={editor} />

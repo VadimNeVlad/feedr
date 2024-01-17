@@ -19,7 +19,7 @@ export const Home: React.FC = () => {
   return (
     <>
       <Header />
-      <Container maxWidth="lg" sx={{ mt: 11 }}>
+      <Container maxWidth="lg" sx={{ mt: 11, pb: 3 }}>
         <ArticlesList
           articles={articles}
           isLoading={isLoading}

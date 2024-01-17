@@ -5,6 +5,7 @@ import { Login } from "../pages/Login/Login";
 import { Register } from "../pages/Register/Register";
 import { AddArticle } from "../pages/AddArticle/AddArticle";
 import { Article } from "../pages/Article/Article";
+import { EditArticle } from "../pages/EditArticle/EditArticle";
 
 export const Routes = () => {
   return (
@@ -12,6 +13,7 @@ export const Routes = () => {
       {/* Private routes */}
       <Route element={<PrivateRoutes />}>
         <Route path="/add-article" element={<AddArticle />} />
+        <Route path="/edit-article/:slug" element={<EditArticle />} />
       </Route>
 
       {/* Public routes */}
