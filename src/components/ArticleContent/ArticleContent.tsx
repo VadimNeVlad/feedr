@@ -14,34 +14,28 @@ import { Editor } from "../Editor/Editor";
 
 export const ArticleContent: React.FC<ArticleContentProps> = ({ article }) => {
   return (
-    <>
-      <Card>
-        <CardHeader
-          avatar={<Avatar>{trimFirstLetter(article.author.name)}</Avatar>}
-          title={article.author.name}
-          subheader={formatDate(article.createdAt)}
-        />
+    <Card sx={{ borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }}>
+      <CardHeader
+        avatar={<Avatar>{trimFirstLetter(article.author.name)}</Avatar>}
+        title={article.author.name}
+        subheader={formatDate(article.createdAt)}
+      />
 
-        <CardContent>
-          <Typography variant="h4" fontWeight={700} sx={{ mb: 2 }}>
-            {article.title}
-          </Typography>
+      <CardContent>
+        <Typography variant="h4" fontWeight={700} sx={{ mb: 2 }}>
+          {article.title}
+        </Typography>
 
-          <Box style={{ display: "flex" }}>
-            {article.tagList.map((tag) => (
-              <Typography key={tag.name} variant="body1" sx={{ mr: 1 }}>
-                #{tag.name}
-              </Typography>
-            ))}
-          </Box>
+        <Box style={{ display: "flex" }}>
+          {article.tagList.map((tag) => (
+            <Typography key={tag.name} variant="body1" sx={{ mr: 1 }}>
+              #{tag.name}
+            </Typography>
+          ))}
+        </Box>
 
-          <Editor
-            content={article.body}
-            showToolbar={false}
-            isEditable={false}
-          />
-        </CardContent>
-      </Card>
-    </>
+        <Editor content={article.body} showToolbar={false} isEditable={false} />
+      </CardContent>
+    </Card>
   );
 };

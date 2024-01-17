@@ -13,6 +13,7 @@ export interface Article {
   author: User;
   authorId: string;
   favorited: User[];
+  commentsCount: number;
 }
 
 export interface ArticleData {

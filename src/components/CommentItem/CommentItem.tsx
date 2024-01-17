@@ -6,12 +6,19 @@ import { formatDate } from "../../utils/helpers/formatDate";
 
 export const CommentItem: React.FC<CommentItemProps> = ({ comment }) => {
   return (
-    <Card sx={{ borderTopRightRadius: 0, borderTopLeftRadius: 0 }}>
+    <Card sx={{ borderRadius: 0 }}>
       <CardContent sx={{ display: "flex" }}>
         <Avatar sx={{ width: 32, height: 32, mr: 2 }}>
           {trimFirstLetter(comment.author.name)}
         </Avatar>
-        <Box>
+        <Box
+          sx={{
+            width: "100%",
+            border: "1px solid rgba(0, 0, 0, 0.07)",
+            p: 2,
+            borderRadius: "4px",
+          }}
+        >
           <Box sx={{ display: "flex", mb: 1 }}>
             <Typography variant="subtitle2" fontWeight={700} sx={{ mr: 1 }}>
               {comment.author.name}

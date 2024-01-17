@@ -1,4 +1,3 @@
-import { Article } from "./articles";
 import { User } from "./user";
 
 export interface Comment {
@@ -7,7 +6,6 @@ export interface Comment {
   authorId: string;
   articleId: string;
   author: User;
-  article: Article;
   createdAt: Date;
   updatedAt: Date;
 }

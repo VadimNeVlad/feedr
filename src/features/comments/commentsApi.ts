@@ -5,6 +5,13 @@ export const commentsApi = api.injectEndpoints({
   endpoints: (build) => ({
     getComments: build.query<Comment[], string>({
       query: (id) => `comments/${id}`,
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.map(({ id }) => ({ type: "Comment" as const, id })),
+              { type: "Comment", id: "LIST" },
+            ]
+          : [{ type: "Comment", id: "LIST" }],
     }),
     createComment: build.mutation<Comment, CommentData>({
       query: ({ content, articleId }) => ({
@@ -12,6 +19,7 @@ export const commentsApi = api.injectEndpoints({
         method: "POST",
         body: { content },
       }),
+      invalidatesTags: ["Article", "Comment"],
     }),
   }),
 });

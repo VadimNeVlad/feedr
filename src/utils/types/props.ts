@@ -2,6 +2,7 @@ import { BaseSyntheticEvent } from "react";
 import { Article } from "./articles";
 import { Editor } from "@tiptap/react";
 import { Comment } from "./comment";
+import { User } from "./user";
 
 export interface AuthFormProps {
   title: string;
@@ -42,10 +43,11 @@ export interface ArticleContentProps {
 
 export interface ArticleReactionsProps {
   article: Article;
+  handleScroll: () => void;
 }
 
 export interface ArticleUserProps {
-  article: Article;
+  author: User;
   isFetching: boolean;
 }
 
@@ -55,4 +57,5 @@ export interface CommentItemProps {
 
 export interface CommentFormProps {
   articleId: string;
+  isFetching: boolean;
 }

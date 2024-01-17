@@ -5,11 +5,17 @@ export const articlesApi = api.injectEndpoints({
   endpoints: (build) => ({
     getArticles: build.query<Article[], void>({
       query: () => "/articles",
-      providesTags: [{ type: "Article", id: "LIST" }],
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.map(({ id }) => ({ type: "Article" as const, id })),
+              { type: "Article", id: "LIST" },
+            ]
+          : [{ type: "Article", id: "LIST" }],
     }),
     getSingleArticle: build.query<Article, string>({
       query: (slug) => `/articles/${slug}`,
-      providesTags: [{ type: "Article", id: "LIST" }],
+      providesTags: (_res, _err, id) => [{ type: "Article", id }],
     }),
     createArticle: build.mutation<Article, ArticleData>({
       query: (body) => ({
@@ -17,7 +23,7 @@ export const articlesApi = api.injectEndpoints({
         method: "POST",
         body,
       }),
-      invalidatesTags: ["Article"],
+      invalidatesTags: [{ type: "Article", id: "LIST" }],
     }),
     favoriteArticle: build.mutation<Article, string>({
       query: (slug) => ({

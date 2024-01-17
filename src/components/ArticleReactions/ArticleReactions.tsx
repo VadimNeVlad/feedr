@@ -14,6 +14,7 @@ import { RootState } from "../../app/store";
 
 export const ArticleReactions: React.FC<ArticleReactionsProps> = ({
   article,
+  handleScroll,
 }) => {
   const navigate = useNavigate();
   const [favoriteArticle] = useFavoriteArticleMutation();
@@ -42,10 +43,10 @@ export const ArticleReactions: React.FC<ArticleReactionsProps> = ({
       </Box>
 
       <Box sx={{ textAlign: "center" }}>
-        <IconButton aria-label="comments">
+        <IconButton aria-label="comments" onClick={handleScroll}>
           <CommentOutlinedIcon />
         </IconButton>
-        <Typography variant="body2">12</Typography>
+        <Typography variant="body2">{article.commentsCount}</Typography>
       </Box>
     </>
   );

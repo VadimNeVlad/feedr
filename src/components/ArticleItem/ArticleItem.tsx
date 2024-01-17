@@ -22,6 +22,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { useNavigate } from "react-router-dom";
 import { removeTags } from "../../utils/helpers/removeTags";
+import CommentOutlinedIcon from "@mui/icons-material/CommentOutlined";
 
 export const ArticleItem: React.FC<ArticleItemProps> = ({ article }) => {
   const navigate = useNavigate();
@@ -49,6 +50,7 @@ export const ArticleItem: React.FC<ArticleItemProps> = ({ article }) => {
       <CardContent>
         <Typography
           variant="h5"
+          fontWeight={700}
           sx={{ display: "block", mb: 2, cursor: "pointer" }}
           onClick={() => navigate(`/articles/${article.slug}`)}
         >
@@ -68,15 +70,28 @@ export const ArticleItem: React.FC<ArticleItemProps> = ({ article }) => {
       </CardContent>
 
       <CardActions>
-        <IconButton
-          aria-label="add to favorites"
-          onClick={user ? handleFavoriteArticle : () => navigate("/login")}
-        >
-          {exists ? <BookmarkIcon /> : <BookmarkBorderOutlinedIcon />}
-        </IconButton>
-        <Typography variant="body2" style={{ marginLeft: "-8px" }}>
-          {article.favoritesCount}
-        </Typography>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <IconButton
+            aria-label="add to favorites"
+            onClick={user ? handleFavoriteArticle : () => navigate("/login")}
+          >
+            {exists ? <BookmarkIcon /> : <BookmarkBorderOutlinedIcon />}
+          </IconButton>
+          <Typography variant="body2" style={{ marginLeft: "-8px" }}>
+            {article.favoritesCount}
+          </Typography>
+        </Box>
+        <Box sx={{ display: "flex", alignItems: "center", mt: "2px" }}>
+          <IconButton
+            aria-label="comments"
+            onClick={() => navigate(`/articles/${article.slug}`)}
+          >
+            <CommentOutlinedIcon />
+          </IconButton>
+          <Typography variant="body2" style={{ marginLeft: "-6px" }}>
+            {article.commentsCount}
+          </Typography>
+        </Box>
       </CardActions>
     </Card>
   );

@@ -18,7 +18,7 @@ import { RootState } from "../../app/store";
 import LoadingButton from "@mui/lab/LoadingButton";
 
 export const ArticleAuthor: React.FC<ArticleUserProps> = ({
-  article,
+  author,
   isFetching,
 }) => {
   const [followUser, { isLoading: isFollowLoading }] = useFollowUserMutation();
@@ -26,13 +26,13 @@ export const ArticleAuthor: React.FC<ArticleUserProps> = ({
     useUnfollowUserMutation();
   const user = useSelector((state: RootState) => state.auth.user);
 
-  const exists = article.author.followers.some((followingUser) =>
+  const exists = author.followers.some((followingUser) =>
     user ? followingUser.followerId === user.id : null
   );
 
   const handleFollowUser = () => {
-    if (!exists) followUser(article.author.id);
-    else unfollowUser(article.author.id);
+    if (!exists) followUser(author.id);
+    else unfollowUser(author.id);
   };
 
   return (
@@ -40,22 +40,24 @@ export const ArticleAuthor: React.FC<ArticleUserProps> = ({
       <CardHeader
         avatar={
           <Avatar sx={{ width: "46px", height: "46px" }}>
-            {trimFirstLetter(article.author.name)}
+            {trimFirstLetter(author.name)}
           </Avatar>
         }
         titleTypographyProps={{ variant: "h6", fontWeight: 700 }}
-        title={article.author.name}
+        title={author.name}
       />
 
       <CardContent>
-        <LoadingButton
-          variant="contained"
-          sx={{ width: "100%", mb: 2 }}
-          loading={isFollowLoading || isUnfollowLoading || isFetching}
-          onClick={handleFollowUser}
-        >
-          {!exists ? "Follow" : "Unfollow"}
-        </LoadingButton>
+        {user?.id !== author.id && (
+          <LoadingButton
+            variant="contained"
+            sx={{ width: "100%", mb: 2 }}
+            loading={isFollowLoading || isUnfollowLoading || isFetching}
+            onClick={handleFollowUser}
+          >
+            {!exists ? "Follow" : "Unfollow"}
+          </LoadingButton>
+        )}
         <Typography variant="body1" sx={{ mb: 2 }}>
           MERN Stack Developer | Machine Learning Developer | Content Reviewer
         </Typography>
@@ -63,13 +65,13 @@ export const ArticleAuthor: React.FC<ArticleUserProps> = ({
           Email
         </Typography>
         <Typography variant="body1" sx={{ mb: 1 }}>
-          {article.author.email}
+          {author.email}
         </Typography>
         <Typography variant="subtitle1" fontWeight={700}>
           Joined
         </Typography>
         <Typography variant="body1">
-          {formatDate(article.author.createdAt, false)}
+          {formatDate(author.createdAt, false)}
         </Typography>
       </CardContent>
     </Card>

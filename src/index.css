@@ -66,6 +66,10 @@ button:focus-visible {
   border: 1px solid rgba(0, 0, 0, 0.12);
 }
 
+.MuiButtonBase-root {
+  outline: none !important;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
