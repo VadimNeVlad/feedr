@@ -9,6 +9,7 @@ export interface Article {
   tagList: Tag[];
   createdAt: Date;
   updatedAt: Date;
+  image: string;
   favoritesCount: number;
   author: User;
   authorId: string;

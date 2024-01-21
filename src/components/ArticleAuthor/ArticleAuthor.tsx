@@ -110,8 +110,8 @@ export const ArticleAuthor: React.FC<ArticleAuthorProps> = ({
           <Button
             fullWidth
             variant="contained"
-            color="warning"
-            sx={{ mt: 2 }}
+            color="error"
+            sx={{ mt: 1 }}
             onClick={setOpen}
           >
             Delete Article

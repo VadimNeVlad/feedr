@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Header } from "../../components/Header/Header";
 import {
   Box,
+  Button,
   Card,
   CardContent,
   Container,
@@ -21,9 +22,12 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { articleSchema } from "../../utils/validators/articleSchema";
 
 export const AddArticle: React.FC = () => {
-  const [content, setContent] = useState("");
-  const [tags, setTags] = useState("");
+  const fileRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+  const [preview, setPreview] = useState("");
+  const [content, setContent] = useState("");
+  const [image, setImage] = useState<string | File>("");
+  const [tags, setTags] = useState("");
   const [createArticle, { isSuccess, isLoading, error }] =
     useCreateArticleMutation();
   const {
@@ -48,11 +52,31 @@ export const AddArticle: React.FC = () => {
     }
   }, [isSuccess, navigate, error]);
 
-  const onSubmit = (data: ArticleData) => {
-    const formattedTags = splitTags(tags);
-    const newArticle = { ...data, body: content, tagList: formattedTags };
+  const handlePreview = (e: React.ChangeEvent) => {
+    const target = e.target as HTMLInputElement;
+    const file: File = (target.files as FileList)[0];
+    const urlImage = URL.createObjectURL(file);
 
-    createArticle(newArticle);
+    setPreview(urlImage);
+    setImage(file);
+  };
+
+  const handleClearPreview = () => {
+    if (fileRef.current) fileRef.current.value = "";
+    setPreview("");
+    setImage("");
+  };
+
+  const onSubmit = (data: ArticleData) => {
+    const formData = new FormData();
+    const formattedTags = splitTags(tags);
+
+    formData.append("title", data.title);
+    formData.append("body", content);
+    formData.append("tagList", JSON.stringify(formattedTags));
+    formData.append("image", image);
+
+    createArticle(formData);
   };
 
   return (
@@ -66,11 +90,52 @@ export const AddArticle: React.FC = () => {
         <Card>
           <CardContent>
             <form onSubmit={handleSubmit(onSubmit)}>
-              <Box className="form-field" sx={{ mb: 2 }}>
+              <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+                <input
+                  type="file"
+                  ref={fileRef}
+                  style={{ display: "none" }}
+                  onChange={(e) => handlePreview(e)}
+                />
+                {preview && (
+                  <Box
+                    component="img"
+                    sx={{
+                      width: 200,
+                      height: 200,
+                      objectFit: "contain",
+                      mr: 2,
+                    }}
+                    src={preview}
+                  />
+                )}
+                <Box>
+                  <Button
+                    variant="outlined"
+                    component="label"
+                    sx={{ mr: 1 }}
+                    onClick={() => fileRef.current?.click()}
+                  >
+                    {preview ? "Change image" : "Add a cover image"}
+                  </Button>
+                  {preview && (
+                    <Button
+                      variant="text"
+                      color="error"
+                      component="label"
+                      onClick={handleClearPreview}
+                    >
+                      Remove Image
+                    </Button>
+                  )}
+                </Box>
+              </Box>
+
+              <Box sx={{ mb: 2 }}>
                 <TextField
                   fullWidth
                   error={!!errors.title}
-                  label="Title"
+                  label="New article title"
                   variant="outlined"
                   type="text"
                   helperText={errors.title ? "Title is required" : null}
@@ -78,7 +143,7 @@ export const AddArticle: React.FC = () => {
                 />
               </Box>
 
-              <Box className="form-field">
+              <Box>
                 <Editor
                   content=""
                   setContent={setContent}
@@ -93,7 +158,7 @@ export const AddArticle: React.FC = () => {
                 />
               </Box>
 
-              <Box className="form-field" sx={{ mt: 4, mb: 2 }}>
+              <Box sx={{ mt: 4, mb: 2 }}>
                 <Typography variant="body2" sx={{ mb: 1 }}>
                   Tags separated by commas, word by either dashes or underscores
                 </Typography>

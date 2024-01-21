@@ -11,10 +11,23 @@ import {
 import { formatDate } from "../../utils/helpers/formatDate";
 import { trimFirstLetter } from "../../utils/helpers/trimString";
 import { Editor } from "../Editor/Editor";
+import { IMAGE_URL } from "../../utils/constants/constants";
 
 export const ArticleContent: React.FC<ArticleContentProps> = ({ article }) => {
   return (
     <Card sx={{ borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }}>
+      {article.image && (
+        <Box
+          component="img"
+          sx={{
+            width: "100%",
+            height: 300,
+            objectFit: "cover",
+          }}
+          src={`${IMAGE_URL}/articles/${article.image}`}
+        />
+      )}
+
       <CardHeader
         avatar={<Avatar>{trimFirstLetter(article.author.name)}</Avatar>}
         title={article.author.name}

@@ -10,7 +10,7 @@ import { logout, setUser } from "../../features/auth/authSlice";
 import { AuthResponse } from "../../utils/types/auth";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:3000/api/",
+  baseUrl: import.meta.env.VITE_BASE_URL,
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.token;
     if (token) headers.set("authorization", `Bearer ${token}`);
