@@ -42,13 +42,15 @@ export const Article: React.FC = () => {
   useEffect(() => {
     if (deleteSuccess) {
       toast.success("Article deleted successfully");
+      setOpen();
+
       const redirect = setTimeout(() => {
         navigate("/");
       }, 2000);
 
       return () => clearTimeout(redirect);
     }
-  }, [deleteSuccess, navigate]);
+  }, [deleteSuccess, navigate, setOpen]);
 
   const handleScroll = () => {
     if (ref.current) ref.current.scrollIntoView({ behavior: "smooth" });
@@ -94,7 +96,12 @@ export const Article: React.FC = () => {
               {user?.id === author.id && (
                 <>
                   <Link to={`/edit-article/${id}`}>
-                    <Button fullWidth variant="outlined" sx={{ mt: 2 }}>
+                    <Button
+                      fullWidth
+                      variant="outlined"
+                      sx={{ mt: 2 }}
+                      disabled={deleteSuccess}
+                    >
                       Edit Article
                     </Button>
                   </Link>
@@ -104,6 +111,7 @@ export const Article: React.FC = () => {
                     variant="contained"
                     color="error"
                     sx={{ mt: 1 }}
+                    disabled={deleteSuccess}
                     onClick={setOpen}
                   >
                     Delete Article

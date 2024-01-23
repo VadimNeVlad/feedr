@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { Header } from "../../components/Header/Header";
 import {
   Box,
-  Button,
   Card,
   CardContent,
   Container,
@@ -20,6 +19,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { articleSchema } from "../../utils/validators/articleSchema";
+import { ImagePreview } from "../../components/ImagePreview/ImagePreview";
 
 export const AddArticle: React.FC = () => {
   const fileRef = useRef<HTMLInputElement>(null);
@@ -90,46 +90,12 @@ export const AddArticle: React.FC = () => {
         <Card>
           <CardContent>
             <form onSubmit={handleSubmit(onSubmit)}>
-              <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-                <input
-                  type="file"
-                  ref={fileRef}
-                  style={{ display: "none" }}
-                  onChange={(e) => handlePreview(e)}
-                />
-                {preview && (
-                  <Box
-                    component="img"
-                    sx={{
-                      width: 200,
-                      height: 200,
-                      objectFit: "contain",
-                      mr: 2,
-                    }}
-                    src={preview}
-                  />
-                )}
-                <Box>
-                  <Button
-                    variant="outlined"
-                    component="label"
-                    sx={{ mr: 1 }}
-                    onClick={() => fileRef.current?.click()}
-                  >
-                    {preview ? "Change image" : "Add a cover image"}
-                  </Button>
-                  {preview && (
-                    <Button
-                      variant="text"
-                      color="error"
-                      component="label"
-                      onClick={handleClearPreview}
-                    >
-                      Remove Image
-                    </Button>
-                  )}
-                </Box>
-              </Box>
+              <ImagePreview
+                preview={preview}
+                fileRef={fileRef}
+                handlePreview={handlePreview}
+                handleClearPreview={handleClearPreview}
+              />
 
               <Box sx={{ mb: 2 }}>
                 <TextField
@@ -177,7 +143,7 @@ export const AddArticle: React.FC = () => {
                 type="submit"
                 variant="contained"
                 loading={isLoading}
-                disabled={!content || !isValid}
+                disabled={!content || !isValid || isSuccess}
               >
                 Create article
               </LoadingButton>

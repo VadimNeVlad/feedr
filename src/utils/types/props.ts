@@ -68,3 +68,10 @@ export interface ModalProps {
   handleClose: () => void;
   deleteAction?: () => void;
 }
+
+export interface ImagePreviewProps {
+  preview: string;
+  fileRef: React.RefObject<HTMLInputElement>;
+  handlePreview: (e: React.ChangeEvent) => void;
+  handleClearPreview: () => void;
+}

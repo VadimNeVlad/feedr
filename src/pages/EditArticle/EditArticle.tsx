@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { Header } from "../../components/Header/Header";
 import {
   Box,
-  Button,
   Card,
   CardContent,
   CircularProgress,
@@ -22,15 +21,16 @@ import { Editor } from "../../components/Editor/Editor";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { IMAGE_URL } from "../../utils/constants/constants";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { ImagePreview } from "../../components/ImagePreview/ImagePreview";
 
 export const EditArticle: React.FC = () => {
-  const fileRef = useRef<HTMLInputElement>(null);
+  const { id } = useParams();
   const navigate = useNavigate();
+  const fileRef = useRef<HTMLInputElement>(null);
   const [preview, setPreview] = useState("");
   const [content, setContent] = useState("");
   const [image, setImage] = useState<string | File>("");
   const [isEdit, setIsEdit] = useState(false);
-  const { id } = useParams();
   const { data: article, isLoading } = useGetSingleArticleQuery(id || "", {
     refetchOnMountOrArgChange: true,
   });
@@ -119,48 +119,12 @@ export const EditArticle: React.FC = () => {
           <Card>
             <CardContent>
               <form onSubmit={handleSubmit(onSubmit)}>
-                <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-                  <input
-                    type="file"
-                    style={{ display: "none" }}
-                    {...register("image", {
-                      onChange: (e) => handlePreview(e),
-                    })}
-                    ref={fileRef}
-                  />
-                  {preview && (
-                    <Box
-                      component="img"
-                      sx={{
-                        width: 200,
-                        height: 200,
-                        objectFit: "contain",
-                        mr: 2,
-                      }}
-                      src={preview}
-                    />
-                  )}
-                  <Box>
-                    <Button
-                      variant="outlined"
-                      component="label"
-                      sx={{ mr: 1 }}
-                      onClick={() => fileRef.current?.click()}
-                    >
-                      {preview ? "Change image" : "Add a cover image"}
-                    </Button>
-                    {preview && (
-                      <Button
-                        variant="text"
-                        color="error"
-                        component="label"
-                        onClick={handleClearPreview}
-                      >
-                        Remove Image
-                      </Button>
-                    )}
-                  </Box>
-                </Box>
+                <ImagePreview
+                  preview={preview}
+                  fileRef={fileRef}
+                  handlePreview={handlePreview}
+                  handleClearPreview={handleClearPreview}
+                />
 
                 <Box className="form-field" sx={{ mb: 2 }}>
                   <TextField
