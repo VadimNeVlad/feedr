@@ -26,8 +26,8 @@ export const ArticleReactions: React.FC<ArticleReactionsProps> = ({
   );
 
   const handleFavoriteArticle = () => {
-    if (!exists) favoriteArticle(article.slug);
-    else unfavoriteArticle(article.slug);
+    if (!exists) favoriteArticle(article.id);
+    else unfavoriteArticle(article.id);
   };
 
   return (

@@ -1,5 +1,5 @@
 import { api } from "../../app/services";
-import { Article, UpdateArticleData } from "../../utils/types/articles";
+import { Article } from "../../utils/types/articles";
 
 export const articlesApi = api.injectEndpoints({
   endpoints: (build) => ({
@@ -14,7 +14,7 @@ export const articlesApi = api.injectEndpoints({
           : [{ type: "Article", id: "LIST" }],
     }),
     getSingleArticle: build.query<Article, string>({
-      query: (slug) => `/articles/${slug}`,
+      query: (id) => `/articles/${id}`,
       providesTags: (_res, _err, id) => [{ type: "Article", id }],
     }),
     createArticle: build.mutation<Article, FormData>({
@@ -25,9 +25,9 @@ export const articlesApi = api.injectEndpoints({
       }),
       invalidatesTags: [{ type: "Article", id: "LIST" }],
     }),
-    updateArticle: build.mutation<Article, UpdateArticleData>({
-      query: ({ slug, ...body }) => ({
-        url: `/articles/${slug}`,
+    updateArticle: build.mutation<Article, FormData>({
+      query: (body) => ({
+        url: `/articles/${body.get("id")}`,
         method: "PUT",
         body,
       }),

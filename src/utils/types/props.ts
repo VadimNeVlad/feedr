@@ -48,7 +48,6 @@ export interface ArticleReactionsProps {
 
 export interface ArticleAuthorProps {
   author: User;
-  slug: string;
   isFetching: boolean;
 }
 

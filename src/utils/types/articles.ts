@@ -2,7 +2,7 @@ import { Tag } from "./tag";
 import { User } from "./user";
 
 export interface Article {
-  id?: string;
+  id: string;
   slug: string;
   title: string;
   body: string;
@@ -27,4 +27,5 @@ export interface UpdateArticleData {
   slug: string;
   title: string;
   body: string;
+  image: string;
 }

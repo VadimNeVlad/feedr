@@ -24,7 +24,7 @@ export const ArticleContent: React.FC<ArticleContentProps> = ({ article }) => {
             height: 300,
             objectFit: "cover",
           }}
-          src={`${IMAGE_URL}/articles/${article.image}`}
+          src={`${IMAGE_URL}articles/${article.image}`}
         />
       )}
 

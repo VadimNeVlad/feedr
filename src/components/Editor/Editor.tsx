@@ -42,8 +42,10 @@ export const Editor: React.FC<EditorProps> = ({
     ],
     content,
     editable: isEditable,
-    onBlur: ({ editor }) => {
-      if (setContent) setContent(editor.getHTML());
+    onUpdate: ({ editor }) => {
+      const isEmpty = editor.state.doc.textContent.length === 0;
+      if (!isEmpty) setContent?.(editor.getHTML());
+      else setContent?.("");
     },
   });
 

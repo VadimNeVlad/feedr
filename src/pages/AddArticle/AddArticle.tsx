@@ -33,7 +33,7 @@ export const AddArticle: React.FC = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { isValid },
   } = useForm<ArticleData>({
     resolver: yupResolver<any>(articleSchema),
   });
@@ -134,11 +134,9 @@ export const AddArticle: React.FC = () => {
               <Box sx={{ mb: 2 }}>
                 <TextField
                   fullWidth
-                  error={!!errors.title}
                   label="New article title"
                   variant="outlined"
                   type="text"
-                  helperText={errors.title ? "Title is required" : null}
                   {...register("title", { required: true })}
                 />
               </Box>
@@ -164,14 +162,14 @@ export const AddArticle: React.FC = () => {
                 </Typography>
                 <TextField
                   fullWidth
-                  error={!!errors.tagList}
                   value={tags}
                   label="Tags"
                   variant="outlined"
                   type="text"
-                  helperText={errors.tagList ? "Tags are required" : null}
-                  {...register("tagList", { required: true })}
-                  onChange={(e) => setTags(e.target.value.replace(/ /g, ""))}
+                  {...register("tagList", {
+                    required: true,
+                    onChange: (e) => setTags(e.target.value.replace(/ /g, "")),
+                  })}
                 />
               </Box>
 
@@ -179,7 +177,7 @@ export const AddArticle: React.FC = () => {
                 type="submit"
                 variant="contained"
                 loading={isLoading}
-                disabled={!content}
+                disabled={!content || !isValid}
               >
                 Create article
               </LoadingButton>

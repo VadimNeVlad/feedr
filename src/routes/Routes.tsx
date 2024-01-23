@@ -20,14 +20,14 @@ export const Routes = () => {
       {/* Private routes */}
       <Route element={<PrivateRoutes />}>
         <Route path="/add-article" element={<AddArticle />} />
-        <Route path="/edit-article/:slug" element={<EditArticle />} />
+        <Route path="/edit-article/:id" element={<EditArticle />} />
       </Route>
 
       {/* Public routes */}
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/articles/:slug" element={<Article />} />
+      <Route path="/articles/:id/:slug" element={<Article />} />
     </RouterRoutes>
   );
 };

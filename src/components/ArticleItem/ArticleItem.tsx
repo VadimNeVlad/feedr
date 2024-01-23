@@ -37,8 +37,8 @@ export const ArticleItem: React.FC<ArticleItemProps> = ({ article }) => {
   );
 
   const handleFavoriteArticle = () => {
-    if (!exists) favoriteArticle(article.slug);
-    else unfavoriteArticle(article.slug);
+    if (!exists) favoriteArticle(article.id);
+    else unfavoriteArticle(article.id);
   };
 
   return (
@@ -54,7 +54,7 @@ export const ArticleItem: React.FC<ArticleItemProps> = ({ article }) => {
           variant="h5"
           fontWeight={700}
           sx={{ display: "block", mb: 2, cursor: "pointer" }}
-          onClick={() => navigate(`/articles/${article.slug}`)}
+          onClick={() => navigate(`/articles/${article.id}/${article.slug}`)}
         >
           {article.title}
         </Typography>
