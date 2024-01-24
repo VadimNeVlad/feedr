@@ -1,10 +1,31 @@
 import { api } from "../../app/services";
-import { Article } from "../../utils/types/articles";
+import { Article, ArticlesParams } from "../../utils/types/articles";
 
 export const articlesApi = api.injectEndpoints({
   endpoints: (build) => ({
-    getArticles: build.query<Article[], void>({
-      query: () => "/articles",
+    getArticles: build.query<Article[], ArticlesParams>({
+      query: ({ page = 0, sortBy = "Latest" }) => ({
+        url: "/articles",
+        method: "GET",
+        params: {
+          page: page,
+          per_page: 10,
+          sort_by: sortBy,
+        },
+      }),
+
+      serializeQueryArgs: ({ endpointName }) => {
+        return endpointName;
+      },
+      merge: (currentCache, newCache, { arg }) => {
+        if (arg.page === 0) {
+          return newCache;
+        }
+        currentCache.push(...newCache);
+      },
+      forceRefetch({ currentArg, previousArg }) {
+        return currentArg !== previousArg;
+      },
       providesTags: (result) =>
         result
           ? [

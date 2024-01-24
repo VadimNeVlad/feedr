@@ -1,30 +1,55 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Header } from "../../components/Header/Header";
 import { ArticlesList } from "../../components/ArticlesList/ArticlesList";
-import { Container } from "@mui/material";
+import { Button, Container, Stack } from "@mui/material";
 import { useGetArticlesQuery } from "../../features/articles/articlesApi";
 import { ToastContainer, toast } from "react-toastify";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 
 export const Home: React.FC = () => {
-  const { data: articles, isLoading, isSuccess, error } = useGetArticlesQuery();
+  const [page, setPage] = useState(0);
+  const [sortBy, setSortBy] = useState("Latest");
+  const {
+    data: articles,
+    isLoading,
+    isSuccess,
+    isFetching,
+    error,
+  } = useGetArticlesQuery({ page, sortBy });
 
   useEffect(() => {
     if (error) {
       const err = (error as FetchBaseQueryError).data as Error;
-      toast.error(err?.message);
+      toast.error(err.message);
     }
   }, [error]);
+
+  const handleChange = () => {
+    setPage((prev) => prev + 1);
+  };
+
+  const handleRefetch = (value: string) => {
+    setPage(0);
+    setSortBy(value);
+  };
 
   return (
     <>
       <Header />
       <Container maxWidth="lg" sx={{ mt: 11, pb: 3 }}>
+        <Stack direction="row" spacing={2}>
+          <Button onClick={() => handleRefetch("Latest")}>Latest</Button>
+          <Button onClick={() => handleRefetch("Oldest")}>Oldest</Button>
+          <Button onClick={() => handleRefetch("Top")}>Top</Button>
+        </Stack>
+
         <ArticlesList
           articles={articles}
           isLoading={isLoading}
+          isFetching={isFetching}
           isSuccess={isSuccess}
           isError={!!error}
+          handleChange={handleChange}
         />
         <ToastContainer />
       </Container>

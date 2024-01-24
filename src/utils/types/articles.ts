@@ -29,3 +29,8 @@ export interface UpdateArticleData {
   body: string;
   image: string;
 }
+
+export interface ArticlesParams {
+  page?: number;
+  sortBy?: string;
+}

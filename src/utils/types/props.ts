@@ -14,8 +14,10 @@ export interface AuthFormProps {
 export interface ArticleListProps {
   articles: Article[] | undefined;
   isLoading: boolean;
+  isFetching: boolean;
   isSuccess: boolean;
   isError: boolean;
+  handleChange: () => void;
 }
 
 export interface ArticleItemProps {
