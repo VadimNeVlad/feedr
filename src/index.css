@@ -70,6 +70,10 @@ button:focus-visible {
   outline: none !important;
 }
 
+.MuiMenu-list {
+  min-width: 200px;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

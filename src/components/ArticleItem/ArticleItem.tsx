@@ -20,7 +20,7 @@ import {
 import { trimFirstLetter } from "../../utils/helpers/trimString";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { removeTags } from "../../utils/helpers/removeTags";
 import CommentOutlinedIcon from "@mui/icons-material/CommentOutlined";
 
@@ -44,19 +44,22 @@ export const ArticleItem: React.FC<ArticleItemProps> = ({ article }) => {
   return (
     <Card sx={{ mb: 3 }}>
       <CardHeader
+        sx={{ cursor: "pointer" }}
         avatar={<Avatar>{trimFirstLetter(article.author.name)}</Avatar>}
         title={article.author.name}
         subheader={formatDate(article.createdAt)}
+        onClick={() => navigate(`/user/${user?.id}`)}
       />
 
       <CardContent>
         <Typography
           variant="h5"
           fontWeight={700}
-          sx={{ display: "block", mb: 2, cursor: "pointer" }}
-          onClick={() => navigate(`/articles/${article.id}/${article.slug}`)}
+          sx={{ display: "block", mb: 2 }}
         >
-          {article.title}
+          <Link to={`/articles/${article.id}/${article.slug}`}>
+            {article.title}
+          </Link>
         </Typography>
         <Typography variant="body2" sx={{ mb: 3 }}>
           {removeTags(article.body)}
@@ -87,7 +90,7 @@ export const ArticleItem: React.FC<ArticleItemProps> = ({ article }) => {
         <Box sx={{ display: "flex", alignItems: "center", mt: "2px" }}>
           <IconButton
             aria-label="comments"
-            onClick={() => navigate(`/articles/${article.slug}`)}
+            onClick={() => navigate(`/articles/${article.id}/${article.slug}`)}
           >
             <CommentOutlinedIcon />
           </IconButton>

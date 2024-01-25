@@ -79,7 +79,7 @@ export const Article: React.FC = () => {
               <ArticleReactions article={article} handleScroll={handleScroll} />
             </Grid>
             <Grid item xs={8}>
-              <ArticleContent article={article} />
+              <ArticleContent article={article} uid={user?.id || ""} />
               <Box ref={ref}>
                 <CommentForm
                   articleId={article.id!}

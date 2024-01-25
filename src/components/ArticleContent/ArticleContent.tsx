@@ -12,8 +12,14 @@ import { formatDate } from "../../utils/helpers/formatDate";
 import { trimFirstLetter } from "../../utils/helpers/trimString";
 import { Editor } from "../Editor/Editor";
 import { IMAGE_URL } from "../../utils/constants/constants";
+import { useNavigate } from "react-router-dom";
 
-export const ArticleContent: React.FC<ArticleContentProps> = ({ article }) => {
+export const ArticleContent: React.FC<ArticleContentProps> = ({
+  article,
+  uid,
+}) => {
+  const navigate = useNavigate();
+
   return (
     <Card sx={{ borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }}>
       {article.image && (
@@ -29,9 +35,11 @@ export const ArticleContent: React.FC<ArticleContentProps> = ({ article }) => {
       )}
 
       <CardHeader
+        sx={{ cursor: "pointer" }}
         avatar={<Avatar>{trimFirstLetter(article.author.name)}</Avatar>}
         title={article.author.name}
         subheader={formatDate(article.createdAt)}
+        onClick={() => navigate(`/user/${uid}`)}
       />
 
       <CardContent>

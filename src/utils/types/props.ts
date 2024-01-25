@@ -25,6 +25,7 @@ export interface ArticleItemProps {
 }
 
 export interface UserDropdownProps {
+  id: string;
   userName: string;
 }
 
@@ -41,6 +42,7 @@ export interface EditorProps {
 
 export interface ArticleContentProps {
   article: Article;
+  uid: string;
 }
 
 export interface ArticleReactionsProps {
@@ -76,4 +78,8 @@ export interface ImagePreviewProps {
   fileRef: React.RefObject<HTMLInputElement>;
   handlePreview: (e: React.ChangeEvent) => void;
   handleClearPreview: () => void;
+}
+
+export interface ProfileContentProps {
+  user: User;
 }

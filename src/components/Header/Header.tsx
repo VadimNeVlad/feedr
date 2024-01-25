@@ -10,48 +10,53 @@ export const Header: React.FC = () => {
   const user = useSelector((state: RootState) => state.auth.user);
 
   return (
-    <header
-      style={{
+    <Box
+      sx={{
         position: "fixed",
         top: 0,
         left: 0,
         width: "100%",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: "10px 15px",
         backgroundColor: "#fff",
         boxShadow:
           "0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12)",
         zIndex: 20,
       }}
     >
-      <Typography variant="h5">
-        <Link to={"/"}>
-          Feed<span style={{ color: "#1976d2" }}>R</span>
-        </Link>
-      </Typography>
-
-      {token && user ? (
-        <Box sx={{ display: "flex" }}>
-          <Link to={"/add-article"}>
-            <Button variant="outlined" sx={{ mr: 2 }}>
-              Create Article
-            </Button>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          padding: "0px 15px",
+        }}
+      >
+        <Typography variant="h5">
+          <Link to={"/"}>
+            FeeD<span style={{ color: "#1976d2" }}>R</span>
           </Link>
+        </Typography>
 
-          <UserDropdown userName={user.name} />
-        </Box>
-      ) : (
-        <>
-          <Button variant="text">
-            <Link to={"/login"}>Login</Link>
-          </Button>
-          <Button variant="contained">
-            <Link to={"/register"}>Create Account</Link>
-          </Button>
-        </>
-      )}
-    </header>
+        {token && user ? (
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Link to={"/add-article"}>
+              <Button variant="outlined" sx={{ mr: 2 }}>
+                Create Article
+              </Button>
+            </Link>
+
+            <UserDropdown id={user.id} userName={user.name} />
+          </Box>
+        ) : (
+          <>
+            <Button variant="text">
+              <Link to={"/login"}>Login</Link>
+            </Button>
+            <Button variant="contained">
+              <Link to={"/register"}>Create Account</Link>
+            </Button>
+          </>
+        )}
+      </Box>
+    </Box>
   );
 };

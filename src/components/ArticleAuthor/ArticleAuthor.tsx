@@ -16,11 +16,13 @@ import {
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import LoadingButton from "@mui/lab/LoadingButton";
+import { useNavigate } from "react-router-dom";
 
 export const ArticleAuthor: React.FC<ArticleAuthorProps> = ({
   author,
   isFetching,
 }) => {
+  const navigate = useNavigate();
   const [followUser, { isLoading: isFollowing }] = useFollowUserMutation();
   const [unfollowUser, { isLoading: isUnfollowing }] =
     useUnfollowUserMutation();
@@ -39,6 +41,7 @@ export const ArticleAuthor: React.FC<ArticleAuthorProps> = ({
     <>
       <Card>
         <CardHeader
+          sx={{ cursor: "pointer" }}
           avatar={
             <Avatar sx={{ width: "46px", height: "46px" }}>
               {trimFirstLetter(author.name)}
@@ -46,6 +49,7 @@ export const ArticleAuthor: React.FC<ArticleAuthorProps> = ({
           }
           titleTypographyProps={{ variant: "h6", fontWeight: 700 }}
           title={author.name}
+          onClick={() => navigate(`/user/${author.id}`)}
         />
 
         <CardContent>
