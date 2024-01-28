@@ -1,6 +1,6 @@
 import React from "react";
 import { ArticleItem } from "../ArticleItem/ArticleItem";
-import { Box, LinearProgress, Typography } from "@mui/material";
+import { Box, LinearProgress } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import { ArticleListProps } from "../../utils/types/props";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -10,7 +10,6 @@ export const ArticlesList: React.FC<ArticleListProps> = ({
   isLoading,
   isFetching,
   isSuccess,
-  isError,
   handleChange,
 }) => {
   return (
@@ -43,12 +42,6 @@ export const ArticlesList: React.FC<ArticleListProps> = ({
             <div>No articles found</div>
           )}
         </InfiniteScroll>
-      )}
-
-      {!isLoading && isError && (
-        <Typography variant="h3" sx={{ textAlign: "center" }} fontWeight={700}>
-          Something went wrong! Please try again later
-        </Typography>
       )}
     </>
   );
