@@ -5,9 +5,11 @@ export interface User {
   id: string;
   email: string;
   name: string;
-  password: string;
-  bio: string;
-  image: string;
+  bio?: string;
+  image?: string;
+  location?: string;
+  websiteUrl?: string;
+  commentsCount: number;
   createdAt: Date;
   updatedAt: Date;
   articles: Article[];

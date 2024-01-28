@@ -1,6 +1,6 @@
 import React from "react";
 import { trimFirstLetter } from "../../utils/helpers/trimString";
-import CakeIcon from "@mui/icons-material/Cake";
+import CakeOutlinedIcon from "@mui/icons-material/CakeOutlined";
 import {
   Avatar,
   Box,
@@ -52,7 +52,7 @@ export const ProfileContent: React.FC<ProfileContentProps> = ({ user }) => {
             justifyContent: "center",
           }}
         >
-          <CakeIcon sx={{ color: "#000" }} />
+          <CakeOutlinedIcon sx={{ color: "#000" }} />
           <Typography variant="body1" fontSize={"17px"}>
             Joined on {formatDate(user.createdAt, false)}
           </Typography>

@@ -12,7 +12,6 @@ export const Home: React.FC = () => {
   const {
     data: articles,
     isLoading,
-    isSuccess,
     isFetching,
     error,
   } = useGetArticlesQuery({ page, sortBy });
@@ -47,8 +46,6 @@ export const Home: React.FC = () => {
           articles={articles}
           isLoading={isLoading}
           isFetching={isFetching}
-          isSuccess={isSuccess}
-          isError={!!error}
           handleChange={handleChange}
         />
         <ToastContainer />

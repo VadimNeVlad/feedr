@@ -34,6 +34,10 @@ export const articlesApi = api.injectEndpoints({
             ]
           : [{ type: "Article", id: "LIST" }],
     }),
+    getArticlesByAuthor: build.query<Article[], string>({
+      query: (id) => `/articles/author/${id}`,
+      providesTags: [{ type: "Article", id: "LIST" }],
+    }),
     getSingleArticle: build.query<Article, string>({
       query: (id) => `/articles/${id}`,
       providesTags: (_res, _err, id) => [{ type: "Article", id }],
@@ -80,6 +84,7 @@ export const articlesApi = api.injectEndpoints({
 
 export const {
   useGetArticlesQuery,
+  useGetArticlesByAuthorQuery,
   useGetSingleArticleQuery,
   useCreateArticleMutation,
   useUpdateArticleMutation,

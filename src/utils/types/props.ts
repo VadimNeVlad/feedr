@@ -13,11 +13,9 @@ export interface AuthFormProps {
 
 export interface ArticleListProps {
   articles: Article[] | undefined;
-  isLoading: boolean;
-  isFetching: boolean;
-  isSuccess: boolean;
-  isError: boolean;
-  handleChange: () => void;
+  isLoading?: boolean;
+  isFetching?: boolean;
+  handleChange?: () => void;
 }
 
 export interface ArticleItemProps {
@@ -82,4 +80,9 @@ export interface ImagePreviewProps {
 
 export interface ProfileContentProps {
   user: User;
+}
+
+export interface ProfileCountInfoProps {
+  commentsCount: number;
+  articlesCount: number;
 }

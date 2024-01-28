@@ -9,7 +9,6 @@ export const ArticlesList: React.FC<ArticleListProps> = ({
   articles,
   isLoading,
   isFetching,
-  isSuccess,
   handleChange,
 }) => {
   return (
@@ -27,11 +26,11 @@ export const ArticlesList: React.FC<ArticleListProps> = ({
         </Box>
       )}
 
-      {!isLoading && isSuccess && articles && (
+      {!isLoading && articles && (
         <InfiniteScroll
           dataLength={articles.length}
-          next={handleChange}
-          hasMore={articles.length <= 10}
+          next={handleChange!}
+          hasMore={articles.length === 10}
           loader={<LinearProgress />}
         >
           {articles.length > 0 ? (
@@ -39,7 +38,7 @@ export const ArticlesList: React.FC<ArticleListProps> = ({
               <ArticleItem key={article.id} article={article} />
             ))
           ) : (
-            <div>No articles found</div>
+            <div>No articles yet</div>
           )}
         </InfiniteScroll>
       )}
