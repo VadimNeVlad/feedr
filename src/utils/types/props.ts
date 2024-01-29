@@ -25,6 +25,7 @@ export interface ArticleItemProps {
 export interface UserDropdownProps {
   id: string;
   userName: string;
+  avatar?: string;
 }
 
 export interface EditorToolbarProps {
@@ -40,7 +41,6 @@ export interface EditorProps {
 
 export interface ArticleContentProps {
   article: Article;
-  uid: string;
 }
 
 export interface ArticleReactionsProps {
@@ -85,4 +85,10 @@ export interface ProfileContentProps {
 export interface ProfileCountInfoProps {
   commentsCount: number;
   articlesCount: number;
+}
+
+export interface AvatarPreviewProps {
+  userName: string;
+  userId: string;
+  avatar?: string;
 }

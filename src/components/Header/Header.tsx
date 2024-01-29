@@ -4,10 +4,12 @@ import { useSelector } from "react-redux";
 import { Box, Button, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { RootState } from "../../app/store";
+import { useGetCurrentUserQuery } from "../../features/users/usersApi";
 
 export const Header: React.FC = () => {
   const token = useSelector((state: RootState) => state.auth.token);
-  const user = useSelector((state: RootState) => state.auth.user);
+  const { data: user, isLoading } = useGetCurrentUserQuery();
+  const data = user && token;
 
   return (
     <Box
@@ -28,6 +30,7 @@ export const Header: React.FC = () => {
           justifyContent: "space-between",
           alignItems: "center",
           padding: "0px 15px",
+          minHeight: "56px",
         }}
       >
         <Typography variant="h5">
@@ -36,7 +39,7 @@ export const Header: React.FC = () => {
           </Link>
         </Typography>
 
-        {token && user ? (
+        {data && (
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <Link to={"/add-article"}>
               <Button variant="outlined" sx={{ mr: 2 }}>
@@ -44,9 +47,15 @@ export const Header: React.FC = () => {
               </Button>
             </Link>
 
-            <UserDropdown id={user.id} userName={user.name} />
+            <UserDropdown
+              id={user.id}
+              userName={user.name}
+              avatar={user.image}
+            />
           </Box>
-        ) : (
+        )}
+
+        {!data && !isLoading && (
           <>
             <Button variant="text">
               <Link to={"/login"}>Login</Link>

@@ -17,6 +17,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useNavigate } from "react-router-dom";
+import { IMAGE_URL } from "../../utils/constants/constants";
 
 export const ArticleAuthor: React.FC<ArticleAuthorProps> = ({
   author,
@@ -43,7 +44,10 @@ export const ArticleAuthor: React.FC<ArticleAuthorProps> = ({
         <CardHeader
           sx={{ cursor: "pointer" }}
           avatar={
-            <Avatar sx={{ width: "46px", height: "46px" }}>
+            <Avatar
+              src={author.image && `${IMAGE_URL}avatars/${author.image}`}
+              sx={{ width: "46px", height: "46px" }}
+            >
               {trimFirstLetter(author.name)}
             </Avatar>
           }

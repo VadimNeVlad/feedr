@@ -14,10 +14,7 @@ import { Editor } from "../Editor/Editor";
 import { IMAGE_URL } from "../../utils/constants/constants";
 import { useNavigate } from "react-router-dom";
 
-export const ArticleContent: React.FC<ArticleContentProps> = ({
-  article,
-  uid,
-}) => {
+export const ArticleContent: React.FC<ArticleContentProps> = ({ article }) => {
   const navigate = useNavigate();
 
   return (
@@ -30,16 +27,25 @@ export const ArticleContent: React.FC<ArticleContentProps> = ({
             height: 300,
             objectFit: "cover",
           }}
-          src={`${IMAGE_URL}articles/${article.image}`}
+          src={article.image && `${IMAGE_URL}articles/${article.image}`}
         />
       )}
 
       <CardHeader
         sx={{ cursor: "pointer" }}
-        avatar={<Avatar>{trimFirstLetter(article.author.name)}</Avatar>}
+        avatar={
+          <Avatar
+            src={
+              article.author.image &&
+              `${IMAGE_URL}avatars/${article.author.image}`
+            }
+          >
+            {trimFirstLetter(article.author.name)}
+          </Avatar>
+        }
         title={article.author.name}
         subheader={formatDate(article.createdAt)}
-        onClick={() => navigate(`/user/${uid}`)}
+        onClick={() => navigate(`/user/${article.authorId}`)}
       />
 
       <CardContent>

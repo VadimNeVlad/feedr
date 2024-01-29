@@ -1,20 +1,13 @@
 import React from "react";
-import { trimFirstLetter } from "../../utils/helpers/trimString";
 import CakeOutlinedIcon from "@mui/icons-material/CakeOutlined";
-import {
-  Avatar,
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Card, CardContent, Typography } from "@mui/material";
 import { formatDate } from "../../utils/helpers/formatDate";
 import { Link } from "react-router-dom";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { ProfileContentProps } from "../../utils/types/props";
+import { AvatarPreview } from "../AvatarPreview/AvatarPreview";
 
 export const ProfileContent: React.FC<ProfileContentProps> = ({ user }) => {
   const currentUser = useSelector((state: RootState) => state.auth.user);
@@ -22,19 +15,12 @@ export const ProfileContent: React.FC<ProfileContentProps> = ({ user }) => {
   return (
     <Card sx={{ overflow: "initial", position: "relative" }}>
       <CardContent sx={{ textAlign: "center" }}>
-        <Avatar
-          sx={{
-            width: "80px",
-            height: "80px",
-            fontSize: "36px",
-            margin: "0 auto",
-            mb: 3,
-            mt: "-50px",
-            border: "5px solid #000",
-          }}
-        >
-          {trimFirstLetter(user.name)}
-        </Avatar>
+        <AvatarPreview
+          userName={user.name}
+          userId={user.id}
+          avatar={user.image}
+        />
+
         <Typography variant="h4" fontWeight={700} sx={{ mb: 1 }}>
           {user.name}
         </Typography>

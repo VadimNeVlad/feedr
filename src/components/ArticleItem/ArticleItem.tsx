@@ -23,6 +23,7 @@ import { RootState } from "../../app/store";
 import { Link, useNavigate } from "react-router-dom";
 import { removeTags } from "../../utils/helpers/removeTags";
 import CommentOutlinedIcon from "@mui/icons-material/CommentOutlined";
+import { IMAGE_URL } from "../../utils/constants/constants";
 
 export const ArticleItem: React.FC<ArticleItemProps> = ({ article }) => {
   const navigate = useNavigate();
@@ -45,10 +46,19 @@ export const ArticleItem: React.FC<ArticleItemProps> = ({ article }) => {
     <Card sx={{ mb: 3 }}>
       <CardHeader
         sx={{ cursor: "pointer" }}
-        avatar={<Avatar>{trimFirstLetter(article.author.name)}</Avatar>}
+        avatar={
+          <Avatar
+            src={
+              article.author.image &&
+              `${IMAGE_URL}avatars/${article.author.image} `
+            }
+          >
+            {trimFirstLetter(article.author.name)}
+          </Avatar>
+        }
         title={article.author.name}
         subheader={formatDate(article.createdAt)}
-        onClick={() => navigate(`/user/${user?.id}`)}
+        onClick={() => navigate(`/user/${article.authorId}`)}
       />
 
       <CardContent>

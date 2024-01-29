@@ -3,12 +3,19 @@ import React from "react";
 import { CommentItemProps } from "../../utils/types/props";
 import { trimFirstLetter } from "../../utils/helpers/trimString";
 import { formatDate } from "../../utils/helpers/formatDate";
+import { IMAGE_URL } from "../../utils/constants/constants";
 
 export const CommentItem: React.FC<CommentItemProps> = ({ comment }) => {
   return (
     <Card sx={{ borderRadius: 0 }}>
       <CardContent sx={{ display: "flex" }}>
-        <Avatar sx={{ width: 32, height: 32, mr: 2 }}>
+        <Avatar
+          src={
+            comment.author.image &&
+            `${IMAGE_URL}avatars/${comment.author.image}`
+          }
+          sx={{ width: 32, height: 32, mr: 2 }}
+        >
           {trimFirstLetter(comment.author.name)}
         </Avatar>
         <Box

@@ -40,7 +40,7 @@ export const Profile: React.FC = () => {
         </Box>
       )}
 
-      {data && (
+      {!isLoading && data && (
         <Container maxWidth="lg" sx={{ mt: -4, pb: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
