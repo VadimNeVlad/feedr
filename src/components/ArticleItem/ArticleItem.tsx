@@ -43,7 +43,7 @@ export const ArticleItem: React.FC<ArticleItemProps> = ({ article }) => {
   };
 
   return (
-    <Card sx={{ mb: 3 }}>
+    <Card sx={{ mb: 2 }}>
       <CardHeader
         sx={{ cursor: "pointer" }}
         avatar={

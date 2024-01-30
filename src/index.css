@@ -43,6 +43,10 @@ body {
   min-width: 200px;
 }
 
+.MuiBox-root:last-child {
+  margin-bottom: 0 !important;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

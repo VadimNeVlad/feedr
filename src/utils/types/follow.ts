@@ -6,3 +6,8 @@ export interface Follow {
   follower: User;
   following: User;
 }
+
+export interface FollowParams {
+  id: string;
+  perPage?: number;
+}

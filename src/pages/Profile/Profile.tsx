@@ -22,7 +22,7 @@ export const Profile: React.FC = () => {
     isFetching,
   } = useGetArticlesByAuthorQuery(id || "");
   const { data: following, isLoading: followingsListLoading } =
-    useGetFollowingsQuery(id || "");
+    useGetFollowingsQuery({ id: id || "", perPage: 5 });
 
   const isLoading =
     (userIsLoading && articlesIsLoading && followingsListLoading) || isFetching;

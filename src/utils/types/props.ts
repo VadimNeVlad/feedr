@@ -96,8 +96,8 @@ export interface AvatarPreviewProps {
 
 export interface FollowingListProps {
   following: Follow[];
-  followingCount: number;
-  id: string;
+  followingCount?: number;
+  id?: string;
   size?: "sm" | "lg";
 }
 

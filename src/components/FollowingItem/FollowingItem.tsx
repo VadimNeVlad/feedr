@@ -16,16 +16,28 @@ export const FollowingItem: React.FC<FollowingItemProps> = ({
         justifyContent: "space-between",
         alignItems: "center",
         mb: 1.5,
+        ...(size === "lg" && {
+          mb: 4,
+        }),
       }}
     >
-      <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          gap: 1.5,
+          ...(size === "lg" && {
+            gap: 2.5,
+          }),
+        }}
+      >
         <Avatar
           src={
             followingUser.image && `${IMAGE_URL}avatars/${followingUser.image}`
           }
           sx={
             size === "lg"
-              ? { width: 42, height: 42, fontSize: "16px" }
+              ? { width: 42, height: 42, fontSize: "20px" }
               : { width: 22, height: 22, fontSize: "13px" }
           }
         >

@@ -13,7 +13,7 @@ export const Following: React.FC = () => {
     id || ""
   );
   const { data: following, isLoading: followingsListLoading } =
-    useGetFollowingsQuery(id || "");
+    useGetFollowingsQuery({ id: id || "" });
 
   const isLoading = userIsLoading && followingsListLoading;
   const data = user && following;
@@ -40,11 +40,7 @@ export const Following: React.FC = () => {
           <Typography variant="h4" fontWeight={700} sx={{ mb: 2 }}>
             {user.followingCount} Following
           </Typography>
-          <FollowingList
-            following={following}
-            followingCount={user.followingCount}
-            id={user.id}
-          />
+          <FollowingList following={following} />
         </Container>
       )}
     </>

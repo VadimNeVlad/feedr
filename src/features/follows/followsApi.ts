@@ -1,10 +1,16 @@
 import { api } from "../../app/services";
-import { Follow } from "../../utils/types/follow";
+import { Follow, FollowParams } from "../../utils/types/follow";
 
 export const followsApi = api.injectEndpoints({
   endpoints: (build) => ({
-    getFollowings: build.query<Follow[], string>({
-      query: (id) => `${id}/following`,
+    getFollowings: build.query<Follow[], FollowParams>({
+      query: ({ id, perPage = 100 }) => ({
+        url: `${id}/following`,
+        method: "GET",
+        params: {
+          per_page: perPage,
+        },
+      }),
       providesTags: ["Follow"],
     }),
   }),
