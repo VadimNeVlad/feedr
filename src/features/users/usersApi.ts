@@ -24,14 +24,14 @@ export const usersApi = api.injectEndpoints({
         url: `user/${id}/follow`,
         method: "POST",
       }),
-      invalidatesTags: ["User"],
+      invalidatesTags: ["User", "Follow"],
     }),
     unfollowUser: build.mutation<User, string>({
       query: (id) => ({
         url: `user/${id}/follow`,
         method: "DELETE",
       }),
-      invalidatesTags: ["User"],
+      invalidatesTags: ["User", "Follow"],
     }),
   }),
 });

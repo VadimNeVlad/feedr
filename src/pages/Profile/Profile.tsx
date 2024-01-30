@@ -7,9 +7,12 @@ import { ProfileContent } from "../../components/ProfileContent/ProfileContent";
 import { ProfileCountInfo } from "../../components/ProfileCountInfo/ProfileCountInfo";
 import { useGetArticlesByAuthorQuery } from "../../features/articles/articlesApi";
 import { ArticlesList } from "../../components/ArticlesList/ArticlesList";
+import { FollowingList } from "../../components/FollowingList/FollowingList";
+import { useGetFollowingsQuery } from "../../features/follows/followsApi";
 
 export const Profile: React.FC = () => {
   const { id } = useParams();
+
   const { data: user, isLoading: userIsLoading } = useGetUserByIdQuery(
     id || ""
   );
@@ -18,9 +21,12 @@ export const Profile: React.FC = () => {
     isLoading: articlesIsLoading,
     isFetching,
   } = useGetArticlesByAuthorQuery(id || "");
+  const { data: following, isLoading: followingsListLoading } =
+    useGetFollowingsQuery(id || "");
 
-  const isLoading = (userIsLoading && articlesIsLoading) || isFetching;
-  const data = user && articles;
+  const isLoading =
+    (userIsLoading && articlesIsLoading && followingsListLoading) || isFetching;
+  const data = user && articles && following;
 
   return (
     <>
@@ -47,6 +53,12 @@ export const Profile: React.FC = () => {
               <ProfileContent user={user}></ProfileContent>
             </Grid>
             <Grid item xs={3}>
+              <FollowingList
+                following={following}
+                followingCount={user.followingCount}
+                id={user.id}
+                size="sm"
+              />
               <ProfileCountInfo
                 commentsCount={user.commentsCount}
                 articlesCount={articles.length}

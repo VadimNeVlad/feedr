@@ -19,12 +19,16 @@ export const ProfileCountInfo: React.FC<ProfileCountInfoProps> = ({
             mb: 2,
           }}
         >
-          <ArticleOutlinedIcon />
-          <Typography>{articlesCount} posts published</Typography>
+          <ArticleOutlinedIcon color="action" />
+          <Typography fontSize="15px">
+            {articlesCount} posts published
+          </Typography>
         </Box>
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          <CommentOutlinedIcon />
-          <Typography>{commentsCount} comments written</Typography>
+          <CommentOutlinedIcon color="action" />
+          <Typography fontSize="15px">
+            {commentsCount} comments written
+          </Typography>
         </Box>
       </CardContent>
     </Card>

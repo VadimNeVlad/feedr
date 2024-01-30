@@ -47,14 +47,19 @@ export const ProfileContent: React.FC<ProfileContentProps> = ({ user }) => {
         {user.id === currentUser?.id ? (
           <Link to="/edit-profile">
             <Button
-              sx={{ position: "absolute", top: 20, right: 20 }}
               variant="contained"
+              sx={{ position: "absolute", top: 20, right: 20 }}
             >
               Edit Profile
             </Button>
           </Link>
         ) : (
-          <LoadingButton variant="contained">Follow</LoadingButton>
+          <LoadingButton
+            variant="contained"
+            sx={{ position: "absolute", top: 20, right: 20 }}
+          >
+            Follow
+          </LoadingButton>
         )}
       </CardContent>
     </Card>

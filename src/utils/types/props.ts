@@ -3,6 +3,7 @@ import { Article } from "./articles";
 import { Editor } from "@tiptap/react";
 import { Comment } from "./comment";
 import { User } from "./user";
+import { Follow } from "./follow";
 
 export interface AuthFormProps {
   title: string;
@@ -91,4 +92,16 @@ export interface AvatarPreviewProps {
   userName: string;
   userId: string;
   avatar?: string;
+}
+
+export interface FollowingListProps {
+  following: Follow[];
+  followingCount: number;
+  id: string;
+  size?: "sm" | "lg";
+}
+
+export interface FollowingItemProps {
+  followingUser: User;
+  size?: "sm" | "lg";
 }
