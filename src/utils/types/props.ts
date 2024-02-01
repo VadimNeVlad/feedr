@@ -51,7 +51,6 @@ export interface ArticleReactionsProps {
 
 export interface ArticleAuthorProps {
   author: User;
-  isFetching: boolean;
 }
 
 export interface CommentItemProps {
@@ -96,7 +95,6 @@ export interface AvatarPreviewProps {
 
 export interface FollowingListProps {
   following: Follow[];
-  followingCount?: number;
   id?: string;
   size?: "sm" | "lg";
 }
@@ -104,4 +102,5 @@ export interface FollowingListProps {
 export interface FollowingItemProps {
   followingUser: User;
   size?: "sm" | "lg";
+  setFollowingCount: (count: React.SetStateAction<number>) => void;
 }

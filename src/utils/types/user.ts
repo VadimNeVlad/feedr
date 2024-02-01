@@ -10,8 +10,6 @@ export interface User {
   location?: string;
   websiteUrl?: string;
   commentsCount: number;
-  followersCount: number;
-  followingCount: number;
   createdAt: Date;
   updatedAt: Date;
   articles: Article[];

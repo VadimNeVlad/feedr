@@ -33,9 +33,7 @@ export const Article: React.FC = () => {
   } = useGetSingleArticleQuery(id || "");
   const { data: comments, isFetching: isFetchingComments } =
     useGetCommentsQuery(article?.id ?? skipToken);
-  const { data: author, isFetching: isFetchingAuthor } = useGetUserByIdQuery(
-    article?.authorId ?? skipToken
-  );
+  const { data: author } = useGetUserByIdQuery(article?.authorId ?? skipToken);
   const [deleteArticle, { isLoading: isDeleting, isSuccess: deleteSuccess }] =
     useDeleteArticleMutation();
 
@@ -91,7 +89,7 @@ export const Article: React.FC = () => {
               ))}
             </Grid>
             <Grid item xs={3}>
-              <ArticleAuthor author={author} isFetching={isFetchingAuthor} />
+              <ArticleAuthor author={author} />
 
               {user?.id === author.id && (
                 <>

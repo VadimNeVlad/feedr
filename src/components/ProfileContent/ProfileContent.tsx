@@ -3,14 +3,33 @@ import CakeOutlinedIcon from "@mui/icons-material/CakeOutlined";
 import { Box, Button, Card, CardContent, Typography } from "@mui/material";
 import { formatDate } from "../../utils/helpers/formatDate";
 import { Link } from "react-router-dom";
-import LoadingButton from "@mui/lab/LoadingButton";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { ProfileContentProps } from "../../utils/types/props";
 import { AvatarPreview } from "../AvatarPreview/AvatarPreview";
+import {
+  useFollowUserMutation,
+  useUnfollowUserMutation,
+} from "../../features/users/usersApi";
+import { useFollowUser } from "../../hooks/useFollowUser";
 
 export const ProfileContent: React.FC<ProfileContentProps> = ({ user }) => {
+  const [isFollow, setIsFollow] = useFollowUser(user);
+
+  const [followUser] = useFollowUserMutation();
+  const [unfollowUser] = useUnfollowUserMutation();
+
   const currentUser = useSelector((state: RootState) => state.auth.user);
+
+  const handleFollowUser = () => {
+    if (!isFollow) {
+      followUser(user.id);
+      setIsFollow(true);
+    } else {
+      unfollowUser(user.id);
+      setIsFollow(false);
+    }
+  };
 
   return (
     <Card sx={{ overflow: "initial", position: "relative" }}>
@@ -54,12 +73,13 @@ export const ProfileContent: React.FC<ProfileContentProps> = ({ user }) => {
             </Button>
           </Link>
         ) : (
-          <LoadingButton
-            variant="contained"
+          <Button
+            variant={!isFollow ? "contained" : "outlined"}
+            onClick={handleFollowUser}
             sx={{ position: "absolute", top: 20, right: 20 }}
           >
-            Follow
-          </LoadingButton>
+            {!isFollow ? "Follow" : "Unfollow"}
+          </Button>
         )}
       </CardContent>
     </Card>

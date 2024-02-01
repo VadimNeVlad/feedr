@@ -1,6 +1,8 @@
 import React from "react";
 import {
   Avatar,
+  Box,
+  Button,
   Card,
   CardContent,
   CardHeader,
@@ -15,32 +17,33 @@ import {
 } from "../../features/users/usersApi";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
-import LoadingButton from "@mui/lab/LoadingButton";
 import { useNavigate } from "react-router-dom";
 import { IMAGE_URL } from "../../utils/constants/constants";
+import { useFollowUser } from "../../hooks/useFollowUser";
 
-export const ArticleAuthor: React.FC<ArticleAuthorProps> = ({
-  author,
-  isFetching,
-}) => {
+export const ArticleAuthor: React.FC<ArticleAuthorProps> = ({ author }) => {
+  const [isFollow, setIsFollow] = useFollowUser(author);
   const navigate = useNavigate();
-  const [followUser, { isLoading: isFollowing }] = useFollowUserMutation();
-  const [unfollowUser, { isLoading: isUnfollowing }] =
-    useUnfollowUserMutation();
+
+  const [followUser] = useFollowUserMutation();
+  const [unfollowUser] = useUnfollowUserMutation();
+
   const user = useSelector((state: RootState) => state.auth.user);
 
-  const exists = author.followers.some((followingUser) =>
-    user ? followingUser.followerId === user.id : null
-  );
-
   const handleFollowUser = () => {
-    if (!exists) followUser(author.id);
-    else unfollowUser(author.id);
+    if (!isFollow) {
+      followUser(author.id);
+      setIsFollow(true);
+    } else {
+      unfollowUser(author.id);
+      setIsFollow(false);
+    }
   };
 
   return (
     <>
       <Card>
+        <Box sx={{ width: "100%", height: "20px", bgcolor: "#000" }}></Box>
         <CardHeader
           sx={{ cursor: "pointer" }}
           avatar={
@@ -58,14 +61,13 @@ export const ArticleAuthor: React.FC<ArticleAuthorProps> = ({
 
         <CardContent>
           {user?.id !== author.id && (
-            <LoadingButton
-              variant="contained"
-              sx={{ width: "100%", mb: 2 }}
-              loading={isFollowing || isUnfollowing || isFetching}
+            <Button
+              variant={!isFollow ? "contained" : "outlined"}
               onClick={handleFollowUser}
+              sx={{ width: "100%", mb: 2 }}
             >
-              {!exists ? "Follow" : "Unfollow"}
-            </LoadingButton>
+              {!isFollow ? "Follow" : "Unfollow"}
+            </Button>
           )}
           <Typography variant="body1" sx={{ mb: 2 }}>
             MERN Stack Developer | Machine Learning Developer | Content Reviewer

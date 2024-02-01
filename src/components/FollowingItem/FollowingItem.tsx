@@ -1,14 +1,37 @@
 import React from "react";
 import { FollowingItemProps } from "../../utils/types/props";
-import { Avatar, Box, Typography } from "@mui/material";
+import { Avatar, Box, Button, Typography } from "@mui/material";
 import { IMAGE_URL } from "../../utils/constants/constants";
 import { trimFirstLetter } from "../../utils/helpers/trimString";
-import LoadingButton from "@mui/lab/LoadingButton";
+import { Link } from "react-router-dom";
+import {
+  useFollowUserMutation,
+  useUnfollowUserMutation,
+} from "../../features/users/usersApi";
+import { useFollowUser } from "../../hooks/useFollowUser";
 
 export const FollowingItem: React.FC<FollowingItemProps> = ({
   followingUser,
   size,
+  setFollowingCount,
 }) => {
+  const [isFollow, setIsFollow] = useFollowUser(followingUser);
+
+  const [followUser] = useFollowUserMutation();
+  const [unfollowUser] = useUnfollowUserMutation();
+
+  const handleFollowUser = () => {
+    if (!isFollow) {
+      followUser(followingUser.id);
+      setIsFollow(true);
+      setFollowingCount((prev) => prev + 1);
+    } else {
+      unfollowUser(followingUser.id);
+      setIsFollow(false);
+      setFollowingCount((prev) => prev - 1);
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -21,13 +44,14 @@ export const FollowingItem: React.FC<FollowingItemProps> = ({
         }),
       }}
     >
-      <Box
-        sx={{
+      <Link
+        to={`/user/${followingUser.id}`}
+        style={{
           display: "flex",
           alignItems: "center",
-          gap: 1.5,
+          gap: "10px",
           ...(size === "lg" && {
-            gap: 2.5,
+            gap: "15px",
           }),
         }}
       >
@@ -55,9 +79,16 @@ export const FollowingItem: React.FC<FollowingItemProps> = ({
             <Typography variant="body2">Bio example</Typography>
           )}
         </Box>
-      </Box>
+      </Link>
 
-      {size === "lg" && <LoadingButton>Follow</LoadingButton>}
+      {size === "lg" && (
+        <Button
+          variant={!isFollow ? "contained" : "outlined"}
+          onClick={handleFollowUser}
+        >
+          {!isFollow ? "Follow" : "Unfollow"}
+        </Button>
+      )}
     </Box>
   );
 };

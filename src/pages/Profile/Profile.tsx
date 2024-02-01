@@ -13,19 +13,18 @@ import { useGetFollowingsQuery } from "../../features/follows/followsApi";
 export const Profile: React.FC = () => {
   const { id } = useParams();
 
-  const { data: user, isLoading: userIsLoading } = useGetUserByIdQuery(
+  const { currentData: user, isFetching: userIsLoading } = useGetUserByIdQuery(
     id || ""
   );
-  const {
-    data: articles,
-    isLoading: articlesIsLoading,
-    isFetching,
-  } = useGetArticlesByAuthorQuery(id || "");
-  const { data: following, isLoading: followingsListLoading } =
-    useGetFollowingsQuery({ id: id || "", perPage: 5 });
+  const { currentData: articles, isFetching: articlesIsLoading } =
+    useGetArticlesByAuthorQuery(id || "", { refetchOnMountOrArgChange: true });
+  const { currentData: following, isFetching: followingsListLoading } =
+    useGetFollowingsQuery(
+      { id: id || "", perPage: 5 },
+      { refetchOnMountOrArgChange: true }
+    );
 
-  const isLoading =
-    (userIsLoading && articlesIsLoading && followingsListLoading) || isFetching;
+  const isLoading = userIsLoading && articlesIsLoading && followingsListLoading;
   const data = user && articles && following;
 
   return (
@@ -50,15 +49,10 @@ export const Profile: React.FC = () => {
         <Container maxWidth="lg" sx={{ mt: -4, pb: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <ProfileContent user={user}></ProfileContent>
+              <ProfileContent user={user} />
             </Grid>
             <Grid item xs={3}>
-              <FollowingList
-                following={following}
-                followingCount={user.followingCount}
-                id={user.id}
-                size="sm"
-              />
+              <FollowingList following={following} id={user.id} size="sm" />
               <ProfileCountInfo
                 commentsCount={user.commentsCount}
                 articlesCount={articles.length}

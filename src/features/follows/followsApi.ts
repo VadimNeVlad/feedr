@@ -11,7 +11,6 @@ export const followsApi = api.injectEndpoints({
           per_page: perPage,
         },
       }),
-      providesTags: ["Follow"],
     }),
   }),
 });
