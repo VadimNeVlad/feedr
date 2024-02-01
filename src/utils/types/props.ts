@@ -74,7 +74,7 @@ export interface ModalProps {
 export interface ImagePreviewProps {
   preview: string;
   fileRef: React.RefObject<HTMLInputElement>;
-  handlePreview: (e: React.ChangeEvent) => void;
+  handlePreview: (e: React.ChangeEvent<HTMLInputElement>) => void;
   handleClearPreview: () => void;
 }
 

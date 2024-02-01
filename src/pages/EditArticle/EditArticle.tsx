@@ -13,26 +13,31 @@ import {
   useGetSingleArticleQuery,
   useUpdateArticleMutation,
 } from "../../features/articles/articlesApi";
-import { useNavigate, useParams } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { useParams } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { UpdateArticleData } from "../../utils/types/articles";
 import { Editor } from "../../components/Editor/Editor";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { IMAGE_URL } from "../../utils/constants/constants";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { ImagePreview } from "../../components/ImagePreview/ImagePreview";
+import { useDelayedRedirect } from "../../hooks/useDelayedRedirect";
+import { useImagePreview } from "../../hooks/useImagePreview";
 
 export const EditArticle: React.FC = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
-
   const fileRef = useRef<HTMLInputElement>(null);
 
-  const [preview, setPreview] = useState("");
+  const {
+    image,
+    preview,
+    isEdit,
+    handleClearPreview,
+    handlePreview,
+    setPreview,
+  } = useImagePreview(fileRef);
+
   const [content, setContent] = useState("");
-  const [image, setImage] = useState<string | File>("");
-  const [isEdit, setIsEdit] = useState(false);
 
   const { data: article, isLoading } = useGetSingleArticleQuery(id || "", {
     refetchOnMountOrArgChange: true,
@@ -49,44 +54,18 @@ export const EditArticle: React.FC = () => {
 
   const tags = article?.tagList.map((tag) => tag.name);
   const title = watch("title");
+  const isDisabled =
+    !content ||
+    !isValid ||
+    isSuccess ||
+    (title === article?.title && content === article?.body && !isEdit);
 
-  useEffect(() => {
-    if (isSuccess) {
-      toast.success("Article changed successfully");
-      setIsEdit(false);
-
-      const redirect = setTimeout(() => {
-        navigate("/");
-      }, 2000);
-
-      return () => clearTimeout(redirect);
-    } else if (error) {
-      const err = (error as FetchBaseQueryError).data as Error;
-      toast.error(err.message);
-    }
-  }, [isSuccess, navigate, error]);
+  useDelayedRedirect(isSuccess, error, "Article updated successfully");
 
   useEffect(() => {
     if (article?.image) setPreview(`${IMAGE_URL}articles/${article.image}`);
     if (article?.body) setContent(article.body);
-  }, [article]);
-
-  const handlePreview = (e: React.ChangeEvent) => {
-    const target = e.target as HTMLInputElement;
-    const file: File = (target.files as FileList)[0];
-    const urlImage = URL.createObjectURL(file);
-
-    setPreview(urlImage);
-    setImage(file);
-    setIsEdit(true);
-  };
-
-  const handleClearPreview = () => {
-    if (fileRef.current) fileRef.current.value = "";
-    setPreview("");
-    setImage("");
-    setIsEdit(true);
-  };
+  }, [article, setPreview]);
 
   const onSubmit = (data: UpdateArticleData) => {
     const formData = new FormData();
@@ -170,13 +149,7 @@ export const EditArticle: React.FC = () => {
                 <LoadingButton
                   type="submit"
                   variant="contained"
-                  disabled={
-                    !content ||
-                    !isValid ||
-                    (title === article.title &&
-                      content === article.body &&
-                      !isEdit)
-                  }
+                  disabled={isDisabled}
                   loading={updatePending}
                 >
                   Update article

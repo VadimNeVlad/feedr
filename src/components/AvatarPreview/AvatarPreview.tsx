@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { Avatar } from "@mui/material";
 import { trimFirstLetter } from "../../utils/helpers/trimString";
 import { AvatarPreviewProps } from "../../utils/types/props";
@@ -8,6 +8,7 @@ import { IMAGE_URL } from "../../utils/constants/constants";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import LoadingButton from "@mui/lab/LoadingButton";
+import { useImagePreview } from "../../hooks/useImagePreview";
 
 export const AvatarPreview: React.FC<AvatarPreviewProps> = ({
   userName,
@@ -15,8 +16,10 @@ export const AvatarPreview: React.FC<AvatarPreviewProps> = ({
   avatar,
 }) => {
   const fileRef = useRef<HTMLInputElement>(null);
-  const [preview, setPreview] = useState("");
-  const [image, setImage] = useState<string | File>("");
+
+  const { image, preview, handlePreview, handleClearPreview } =
+    useImagePreview(fileRef);
+
   const [updateAvatar, { isLoading, isSuccess }] =
     useUpdateUserAvatarMutation();
   const { handleSubmit } = useForm();
@@ -27,22 +30,7 @@ export const AvatarPreview: React.FC<AvatarPreviewProps> = ({
     if (isSuccess) {
       handleClearPreview();
     }
-  }, [isSuccess]);
-
-  const handlePreview = (e: React.ChangeEvent) => {
-    const target = e.target as HTMLInputElement;
-    const file: File = (target.files as FileList)[0];
-    const urlImage = URL.createObjectURL(file);
-
-    setPreview(urlImage);
-    setImage(file);
-  };
-
-  const handleClearPreview = () => {
-    if (fileRef.current) fileRef.current.value = "";
-    setPreview("");
-    setImage("");
-  };
+  }, [isSuccess, handleClearPreview]);
 
   const onSubmit = () => {
     const formData = new FormData();
