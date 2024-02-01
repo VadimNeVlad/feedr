@@ -94,13 +94,14 @@ export interface AvatarPreviewProps {
 }
 
 export interface FollowingListProps {
-  following: Follow[];
+  followType: Follow[] | undefined;
+  listType: "followers" | "followings";
   id?: string;
   size?: "sm" | "lg";
 }
 
 export interface FollowingItemProps {
-  followingUser: User;
+  followTypeUser: User;
   size?: "sm" | "lg";
-  setFollowingCount: (count: React.SetStateAction<number>) => void;
+  setFollowingCount: (count: React.SetStateAction<number | undefined>) => void;
 }

@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import { FollowingListProps } from "../../utils/types/props";
-import { Card, CardContent, Typography } from "@mui/material";
+import { Card, CardContent, CardHeader, Typography } from "@mui/material";
 import { FollowingItem } from "../FollowingItem/FollowingItem";
 import { Link } from "react-router-dom";
 
 export const FollowingList: React.FC<FollowingListProps> = ({
-  following,
+  followType,
+  listType,
   id,
   size = "lg",
 }) => {
-  const [followingCount, setFollowingCount] = useState(following.length);
+  const [followingCount, setFollowingCount] = useState(followType?.length);
   return (
     <>
       {size === "lg" && (
@@ -18,22 +19,42 @@ export const FollowingList: React.FC<FollowingListProps> = ({
         </Typography>
       )}
 
-      {following.length > 0 && (
+      {followType && followType.length > 0 && (
         <Card sx={{ mb: 2 }}>
+          {size === "sm" && listType === "followings" && (
+            <CardHeader
+              title="Following"
+              titleTypographyProps={{
+                variant: "h6",
+                fontWeight: 700,
+                fontSize: 16,
+              }}
+              sx={{ pb: 0 }}
+            />
+          )}
+
           <CardContent>
-            {following.map((followingUser) => (
+            {followType.map((followTypeUser) => (
               <FollowingItem
-                key={followingUser.followingId}
-                followingUser={followingUser.following}
+                key={
+                  listType === "followers"
+                    ? followTypeUser.followerId
+                    : followTypeUser.followingId
+                }
+                followTypeUser={
+                  listType === "followers"
+                    ? followTypeUser.follower
+                    : followTypeUser.following
+                }
                 size={size}
                 setFollowingCount={setFollowingCount}
               />
             ))}
 
-            {size === "sm" && following.length > 0 && (
+            {size === "sm" && followType.length > 0 && (
               <Link to={`/user/${id}/following`}>
                 <Typography variant="body2" sx={{ mt: 3 }}>
-                  See All ({following.length})
+                  See All ({followType.length})
                 </Typography>
               </Link>
             )}

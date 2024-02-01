@@ -8,7 +8,7 @@ import { Article } from "../pages/Article/Article";
 import { EditArticle } from "../pages/EditArticle/EditArticle";
 import { useEffect } from "react";
 import { Profile } from "../pages/Profile/Profile";
-import { Following } from "../pages/Follow/Following";
+import { Follow } from "../pages/Follow/Follow";
 
 export const Routes = () => {
   const location = useLocation();
@@ -24,7 +24,8 @@ export const Routes = () => {
         <Route path="/add-article" element={<AddArticle />} />
         <Route path="/edit-article/:id" element={<EditArticle />} />
         <Route path="/user/:id" element={<Profile />} />
-        <Route path="/user/:id/following" element={<Following />} />
+        <Route path="/user/:id/following" element={<Follow />} />
+        <Route path="/user/:id/followers" element={<Follow />} />
       </Route>
 
       {/* Public routes */}

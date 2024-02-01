@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import CakeOutlinedIcon from "@mui/icons-material/CakeOutlined";
 import { Box, Button, Card, CardContent, Typography } from "@mui/material";
 import { formatDate } from "../../utils/helpers/formatDate";
@@ -14,6 +14,7 @@ import {
 import { useFollowUser } from "../../hooks/useFollowUser";
 
 export const ProfileContent: React.FC<ProfileContentProps> = ({ user }) => {
+  const [folowersCount, setFolowersCount] = useState(user.followers.length);
   const [isFollow, setIsFollow] = useFollowUser(user);
 
   const [followUser] = useFollowUserMutation();
@@ -25,9 +26,11 @@ export const ProfileContent: React.FC<ProfileContentProps> = ({ user }) => {
     if (!isFollow) {
       followUser(user.id);
       setIsFollow(true);
+      setFolowersCount((prev) => prev + 1);
     } else {
       unfollowUser(user.id);
       setIsFollow(false);
+      setFolowersCount((prev) => prev - 1);
     }
   };
 
@@ -43,6 +46,11 @@ export const ProfileContent: React.FC<ProfileContentProps> = ({ user }) => {
         <Typography variant="h4" fontWeight={700} sx={{ mb: 1 }}>
           {user.name}
         </Typography>
+        <Link to={`/user/${user.id}/followers`}>
+          <Typography variant="body1" sx={{ mb: 1 }}>
+            {folowersCount} Followers
+          </Typography>
+        </Link>
         <Typography variant="body1" sx={{ mb: 3 }}>
           {user.email}
         </Typography>

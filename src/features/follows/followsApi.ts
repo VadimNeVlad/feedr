@@ -12,7 +12,16 @@ export const followsApi = api.injectEndpoints({
         },
       }),
     }),
+    getFollowers: build.query<Follow[], FollowParams>({
+      query: ({ id, perPage = 100 }) => ({
+        url: `${id}/followers`,
+        method: "GET",
+        params: {
+          per_page: perPage,
+        },
+      }),
+    }),
   }),
 });
 
-export const { useGetFollowingsQuery } = followsApi;
+export const { useGetFollowingsQuery, useGetFollowersQuery } = followsApi;

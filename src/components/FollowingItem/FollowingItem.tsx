@@ -3,32 +3,38 @@ import { FollowingItemProps } from "../../utils/types/props";
 import { Avatar, Box, Button, Typography } from "@mui/material";
 import { IMAGE_URL } from "../../utils/constants/constants";
 import { trimFirstLetter } from "../../utils/helpers/trimString";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import {
   useFollowUserMutation,
   useUnfollowUserMutation,
 } from "../../features/users/usersApi";
 import { useFollowUser } from "../../hooks/useFollowUser";
+import { useSelector } from "react-redux";
+import { RootState } from "../../app/store";
 
 export const FollowingItem: React.FC<FollowingItemProps> = ({
-  followingUser,
+  followTypeUser,
   size,
   setFollowingCount,
 }) => {
-  const [isFollow, setIsFollow] = useFollowUser(followingUser);
+  const { id } = useParams();
+
+  const [isFollow, setIsFollow] = useFollowUser(followTypeUser);
 
   const [followUser] = useFollowUserMutation();
   const [unfollowUser] = useUnfollowUserMutation();
 
+  const currentUser = useSelector((state: RootState) => state.auth.user);
+
   const handleFollowUser = () => {
     if (!isFollow) {
-      followUser(followingUser.id);
+      followUser(followTypeUser.id);
       setIsFollow(true);
-      setFollowingCount((prev) => prev + 1);
+      if (currentUser?.id === id) setFollowingCount((prev) => prev! + 1);
     } else {
-      unfollowUser(followingUser.id);
+      unfollowUser(followTypeUser.id);
       setIsFollow(false);
-      setFollowingCount((prev) => prev - 1);
+      if (currentUser?.id === id) setFollowingCount((prev) => prev! - 1);
     }
   };
 
@@ -45,7 +51,7 @@ export const FollowingItem: React.FC<FollowingItemProps> = ({
       }}
     >
       <Link
-        to={`/user/${followingUser.id}`}
+        to={`/user/${followTypeUser.id}`}
         style={{
           display: "flex",
           alignItems: "center",
@@ -57,7 +63,8 @@ export const FollowingItem: React.FC<FollowingItemProps> = ({
       >
         <Avatar
           src={
-            followingUser.image && `${IMAGE_URL}avatars/${followingUser.image}`
+            followTypeUser.image &&
+            `${IMAGE_URL}avatars/${followTypeUser.image}`
           }
           sx={
             size === "lg"
@@ -65,7 +72,7 @@ export const FollowingItem: React.FC<FollowingItemProps> = ({
               : { width: 22, height: 22, fontSize: "13px" }
           }
         >
-          {trimFirstLetter(followingUser.name)}
+          {trimFirstLetter(followTypeUser.name)}
         </Avatar>
         <Box>
           <Typography
@@ -73,7 +80,7 @@ export const FollowingItem: React.FC<FollowingItemProps> = ({
             fontWeight={size === "lg" ? 700 : 400}
             fontSize={size === "lg" ? "16px" : "14px"}
           >
-            {followingUser.name}
+            {followTypeUser.name}
           </Typography>
           {size === "lg" && (
             <Typography variant="body2">Bio example</Typography>
@@ -81,7 +88,7 @@ export const FollowingItem: React.FC<FollowingItemProps> = ({
         </Box>
       </Link>
 
-      {size === "lg" && (
+      {size === "lg" && currentUser?.id !== followTypeUser.id && (
         <Button
           variant={!isFollow ? "contained" : "outlined"}
           onClick={handleFollowUser}

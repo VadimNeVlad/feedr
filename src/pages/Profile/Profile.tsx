@@ -14,7 +14,8 @@ export const Profile: React.FC = () => {
   const { id } = useParams();
 
   const { currentData: user, isFetching: userIsLoading } = useGetUserByIdQuery(
-    id || ""
+    id || "",
+    { refetchOnMountOrArgChange: true }
   );
   const { currentData: articles, isFetching: articlesIsLoading } =
     useGetArticlesByAuthorQuery(id || "", { refetchOnMountOrArgChange: true });
@@ -52,7 +53,12 @@ export const Profile: React.FC = () => {
               <ProfileContent user={user} />
             </Grid>
             <Grid item xs={3}>
-              <FollowingList following={following} id={user.id} size="sm" />
+              <FollowingList
+                listType="followings"
+                followType={following}
+                id={user.id}
+                size="sm"
+              />
               <ProfileCountInfo
                 commentsCount={user.commentsCount}
                 articlesCount={articles.length}
