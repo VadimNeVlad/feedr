@@ -9,6 +9,9 @@ import { EditArticle } from "../pages/EditArticle/EditArticle";
 import { useEffect } from "react";
 import { Profile } from "../pages/Profile/Profile";
 import { Follow } from "../pages/Follow/Follow";
+import { EditProfile } from "../pages/EditProfile/EditProfile";
+import { ProfileSettings } from "../pages/EditProfile/ProfileSettings/ProfileSettings";
+import { AccountSettings } from "../pages/EditProfile/AccountSettings/AccountSettings";
 
 export const Routes = () => {
   const location = useLocation();
@@ -26,6 +29,10 @@ export const Routes = () => {
         <Route path="/user/:id" element={<Profile />} />
         <Route path="/user/:id/following" element={<Follow />} />
         <Route path="/user/:id/followers" element={<Follow />} />
+        <Route path="/user/edit-profile" element={<EditProfile />}>
+          <Route index path="*" element={<ProfileSettings />} />
+          <Route path="account" element={<AccountSettings />} />
+        </Route>
       </Route>
 
       {/* Public routes */}

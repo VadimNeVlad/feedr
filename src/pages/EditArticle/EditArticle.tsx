@@ -26,16 +26,20 @@ import { ImagePreview } from "../../components/ImagePreview/ImagePreview";
 export const EditArticle: React.FC = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+
   const fileRef = useRef<HTMLInputElement>(null);
+
   const [preview, setPreview] = useState("");
   const [content, setContent] = useState("");
   const [image, setImage] = useState<string | File>("");
   const [isEdit, setIsEdit] = useState(false);
+
   const { data: article, isLoading } = useGetSingleArticleQuery(id || "", {
     refetchOnMountOrArgChange: true,
   });
   const [updateArticle, { isSuccess, isLoading: updatePending, error }] =
     useUpdateArticleMutation();
+
   const {
     register,
     handleSubmit,

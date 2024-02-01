@@ -72,7 +72,7 @@ export const ProfileContent: React.FC<ProfileContentProps> = ({ user }) => {
         </Box>
 
         {user.id === currentUser?.id ? (
-          <Link to="/edit-profile">
+          <Link to="/user/edit-profile/profile">
             <Button
               variant="contained"
               sx={{ position: "absolute", top: 20, right: 20 }}

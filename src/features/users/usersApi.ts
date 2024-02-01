@@ -11,6 +11,14 @@ export const usersApi = api.injectEndpoints({
       query: (id) => `user/${id}`,
       providesTags: (_result, _err, id) => [{ type: "User", id }],
     }),
+    updateUser: build.mutation<User, Partial<User>>({
+      query: (body) => ({
+        url: "user",
+        method: "PUT",
+        body,
+      }),
+      invalidatesTags: ["User"],
+    }),
     updateUserAvatar: build.mutation<User, FormData>({
       query: (body) => ({
         url: `user/update-avatar`,
@@ -39,6 +47,7 @@ export const usersApi = api.injectEndpoints({
 export const {
   useGetCurrentUserQuery,
   useGetUserByIdQuery,
+  useUpdateUserMutation,
   useUpdateUserAvatarMutation,
   useFollowUserMutation,
   useUnfollowUserMutation,
