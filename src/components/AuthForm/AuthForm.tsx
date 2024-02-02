@@ -2,9 +2,18 @@ import React from "react";
 import { useFormContext } from "react-hook-form";
 import { AuthFormProps } from "../../utils/types/props";
 import { AuthData } from "../../utils/types/auth";
-import { Box, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  IconButton,
+  InputAdornment,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { Link } from "react-router-dom";
 import LoadingButton from "@mui/lab/LoadingButton";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { useToggle } from "../../hooks/useToggle";
 
 export const AuthForm: React.FC<AuthFormProps> = ({
   title,
@@ -12,6 +21,8 @@ export const AuthForm: React.FC<AuthFormProps> = ({
   isPending,
   onSubmit,
 }) => {
+  const [showPassword, setShowPassword] = useToggle();
+
   const {
     register,
     formState: { errors },
@@ -50,6 +61,15 @@ export const AuthForm: React.FC<AuthFormProps> = ({
             label="Password"
             variant="outlined"
             type="password"
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={setShowPassword} edge="end">
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
             {...register("password", { required: true })}
           />
           {errors.password && <p>{errors.password?.message}</p>}

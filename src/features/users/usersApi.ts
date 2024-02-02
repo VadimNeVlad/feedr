@@ -1,5 +1,5 @@
 import { api } from "../../app/services";
-import { User } from "../../utils/types/user";
+import { ChangePasswordData, User } from "../../utils/types/user";
 
 export const usersApi = api.injectEndpoints({
   endpoints: (build) => ({
@@ -27,6 +27,13 @@ export const usersApi = api.injectEndpoints({
       }),
       invalidatesTags: ["User", "Article"],
     }),
+    changePassword: build.mutation<void, ChangePasswordData>({
+      query: (body) => ({
+        url: "user/change-password",
+        method: "PUT",
+        body,
+      }),
+    }),
     followUser: build.mutation<User, string>({
       query: (id) => ({
         url: `user/${id}/follow`,
@@ -49,6 +56,7 @@ export const {
   useGetUserByIdQuery,
   useUpdateUserMutation,
   useUpdateUserAvatarMutation,
+  useChangePasswordMutation,
   useFollowUserMutation,
   useUnfollowUserMutation,
 } = usersApi;

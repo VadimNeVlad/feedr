@@ -17,3 +17,9 @@ export interface User {
   following: Follow[];
   followers: Follow[];
 }
+
+export interface ChangePasswordData {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}

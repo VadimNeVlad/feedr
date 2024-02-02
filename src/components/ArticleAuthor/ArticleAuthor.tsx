@@ -70,15 +70,25 @@ export const ArticleAuthor: React.FC<ArticleAuthorProps> = ({ author }) => {
             </Button>
           )}
           <Typography variant="body1" sx={{ mb: 2 }}>
-            MERN Stack Developer | Machine Learning Developer | Content Reviewer
+            {author.bio}
           </Typography>
-          <Typography variant="subtitle1" fontWeight={700}>
-            Email
+          <Typography
+            variant="subtitle2"
+            fontWeight={700}
+            textTransform="uppercase"
+            fontSize={14}
+          >
+            Location
           </Typography>
           <Typography variant="body1" sx={{ mb: 1 }}>
-            {author.email}
+            {author.location}
           </Typography>
-          <Typography variant="subtitle1" fontWeight={700}>
+          <Typography
+            variant="subtitle2"
+            fontWeight={700}
+            textTransform="uppercase"
+            fontSize={14}
+          >
             Joined
           </Typography>
           <Typography variant="body1">
