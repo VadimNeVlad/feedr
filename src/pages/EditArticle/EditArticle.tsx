@@ -13,7 +13,6 @@ import {
   useUpdateArticleMutation,
 } from "../../features/articles/articlesApi";
 import { useParams } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { UpdateArticleData } from "../../utils/types/articles";
 import { Editor } from "../../components/Editor/Editor";
@@ -158,8 +157,6 @@ export const EditArticle: React.FC = () => {
           </Card>
         </Container>
       )}
-
-      <ToastContainer />
     </Layout>
   );
 };

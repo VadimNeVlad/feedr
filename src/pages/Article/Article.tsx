@@ -1,11 +1,11 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import { Box, Button, CircularProgress, Container, Grid } from "@mui/material";
 import {
   useDeleteArticleMutation,
   useGetSingleArticleQuery,
 } from "../../features/articles/articlesApi";
 import { ArticleContent } from "../../components/ArticleContent/ArticleContent";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { ArticleReactions } from "../../components/ArticleReactions/ArticleReactions";
 import { ArticleAuthor } from "../../components/ArticleAuthor/ArticleAuthor";
 import { CommentForm } from "../../components/CommentForm/CommentForm";
@@ -16,39 +16,27 @@ import { useGetUserByIdQuery } from "../../features/users/usersApi";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { Modal } from "../../components/Modal/Modal";
-import { ToastContainer, toast } from "react-toastify";
 import { useToggle } from "../../hooks/useToggle";
 import { Layout } from "../../components/Layout/Layout";
+import { useDelayedRedirect } from "../../hooks/useDelayedRedirect";
 
 export const Article: React.FC = () => {
   const ref = useRef<null | HTMLDivElement>(null);
-  const navigate = useNavigate();
   const { id } = useParams();
+
   const [open, setOpen] = useToggle();
   const user = useSelector((state: RootState) => state.auth.user);
-  const {
-    data: article,
-    isLoading,
-    isSuccess,
-  } = useGetSingleArticleQuery(id || "");
+
+  const { data: article, isLoading } = useGetSingleArticleQuery(id || "");
   const { data: comments, isFetching: isFetchingComments } =
     useGetCommentsQuery(article?.id ?? skipToken);
   const { data: author } = useGetUserByIdQuery(article?.authorId ?? skipToken);
-  const [deleteArticle, { isLoading: isDeleting, isSuccess: deleteSuccess }] =
-    useDeleteArticleMutation();
+  const [
+    deleteArticle,
+    { isLoading: isDeleting, isSuccess: deleteSuccess, error },
+  ] = useDeleteArticleMutation();
 
-  useEffect(() => {
-    if (deleteSuccess) {
-      toast.success("Article deleted successfully");
-      setOpen();
-
-      const redirect = setTimeout(() => {
-        navigate("/");
-      }, 2000);
-
-      return () => clearTimeout(redirect);
-    }
-  }, [deleteSuccess, navigate, setOpen]);
+  useDelayedRedirect(deleteSuccess, error, "Article deleted successfully");
 
   const handleScroll = () => {
     if (ref.current) ref.current.scrollIntoView({ behavior: "smooth" });
@@ -69,7 +57,7 @@ export const Article: React.FC = () => {
         </Box>
       )}
 
-      {!isLoading && isSuccess && article && comments && author && (
+      {!isLoading && article && comments && author && (
         <Container maxWidth="lg" sx={{ mt: 11, pb: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={1}>
@@ -127,8 +115,6 @@ export const Article: React.FC = () => {
           >
             Are you sure you want to delete this article?
           </Modal>
-
-          <ToastContainer />
         </Container>
       )}
     </Layout>

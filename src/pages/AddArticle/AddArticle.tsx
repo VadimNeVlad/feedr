@@ -13,7 +13,6 @@ import { ArticleData } from "../../utils/types/articles";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useCreateArticleMutation } from "../../features/articles/articlesApi";
 import { splitTags } from "../../utils/helpers/splitTags";
-import { ToastContainer } from "react-toastify";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { articleSchema } from "../../utils/validators/articleSchema";
 import { ImagePreview } from "../../components/ImagePreview/ImagePreview";
@@ -128,8 +127,6 @@ export const AddArticle: React.FC = () => {
           </CardContent>
         </Card>
       </Container>
-
-      <ToastContainer />
     </Layout>
   );
 };
