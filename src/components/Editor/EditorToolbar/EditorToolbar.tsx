@@ -34,9 +34,7 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({ editor }) => {
         elevation={0}
         sx={{
           display: "flex",
-          border: (theme) => `1px solid ${theme.palette.divider}`,
           flexWrap: "wrap",
-          mb: 2,
           position: "sticky",
           top: 10,
           zIndex: 10,

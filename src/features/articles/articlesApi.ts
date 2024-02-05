@@ -5,7 +5,7 @@ export const articlesApi = api.injectEndpoints({
   endpoints: (build) => ({
     getArticles: build.query<Article[], ArticlesParams>({
       query: ({ page = 0, sortBy = "Latest" }) => ({
-        url: "/articles",
+        url: "articles",
         method: "GET",
         params: {
           page: page,
@@ -35,16 +35,16 @@ export const articlesApi = api.injectEndpoints({
           : [{ type: "Article", id: "LIST" }],
     }),
     getArticlesByAuthor: build.query<Article[], string>({
-      query: (id) => `/articles/author/${id}`,
+      query: (id) => `articles/author/${id}`,
       providesTags: [{ type: "Article", id: "LIST" }],
     }),
     getSingleArticle: build.query<Article, string>({
-      query: (id) => `/articles/${id}`,
+      query: (id) => `articles/${id}`,
       providesTags: (_res, _err, id) => [{ type: "Article", id }],
     }),
     createArticle: build.mutation<Article, FormData>({
       query: (body) => ({
-        url: "/articles",
+        url: "articles",
         method: "POST",
         body,
       }),
@@ -52,7 +52,7 @@ export const articlesApi = api.injectEndpoints({
     }),
     updateArticle: build.mutation<Article, FormData>({
       query: (body) => ({
-        url: `/articles/${body.get("id")}`,
+        url: `articles/${body.get("id")}`,
         method: "PUT",
         body,
       }),
@@ -60,21 +60,21 @@ export const articlesApi = api.injectEndpoints({
     }),
     deleteArticle: build.mutation<Article, string>({
       query: (slug) => ({
-        url: `/articles/${slug}`,
+        url: `articles/${slug}`,
         method: "DELETE",
       }),
       invalidatesTags: [{ type: "Article", id: "LIST" }],
     }),
     favoriteArticle: build.mutation<Article, string>({
       query: (slug) => ({
-        url: `/articles/${slug}/favorite`,
+        url: `articles/${slug}/favorite`,
         method: "POST",
       }),
       invalidatesTags: ["Article"],
     }),
     unfavoriteArticle: build.mutation<Article, string>({
       query: (slug) => ({
-        url: `/articles/${slug}/favorite`,
+        url: `articles/${slug}/favorite`,
         method: "DELETE",
       }),
       invalidatesTags: ["Article"],

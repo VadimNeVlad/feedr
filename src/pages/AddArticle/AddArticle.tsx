@@ -19,6 +19,7 @@ import { ImagePreview } from "../../components/ImagePreview/ImagePreview";
 import { useDelayedRedirect } from "../../hooks/useDelayedRedirect";
 import { useImagePreview } from "../../hooks/useImagePreview";
 import { Layout } from "../../components/Layout/Layout";
+import { TagsAutocomplete } from "../../components/TagsAutocomplete/TagsAutocomplete";
 
 export const AddArticle: React.FC = () => {
   const fileRef = useRef<HTMLInputElement>(null);
@@ -35,12 +36,13 @@ export const AddArticle: React.FC = () => {
   const {
     register,
     handleSubmit,
+    control,
     formState: { isValid },
   } = useForm<ArticleData>({
     resolver: yupResolver<any>(articleSchema),
   });
 
-  const isDisabled = !content || !isValid || isSuccess;
+  const isDisabled = !content || !isValid || !tags || isSuccess;
 
   useDelayedRedirect(isSuccess, error, "Article created successfully");
 
@@ -79,8 +81,12 @@ export const AddArticle: React.FC = () => {
                   label="New article title"
                   variant="outlined"
                   type="text"
-                  {...register("title", { required: true })}
+                  {...register("title")}
                 />
+              </Box>
+
+              <Box sx={{ mb: 2 }}>
+                <TagsAutocomplete control={control} setTags={setTags} />
               </Box>
 
               <Box>
@@ -89,29 +95,6 @@ export const AddArticle: React.FC = () => {
                   setContent={setContent}
                   isEditable
                   showToolbar
-                />
-                <TextField
-                  type="hidden"
-                  sx={{ display: "none" }}
-                  value={content}
-                  {...register("body", { required: true })}
-                />
-              </Box>
-
-              <Box sx={{ mt: 4, mb: 2 }}>
-                <Typography variant="body2" sx={{ mb: 1 }}>
-                  Tags separated by commas, word by either dashes or underscores
-                </Typography>
-                <TextField
-                  fullWidth
-                  value={tags}
-                  label="Tags"
-                  variant="outlined"
-                  type="text"
-                  {...register("tagList", {
-                    required: true,
-                    onChange: (e) => setTags(e.target.value.replace(/ /g, "")),
-                  })}
                 />
               </Box>
 

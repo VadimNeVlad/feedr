@@ -4,6 +4,7 @@ import { Editor } from "@tiptap/react";
 import { Comment } from "./comment";
 import { User } from "./user";
 import { Follow } from "./follow";
+import { Control } from "react-hook-form";
 
 export interface LayoutProps {
   children: React.ReactNode;
@@ -108,4 +109,11 @@ export interface FollowingItemProps {
   followTypeUser: User;
   size?: "sm" | "lg";
   setFollowingCount: (count: React.SetStateAction<number | undefined>) => void;
+}
+
+export interface TagsAutocompleteProps {
+  control: Control<any>;
+  defaultValues?: string[];
+  disabled?: boolean;
+  setTags?: (tags: React.SetStateAction<string>) => void;
 }

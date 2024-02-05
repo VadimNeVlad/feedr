@@ -20,7 +20,7 @@ export interface Article {
 export interface ArticleData {
   title: string;
   body: string;
-  tagList: Tag[];
+  tagList: string[];
 }
 
 export interface UpdateArticleData {

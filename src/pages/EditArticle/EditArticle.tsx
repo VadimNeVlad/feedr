@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   Box,
   Card,
@@ -22,6 +22,7 @@ import { ImagePreview } from "../../components/ImagePreview/ImagePreview";
 import { useDelayedRedirect } from "../../hooks/useDelayedRedirect";
 import { useImagePreview } from "../../hooks/useImagePreview";
 import { Layout } from "../../components/Layout/Layout";
+import { TagsAutocomplete } from "../../components/TagsAutocomplete/TagsAutocomplete";
 
 export const EditArticle: React.FC = () => {
   const { id } = useParams();
@@ -48,10 +49,15 @@ export const EditArticle: React.FC = () => {
     register,
     handleSubmit,
     watch,
+    control,
     formState: { isValid },
   } = useForm<UpdateArticleData>();
 
-  const tags = article?.tagList.map((tag) => tag.name);
+  const tags = useMemo(
+    () => article?.tagList.map((tag) => tag.name),
+    [article?.tagList]
+  );
+
   const title = watch("title");
   const isDisabled =
     !content ||
@@ -107,7 +113,7 @@ export const EditArticle: React.FC = () => {
                   handleClearPreview={handleClearPreview}
                 />
 
-                <Box className="form-field" sx={{ mb: 2 }}>
+                <Box sx={{ mb: 2 }}>
                   <TextField
                     fullWidth
                     label="Title"
@@ -118,29 +124,20 @@ export const EditArticle: React.FC = () => {
                   />
                 </Box>
 
-                <Box className="form-field">
+                <Box sx={{ mb: 2 }}>
+                  <TagsAutocomplete
+                    disabled
+                    control={control}
+                    defaultValues={tags}
+                  />
+                </Box>
+
+                <Box>
                   <Editor
                     content={article?.body}
                     setContent={setContent}
                     isEditable
                     showToolbar
-                  />
-                  <TextField
-                    type="hidden"
-                    sx={{ display: "none" }}
-                    value={content}
-                    {...register("body")}
-                  />
-                </Box>
-
-                <Box className="form-field" sx={{ mt: 4, mb: 2 }}>
-                  <TextField
-                    fullWidth
-                    disabled
-                    value={tags}
-                    label="Tags"
-                    variant="outlined"
-                    type="text"
                   />
                 </Box>
 
