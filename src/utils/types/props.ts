@@ -5,6 +5,10 @@ import { Comment } from "./comment";
 import { User } from "./user";
 import { Follow } from "./follow";
 
+export interface LayoutProps {
+  children: React.ReactNode;
+}
+
 export interface AuthFormProps {
   title: string;
   text: string;

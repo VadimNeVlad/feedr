@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from "react";
 import { Box, Button, CircularProgress, Container, Grid } from "@mui/material";
-import { Header } from "../../components/Header/Header";
 import {
   useDeleteArticleMutation,
   useGetSingleArticleQuery,
@@ -19,6 +18,7 @@ import { RootState } from "../../app/store";
 import { Modal } from "../../components/Modal/Modal";
 import { ToastContainer, toast } from "react-toastify";
 import { useToggle } from "../../hooks/useToggle";
+import { Layout } from "../../components/Layout/Layout";
 
 export const Article: React.FC = () => {
   const ref = useRef<null | HTMLDivElement>(null);
@@ -55,8 +55,7 @@ export const Article: React.FC = () => {
   };
 
   return (
-    <>
-      <Header />
+    <Layout>
       {isLoading && (
         <Box
           sx={{
@@ -132,6 +131,6 @@ export const Article: React.FC = () => {
           <ToastContainer />
         </Container>
       )}
-    </>
+    </Layout>
   );
 };

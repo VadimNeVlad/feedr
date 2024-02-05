@@ -1,5 +1,4 @@
 import React, { useRef, useState } from "react";
-import { Header } from "../../components/Header/Header";
 import {
   Box,
   Card,
@@ -20,6 +19,7 @@ import { articleSchema } from "../../utils/validators/articleSchema";
 import { ImagePreview } from "../../components/ImagePreview/ImagePreview";
 import { useDelayedRedirect } from "../../hooks/useDelayedRedirect";
 import { useImagePreview } from "../../hooks/useImagePreview";
+import { Layout } from "../../components/Layout/Layout";
 
 export const AddArticle: React.FC = () => {
   const fileRef = useRef<HTMLInputElement>(null);
@@ -58,8 +58,7 @@ export const AddArticle: React.FC = () => {
   };
 
   return (
-    <>
-      <Header />
+    <Layout>
       <Container maxWidth="lg" sx={{ mt: 11, pb: 3 }}>
         <Typography variant="h4" fontWeight={700} sx={{ mb: 2 }}>
           Create new article
@@ -131,6 +130,6 @@ export const AddArticle: React.FC = () => {
       </Container>
 
       <ToastContainer />
-    </>
+    </Layout>
   );
 };

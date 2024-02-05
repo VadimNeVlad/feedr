@@ -34,7 +34,7 @@ export const AccountSettings: React.FC = () => {
   useDelayedRedirect(isSuccess, error, "Password changed successfully");
 
   const onSubmit = (data: ChangePasswordData) => {
-    console.log(data);
+    changePassword(data);
   };
 
   return (

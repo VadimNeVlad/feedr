@@ -1,5 +1,4 @@
 import React from "react";
-import { Header } from "../../components/Header/Header";
 import { Box, CircularProgress, Container, Grid } from "@mui/material";
 import { useGetUserByIdQuery } from "../../features/users/usersApi";
 import { useParams } from "react-router-dom";
@@ -9,6 +8,7 @@ import { useGetArticlesByAuthorQuery } from "../../features/articles/articlesApi
 import { ArticlesList } from "../../components/ArticlesList/ArticlesList";
 import { FollowingList } from "../../components/FollowingList/FollowingList";
 import { useGetFollowingsQuery } from "../../features/follows/followsApi";
+import { Layout } from "../../components/Layout/Layout";
 
 export const Profile: React.FC = () => {
   const { id } = useParams();
@@ -29,8 +29,7 @@ export const Profile: React.FC = () => {
   const data = user && articles && following;
 
   return (
-    <>
-      <Header />
+    <Layout>
       <Box sx={{ width: "100%", height: "170px", bgcolor: "#000" }}></Box>
 
       {isLoading && (
@@ -70,6 +69,6 @@ export const Profile: React.FC = () => {
           </Grid>
         </Container>
       )}
-    </>
+    </Layout>
   );
 };

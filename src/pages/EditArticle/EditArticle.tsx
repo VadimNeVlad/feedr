@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Header } from "../../components/Header/Header";
 import {
   Box,
   Card,
@@ -23,6 +22,7 @@ import { IMAGE_URL } from "../../utils/constants/constants";
 import { ImagePreview } from "../../components/ImagePreview/ImagePreview";
 import { useDelayedRedirect } from "../../hooks/useDelayedRedirect";
 import { useImagePreview } from "../../hooks/useImagePreview";
+import { Layout } from "../../components/Layout/Layout";
 
 export const EditArticle: React.FC = () => {
   const { id } = useParams();
@@ -78,8 +78,7 @@ export const EditArticle: React.FC = () => {
   };
 
   return (
-    <>
-      <Header />
+    <Layout>
       {isLoading && (
         <Box
           sx={{
@@ -161,6 +160,6 @@ export const EditArticle: React.FC = () => {
       )}
 
       <ToastContainer />
-    </>
+    </Layout>
   );
 };

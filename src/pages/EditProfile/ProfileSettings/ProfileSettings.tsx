@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Card,
@@ -32,6 +32,16 @@ export const ProfileSettings: React.FC = () => {
 
   useDelayedRedirect(isSuccess, error, "Profile updated successfully");
 
+  useEffect(() => {
+    if (currentUser) {
+      setCharacterCounts({
+        websiteUrl: currentUser.websiteUrl?.length || 0,
+        location: currentUser.location?.length || 0,
+        bio: currentUser.bio?.length || 0,
+      });
+    }
+  }, [currentUser]);
+
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
 
@@ -46,6 +56,7 @@ export const ProfileSettings: React.FC = () => {
       event.target.value = value.substring(0, characterLimit);
     }
   };
+
   const onSubmit = (data: Partial<User>) => {
     updateUser(data);
   };
@@ -66,7 +77,7 @@ export const ProfileSettings: React.FC = () => {
                   label="Name"
                   variant="outlined"
                   type="text"
-                  defaultValue={currentUser?.name}
+                  defaultValue={currentUser.name}
                   {...register("name")}
                 />
               </Box>
@@ -76,7 +87,7 @@ export const ProfileSettings: React.FC = () => {
                   label="Email"
                   variant="outlined"
                   type="text"
-                  defaultValue={currentUser?.email}
+                  defaultValue={currentUser.email}
                   disabled
                 />
               </Box>
@@ -96,7 +107,7 @@ export const ProfileSettings: React.FC = () => {
                   variant="outlined"
                   type="text"
                   placeholder="https://yoursite.com"
-                  defaultValue={currentUser?.websiteUrl}
+                  defaultValue={currentUser.websiteUrl}
                   {...register("websiteUrl")}
                   onChange={handleInputChange}
                 />
@@ -116,7 +127,7 @@ export const ProfileSettings: React.FC = () => {
                   variant="outlined"
                   type="text"
                   placeholder="Dublin, Ireland"
-                  defaultValue={currentUser?.location}
+                  defaultValue={currentUser.location}
                   {...register("location")}
                   onChange={handleInputChange}
                 />
@@ -136,7 +147,7 @@ export const ProfileSettings: React.FC = () => {
                   rows={2}
                   label="Bio"
                   placeholder="A short bio..."
-                  defaultValue={currentUser?.bio}
+                  defaultValue={currentUser.bio}
                   sx={{ borderRadius: 0 }}
                   {...register("bio")}
                   onChange={handleInputChange}

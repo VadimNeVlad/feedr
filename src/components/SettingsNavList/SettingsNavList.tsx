@@ -6,18 +6,19 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import SentimentSatisfiedOutlinedIcon from "@mui/icons-material/SentimentSatisfiedOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 
 export const SettingsNavList: React.FC = () => {
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const location = useLocation();
+  const [selectedItem, setSelectedItem] = useState(location.pathname);
 
   const handleListItemClick = (
     _event: React.MouseEvent<HTMLDivElement, MouseEvent>,
-    index: number
+    value: string
   ) => {
-    setSelectedIndex(index);
+    setSelectedItem(value);
   };
   return (
     <nav style={{ width: "100%" }}>
@@ -25,8 +26,10 @@ export const SettingsNavList: React.FC = () => {
         <ListItem disablePadding>
           <Link to="profile" style={{ width: "100%" }}>
             <ListItemButton
-              selected={selectedIndex === 0}
-              onClick={(event) => handleListItemClick(event, 0)}
+              selected={selectedItem === "/user/edit-profile/profile"}
+              onClick={(event) =>
+                handleListItemClick(event, "/user/edit-profile/profile")
+              }
             >
               <ListItemIcon>
                 <SentimentSatisfiedOutlinedIcon />
@@ -38,8 +41,10 @@ export const SettingsNavList: React.FC = () => {
         <ListItem disablePadding>
           <Link to="account" style={{ width: "100%" }}>
             <ListItemButton
-              selected={selectedIndex === 1}
-              onClick={(event) => handleListItemClick(event, 1)}
+              selected={selectedItem === "/user/edit-profile/account"}
+              onClick={(event) =>
+                handleListItemClick(event, "/user/edit-profile/account")
+              }
             >
               <ListItemIcon>
                 <SettingsOutlinedIcon />

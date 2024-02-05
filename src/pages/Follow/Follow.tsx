@@ -1,12 +1,12 @@
 import React from "react";
 import { useLocation, useParams } from "react-router-dom";
-import { Header } from "../../components/Header/Header";
 import { Box, CircularProgress, Container } from "@mui/material";
 import { FollowingList } from "../../components/FollowingList/FollowingList";
 import {
   useGetFollowersQuery,
   useGetFollowingsQuery,
 } from "../../features/follows/followsApi";
+import { Layout } from "../../components/Layout/Layout";
 
 export const Follow: React.FC = () => {
   const { id } = useParams();
@@ -29,9 +29,7 @@ export const Follow: React.FC = () => {
   const data = following || followers;
 
   return (
-    <>
-      <Header></Header>
-
+    <Layout>
       {isLoading && (
         <Box
           sx={{
@@ -53,6 +51,6 @@ export const Follow: React.FC = () => {
           />
         </Container>
       )}
-    </>
+    </Layout>
   );
 };

@@ -1,15 +1,13 @@
 import React from "react";
-import { Header } from "../../components/Header/Header";
 import { Container, Grid, Typography } from "@mui/material";
 import { Outlet } from "react-router-dom";
 import { SettingsNavList } from "../../components/SettingsNavList/SettingsNavList";
 import { ToastContainer } from "react-toastify";
+import { Layout } from "../../components/Layout/Layout";
 
 export const EditProfile: React.FC = () => {
   return (
-    <>
-      <Header />
-
+    <Layout>
       <Container maxWidth="lg" sx={{ mt: 11, pb: 7 }}>
         <Grid container spacing={2}>
           <Grid item xs={3}>
@@ -26,6 +24,6 @@ export const EditProfile: React.FC = () => {
 
         <ToastContainer />
       </Container>
-    </>
+    </Layout>
   );
 };

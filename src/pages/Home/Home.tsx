@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Header } from "../../components/Header/Header";
 import { ArticlesList } from "../../components/ArticlesList/ArticlesList";
 import { Button, Container, Stack } from "@mui/material";
 import { useGetArticlesQuery } from "../../features/articles/articlesApi";
 import { ToastContainer, toast } from "react-toastify";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { Layout } from "../../components/Layout/Layout";
 
 export const Home: React.FC = () => {
   const [page, setPage] = useState(0);
@@ -33,8 +33,7 @@ export const Home: React.FC = () => {
   };
 
   return (
-    <>
-      <Header />
+    <Layout>
       <Container maxWidth="lg" sx={{ mt: 11, pb: 3 }}>
         <Stack direction="row" spacing={2}>
           <Button onClick={() => handleRefetch("Latest")}>Latest</Button>
@@ -50,6 +49,6 @@ export const Home: React.FC = () => {
         />
         <ToastContainer />
       </Container>
-    </>
+    </Layout>
   );
 };
