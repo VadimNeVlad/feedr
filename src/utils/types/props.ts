@@ -20,8 +20,7 @@ export interface AuthFormProps {
 export interface ArticleListProps {
   articles: Article[] | undefined;
   isLoading?: boolean;
-  isFetching?: boolean;
-  handleChange?: () => void;
+  handleNextPage?: () => void;
 }
 
 export interface ArticleItemProps {
@@ -116,4 +115,9 @@ export interface TagsAutocompleteProps {
   defaultValues?: string[];
   disabled?: boolean;
   setTags?: (tags: React.SetStateAction<string>) => void;
+}
+
+export interface SortingButtonsProps {
+  value: string;
+  handleSortChange: (value: string) => void;
 }

@@ -11,23 +11,28 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
+import { useFavoriteArticle } from "../../hooks/useFavoriteArticle";
 
 export const ArticleReactions: React.FC<ArticleReactionsProps> = ({
   article,
   handleScroll,
 }) => {
   const navigate = useNavigate();
+  const [isFavorite, setIsFavorite] = useFavoriteArticle(article);
+
   const [favoriteArticle] = useFavoriteArticleMutation();
   const [unfavoriteArticle] = useUnfavoriteArticleMutation();
+
   const user = useSelector((state: RootState) => state.auth.user);
 
-  const exists = article.favorited.some((userItem) =>
-    user ? userItem.id === user.id : null
-  );
-
   const handleFavoriteArticle = () => {
-    if (!exists) favoriteArticle(article.id);
-    else unfavoriteArticle(article.id);
+    if (!isFavorite) {
+      favoriteArticle(article.id);
+      setIsFavorite(true);
+    } else {
+      unfavoriteArticle(article.id);
+      setIsFavorite(false);
+    }
   };
 
   return (
@@ -37,7 +42,7 @@ export const ArticleReactions: React.FC<ArticleReactionsProps> = ({
           aria-label="add to favorites"
           onClick={user ? handleFavoriteArticle : () => navigate("/login")}
         >
-          {exists ? <BookmarkIcon /> : <BookmarkBorderOutlinedIcon />}
+          {isFavorite ? <BookmarkIcon /> : <BookmarkBorderOutlinedIcon />}
         </IconButton>
         <Typography variant="body2">{article.favoritesCount}</Typography>
       </Box>

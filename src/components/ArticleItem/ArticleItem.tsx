@@ -24,22 +24,25 @@ import { Link, useNavigate } from "react-router-dom";
 import { removeTags } from "../../utils/helpers/removeTags";
 import CommentOutlinedIcon from "@mui/icons-material/CommentOutlined";
 import { IMAGE_URL } from "../../utils/constants/constants";
+import { useFavoriteArticle } from "../../hooks/useFavoriteArticle";
 
 export const ArticleItem: React.FC<ArticleItemProps> = ({ article }) => {
   const navigate = useNavigate();
-  const [favoriteArticle, { isLoading: isLoadingFavorite }] =
-    useFavoriteArticleMutation();
-  const [unfavoriteArticle, { isLoading: isLoadingUnfavorite }] =
-    useUnfavoriteArticleMutation();
+  const [isFavorite, setIsFavorite] = useFavoriteArticle(article);
+
+  const [favoriteArticle] = useFavoriteArticleMutation();
+  const [unfavoriteArticle] = useUnfavoriteArticleMutation();
+
   const user = useSelector((state: RootState) => state.auth.user);
 
-  const exists = article.favorited.some((userItem) =>
-    user ? userItem.id === user.id : null
-  );
-
   const handleFavoriteArticle = () => {
-    if (!exists) favoriteArticle(article.id);
-    else unfavoriteArticle(article.id);
+    if (!isFavorite) {
+      favoriteArticle(article.id);
+      setIsFavorite(true);
+    } else {
+      unfavoriteArticle(article.id);
+      setIsFavorite(false);
+    }
   };
 
   return (
@@ -84,19 +87,7 @@ export const ArticleItem: React.FC<ArticleItemProps> = ({ article }) => {
         </Box>
       </CardContent>
 
-      <CardActions>
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <IconButton
-            aria-label="add to favorites"
-            disabled={isLoadingFavorite || isLoadingUnfavorite}
-            onClick={user ? handleFavoriteArticle : () => navigate("/login")}
-          >
-            {exists ? <BookmarkIcon /> : <BookmarkBorderOutlinedIcon />}
-          </IconButton>
-          <Typography variant="body2" style={{ marginLeft: "-8px" }}>
-            {article.favoritesCount}
-          </Typography>
-        </Box>
+      <CardActions sx={{ display: "flex", justifyContent: "space-between" }}>
         <Box sx={{ display: "flex", alignItems: "center", mt: "2px" }}>
           <IconButton
             aria-label="comments"
@@ -107,6 +98,15 @@ export const ArticleItem: React.FC<ArticleItemProps> = ({ article }) => {
           <Typography variant="body2" style={{ marginLeft: "-6px" }}>
             {article.commentsCount}
           </Typography>
+        </Box>
+
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <IconButton
+            aria-label="add to favorites"
+            onClick={user ? handleFavoriteArticle : () => navigate("/login")}
+          >
+            {isFavorite ? <BookmarkIcon /> : <BookmarkBorderOutlinedIcon />}
+          </IconButton>
         </Box>
       </CardActions>
     </Card>

@@ -8,12 +8,11 @@ import InfiniteScroll from "react-infinite-scroll-component";
 export const ArticlesList: React.FC<ArticleListProps> = ({
   articles,
   isLoading,
-  isFetching,
-  handleChange,
+  handleNextPage,
 }) => {
   return (
     <>
-      {(isLoading || isFetching) && (
+      {isLoading && (
         <Box
           sx={{
             display: "flex",
@@ -29,7 +28,7 @@ export const ArticlesList: React.FC<ArticleListProps> = ({
       {!isLoading && articles && (
         <InfiniteScroll
           dataLength={articles.length}
-          next={handleChange!}
+          next={handleNextPage!}
           hasMore={articles.length === 10}
           loader={<LinearProgress />}
         >

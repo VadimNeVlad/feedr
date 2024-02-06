@@ -4,7 +4,7 @@ import { Article, ArticlesParams } from "../../utils/types/articles";
 export const articlesApi = api.injectEndpoints({
   endpoints: (build) => ({
     getArticles: build.query<Article[], ArticlesParams>({
-      query: ({ page = 0, sortBy = "Latest" }) => ({
+      query: ({ page = 0, sortBy = "latest" }) => ({
         url: "articles",
         method: "GET",
         params: {
@@ -66,18 +66,42 @@ export const articlesApi = api.injectEndpoints({
       invalidatesTags: [{ type: "Article", id: "LIST" }],
     }),
     favoriteArticle: build.mutation<Article, string>({
-      query: (slug) => ({
-        url: `articles/${slug}/favorite`,
+      query: (id) => ({
+        url: `articles/${id}/favorite`,
         method: "POST",
       }),
-      invalidatesTags: ["Article"],
+
+      async onQueryStarted(id, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          articlesApi.util.updateQueryData("getSingleArticle", id, (draft) => {
+            draft.favoritesCount += 1;
+          })
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
+      },
     }),
     unfavoriteArticle: build.mutation<Article, string>({
-      query: (slug) => ({
-        url: `articles/${slug}/favorite`,
+      query: (id) => ({
+        url: `articles/${id}/favorite`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Article"],
+
+      async onQueryStarted(id, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          articlesApi.util.updateQueryData("getSingleArticle", id, (draft) => {
+            draft.favoritesCount -= 1;
+          })
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
+      },
     }),
   }),
 });

@@ -27,14 +27,21 @@ export const Article: React.FC = () => {
   const [open, setOpen] = useToggle();
   const user = useSelector((state: RootState) => state.auth.user);
 
-  const { data: article, isLoading } = useGetSingleArticleQuery(id || "");
-  const { data: comments, isFetching: isFetchingComments } =
+  const { data: article, isFetching: articlesIsFetching } =
+    useGetSingleArticleQuery(id || "", { refetchOnMountOrArgChange: true });
+  const { data: comments, isFetching: commentsIsFetching } =
     useGetCommentsQuery(article?.id ?? skipToken);
-  const { data: author } = useGetUserByIdQuery(article?.authorId ?? skipToken);
+  const { data: author, isFetching: authorIsFetching } = useGetUserByIdQuery(
+    article?.authorId ?? skipToken
+  );
   const [
     deleteArticle,
     { isLoading: isDeleting, isSuccess: deleteSuccess, error },
   ] = useDeleteArticleMutation();
+
+  const data = article && comments && author;
+  const isLoading =
+    articlesIsFetching || commentsIsFetching || authorIsFetching;
 
   useDelayedRedirect(deleteSuccess, error, "Article deleted successfully");
 
@@ -57,7 +64,7 @@ export const Article: React.FC = () => {
         </Box>
       )}
 
-      {!isLoading && article && comments && author && (
+      {!isLoading && data && (
         <Container maxWidth="lg" sx={{ mt: 11, pb: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={1}>
@@ -68,7 +75,7 @@ export const Article: React.FC = () => {
               <Box ref={ref}>
                 <CommentForm
                   articleId={article.id!}
-                  isFetching={isFetchingComments}
+                  isFetching={commentsIsFetching}
                 />
               </Box>
               {comments.map((comment) => (

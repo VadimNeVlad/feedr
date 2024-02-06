@@ -47,6 +47,18 @@ body {
   margin-bottom: 0 !important;
 }
 
+.css-1yrwcr8-MuiToggleButtonGroup-root .MuiToggleButtonGroup-grouped:not(:last-of-type) {
+  border: none;
+}
+
+.css-1yrwcr8-MuiToggleButtonGroup-root .MuiToggleButtonGroup-grouped:not(:first-of-type) {
+  border: none;
+}
+
+.css-1yrwcr8-MuiToggleButtonGroup-root .MuiToggleButtonGroup-grouped:not(:first-of-type) {
+  margin-left: 0 !important;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
