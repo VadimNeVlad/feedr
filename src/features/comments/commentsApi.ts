@@ -1,5 +1,6 @@
 import { api } from "../../app/services";
 import { Comment, CommentData } from "../../utils/types/comment";
+import { articlesApi } from "../articles/articlesApi";
 
 export const commentsApi = api.injectEndpoints({
   endpoints: (build) => ({
@@ -19,7 +20,19 @@ export const commentsApi = api.injectEndpoints({
         method: "POST",
         body: { content },
       }),
-      invalidatesTags: ["Article", "Comment"],
+      invalidatesTags: ["Comment"],
+      async onQueryStarted({ articleId }, { dispatch, queryFulfilled }) {
+        await queryFulfilled;
+        dispatch(
+          articlesApi.util.updateQueryData(
+            "getSingleArticle",
+            articleId,
+            (draft) => {
+              draft.commentsCount += 1;
+            }
+          )
+        );
+      },
     }),
   }),
 });

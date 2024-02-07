@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ArticlesList } from "../../components/ArticlesList/ArticlesList";
-import { Container } from "@mui/material";
+import { Container, Grid } from "@mui/material";
 import { useGetArticlesQuery } from "../../features/articles/articlesApi";
 import { Layout } from "../../components/Layout/Layout";
 import { SortingButtons } from "../../components/SortingButtons/SortingButtons";
@@ -38,13 +38,23 @@ export const Home: React.FC = () => {
   return (
     <Layout>
       <Container maxWidth="lg" sx={{ mt: 9, pb: 3 }}>
-        <SortingButtons value={sortBy} handleSortChange={handleSortChange} />
-
-        <ArticlesList
-          articles={articles}
-          isLoading={customFetching}
-          handleNextPage={handleNextPage}
-        />
+        <Grid container spacing={2}>
+          <Grid item xs={3}>
+            <h1>Hello</h1>
+            <h2>hi</h2>
+          </Grid>
+          <Grid item xs={9}>
+            <SortingButtons
+              value={sortBy}
+              handleSortChange={handleSortChange}
+            />
+            <ArticlesList
+              articles={articles}
+              isLoading={customFetching}
+              handleNextPage={handleNextPage}
+            />
+          </Grid>
+        </Grid>
       </Container>
     </Layout>
   );

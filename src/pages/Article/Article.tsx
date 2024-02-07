@@ -29,9 +29,12 @@ export const Article: React.FC = () => {
 
   const { data: article, isFetching: articlesIsFetching } =
     useGetSingleArticleQuery(id || "", { refetchOnMountOrArgChange: true });
-  const { data: comments, isFetching: commentsIsFetching } =
-    useGetCommentsQuery(article?.id ?? skipToken);
-  const { data: author, isFetching: authorIsFetching } = useGetUserByIdQuery(
+  const {
+    data: comments,
+    isLoading: commentsIsLoading,
+    isFetching: commentsIsFetching,
+  } = useGetCommentsQuery(article?.id ?? skipToken);
+  const { data: author, isLoading: authorIsLoading } = useGetUserByIdQuery(
     article?.authorId ?? skipToken
   );
   const [
@@ -40,8 +43,7 @@ export const Article: React.FC = () => {
   ] = useDeleteArticleMutation();
 
   const data = article && comments && author;
-  const isLoading =
-    articlesIsFetching || commentsIsFetching || authorIsFetching;
+  const isLoading = articlesIsFetching || commentsIsLoading || authorIsLoading;
 
   useDelayedRedirect(deleteSuccess, error, "Article deleted successfully");
 

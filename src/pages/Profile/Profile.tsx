@@ -9,23 +9,27 @@ import { ArticlesList } from "../../components/ArticlesList/ArticlesList";
 import { FollowingList } from "../../components/FollowingList/FollowingList";
 import { useGetFollowingsQuery } from "../../features/follows/followsApi";
 import { Layout } from "../../components/Layout/Layout";
+import { FollowingListSkeleton } from "../../components/Skeletons/FollowingListSkeleton/FollowingListSkeleton";
 
 export const Profile: React.FC = () => {
   const { id } = useParams();
 
-  const { currentData: user, isFetching: userIsLoading } = useGetUserByIdQuery(
+  const { data: user, isFetching: userIsFetching } = useGetUserByIdQuery(
     id || "",
     { refetchOnMountOrArgChange: true }
   );
-  const { currentData: articles, isFetching: articlesIsLoading } =
-    useGetArticlesByAuthorQuery(id || "", { refetchOnMountOrArgChange: true });
-  const { currentData: following, isFetching: followingsListLoading } =
-    useGetFollowingsQuery(
-      { id: id || "", perPage: 5 },
-      { refetchOnMountOrArgChange: true }
-    );
+  const { currentData: articles, isLoading: articlesIsLoading } =
+    useGetArticlesByAuthorQuery(id || "");
+  const {
+    data: following,
+    isLoading: followingsIsLoading,
+    isFetching: followingsIsFetching,
+  } = useGetFollowingsQuery(
+    { id: id || "", perPage: 5 },
+    { refetchOnMountOrArgChange: true }
+  );
 
-  const isLoading = userIsLoading || articlesIsLoading || followingsListLoading;
+  const isLoading = userIsFetching || articlesIsLoading || followingsIsLoading;
   const data = user && articles && following;
 
   return (
@@ -52,12 +56,16 @@ export const Profile: React.FC = () => {
               <ProfileContent user={user} />
             </Grid>
             <Grid item xs={3}>
-              <FollowingList
-                listType="followings"
-                followType={following}
-                id={user.id}
-                size="sm"
-              />
+              {followingsIsFetching ? (
+                <FollowingListSkeleton />
+              ) : (
+                <FollowingList
+                  listType="followings"
+                  followType={following}
+                  id={user.id}
+                  size="sm"
+                />
+              )}
               <ProfileCountInfo
                 commentsCount={user.commentsCount}
                 articlesCount={articles.length}
