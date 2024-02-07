@@ -37,7 +37,7 @@ export const Home: React.FC = () => {
 
   return (
     <Layout>
-      <Container maxWidth="lg" sx={{ mt: 11, pb: 3 }}>
+      <Container maxWidth="lg" sx={{ mt: 9, pb: 3 }}>
         <SortingButtons value={sortBy} handleSortChange={handleSortChange} />
 
         <ArticlesList

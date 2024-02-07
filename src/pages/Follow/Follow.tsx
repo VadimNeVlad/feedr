@@ -36,7 +36,7 @@ export const Follow: React.FC = () => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            height: "calc(100vh - 170px)",
+            height: "100vh",
           }}
         >
           <CircularProgress />

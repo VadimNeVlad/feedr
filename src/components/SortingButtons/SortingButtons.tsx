@@ -12,7 +12,7 @@ export const SortingButtons: React.FC<SortingButtonsProps> = ({
       color="primary"
       size="medium"
       exclusive
-      sx={{ mb: 4 }}
+      sx={{ mb: 2 }}
     >
       <ToggleButton value="latest" onClick={() => handleSortChange("latest")}>
         Latest

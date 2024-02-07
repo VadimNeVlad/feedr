@@ -59,7 +59,7 @@ export const ArticleAuthor: React.FC<ArticleAuthorProps> = ({ author }) => {
           onClick={() => navigate(`/user/${author.id}`)}
         />
 
-        <CardContent>
+        <CardContent sx={{ pt: 0 }}>
           {user?.id !== author.id && (
             <Button
               variant={!isFollow ? "contained" : "outlined"}

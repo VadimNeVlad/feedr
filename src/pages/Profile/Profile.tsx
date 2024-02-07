@@ -25,7 +25,7 @@ export const Profile: React.FC = () => {
       { refetchOnMountOrArgChange: true }
     );
 
-  const isLoading = userIsLoading && articlesIsLoading && followingsListLoading;
+  const isLoading = userIsLoading || articlesIsLoading || followingsListLoading;
   const data = user && articles && following;
 
   return (

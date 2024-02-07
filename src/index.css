@@ -26,13 +26,17 @@ body {
 }
 
 .ProseMirror {
-  min-height: 300px;
   outline: none;
 }
 
 .editor__frame {
   padding: 5px 14px;
-  border: 1px solid rgba(0, 0, 0, 0.12);
+  border: 1px solid #c4c4c4;
+  border-radius: 4px;
+}
+
+.editor__frame .ProseMirror {
+  min-height: 300px;
 }
 
 .MuiButtonBase-root {
@@ -47,15 +51,15 @@ body {
   margin-bottom: 0 !important;
 }
 
-.css-1yrwcr8-MuiToggleButtonGroup-root .MuiToggleButtonGroup-grouped:not(:last-of-type) {
+.MuiToggleButtonGroup-root .MuiToggleButtonGroup-grouped:not(:last-of-type) {
   border: none;
 }
 
-.css-1yrwcr8-MuiToggleButtonGroup-root .MuiToggleButtonGroup-grouped:not(:first-of-type) {
+.MuiToggleButtonGroup-root .MuiToggleButtonGroup-grouped:not(:first-of-type) {
   border: none;
 }
 
-.css-1yrwcr8-MuiToggleButtonGroup-root .MuiToggleButtonGroup-grouped:not(:first-of-type) {
+.MuiToggleButtonGroup-root .MuiToggleButtonGroup-grouped:not(:first-of-type) {
   margin-left: 0 !important;
 }
 

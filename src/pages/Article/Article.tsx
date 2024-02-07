@@ -57,7 +57,7 @@ export const Article: React.FC = () => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            height: "calc(100vh - 96px)",
+            height: "100vh",
           }}
         >
           <CircularProgress />

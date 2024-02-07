@@ -35,7 +35,7 @@ export const CommentForm: React.FC<CommentFormProps> = ({
 
   return (
     <Card sx={{ borderRadius: 0 }}>
-      <CardContent>
+      <CardContent sx={{ pt: 0 }}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <TextField
             multiline
