@@ -28,7 +28,7 @@ export const commentsApi = api.injectEndpoints({
             "getSingleArticle",
             articleId,
             (draft) => {
-              draft.commentsCount += 1;
+              draft._count.comments += 1;
             }
           )
         );

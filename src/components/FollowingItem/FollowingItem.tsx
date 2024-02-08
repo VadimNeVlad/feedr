@@ -83,7 +83,7 @@ export const FollowingItem: React.FC<FollowingItemProps> = ({
             {followTypeUser.name}
           </Typography>
           {size === "lg" && followTypeUser.bio && (
-            <Typography variant="body2">Bio example</Typography>
+            <Typography variant="body2">{followTypeUser.bio}</Typography>
           )}
         </Box>
       </Link>

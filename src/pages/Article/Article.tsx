@@ -1,11 +1,11 @@
 import React, { useRef } from "react";
-import { Box, Button, CircularProgress, Container, Grid } from "@mui/material";
+import { Box, CircularProgress, Container, Grid } from "@mui/material";
 import {
   useDeleteArticleMutation,
   useGetSingleArticleQuery,
 } from "../../features/articles/articlesApi";
 import { ArticleContent } from "../../components/ArticleContent/ArticleContent";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { ArticleReactions } from "../../components/ArticleReactions/ArticleReactions";
 import { ArticleAuthor } from "../../components/ArticleAuthor/ArticleAuthor";
 import { CommentForm } from "../../components/CommentForm/CommentForm";
@@ -19,6 +19,7 @@ import { Modal } from "../../components/Modal/Modal";
 import { useToggle } from "../../hooks/useToggle";
 import { Layout } from "../../components/Layout/Layout";
 import { useDelayedRedirect } from "../../hooks/useDelayedRedirect";
+import { ArticleActions } from "../../components/ArticleActions/ArticleActions";
 
 export const Article: React.FC = () => {
   const ref = useRef<null | HTMLDivElement>(null);
@@ -35,20 +36,32 @@ export const Article: React.FC = () => {
     isFetching: commentsIsFetching,
   } = useGetCommentsQuery(article?.id ?? skipToken);
   const { data: author, isLoading: authorIsLoading } = useGetUserByIdQuery(
-    article?.authorId ?? skipToken
+    article?.authorId ?? skipToken,
+    { refetchOnMountOrArgChange: true }
   );
   const [
     deleteArticle,
-    { isLoading: isDeleting, isSuccess: deleteSuccess, error },
+    { isLoading: isDeleting, isSuccess: deleteArticleSuccess, error },
   ] = useDeleteArticleMutation();
 
   const data = article && comments && author;
   const isLoading = articlesIsFetching || commentsIsLoading || authorIsLoading;
 
-  useDelayedRedirect(deleteSuccess, error, "Article deleted successfully");
+  useDelayedRedirect(
+    deleteArticleSuccess,
+    error,
+    "Article deleted successfully"
+  );
 
   const handleScroll = () => {
     if (ref.current) ref.current.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const deleteArticleHandler = () => {
+    if (article) {
+      deleteArticle(article.id);
+      setOpen();
+    }
   };
 
   return (
@@ -86,31 +99,13 @@ export const Article: React.FC = () => {
             </Grid>
             <Grid item xs={3}>
               <ArticleAuthor author={author} />
-
               {user?.id === author.id && (
-                <>
-                  <Link to={`/edit-article/${id}`}>
-                    <Button
-                      fullWidth
-                      variant="outlined"
-                      sx={{ mt: 2 }}
-                      disabled={deleteSuccess}
-                    >
-                      Edit Article
-                    </Button>
-                  </Link>
-
-                  <Button
-                    fullWidth
-                    variant="contained"
-                    color="error"
-                    sx={{ mt: 1 }}
-                    disabled={deleteSuccess}
-                    onClick={setOpen}
-                  >
-                    Delete Article
-                  </Button>
-                </>
+                <ArticleActions
+                  articleId={id || ""}
+                  setOpen={setOpen}
+                  isDeleting={isDeleting}
+                  deleteArticleSuccess={deleteArticleSuccess}
+                />
               )}
             </Grid>
           </Grid>
@@ -118,9 +113,8 @@ export const Article: React.FC = () => {
           <Modal
             title="Delete Article"
             open={open}
-            isDeleting={isDeleting}
             handleClose={setOpen}
-            deleteAction={() => deleteArticle(article.id)}
+            deleteAction={deleteArticleHandler}
           >
             Are you sure you want to delete this article?
           </Modal>

@@ -44,14 +44,14 @@ export const ArticleReactions: React.FC<ArticleReactionsProps> = ({
         >
           {isFavorite ? <BookmarkIcon /> : <BookmarkBorderOutlinedIcon />}
         </IconButton>
-        <Typography variant="body2">{article.favoritesCount}</Typography>
+        <Typography variant="body2">{article._count.favorited}</Typography>
       </Box>
 
       <Box sx={{ textAlign: "center" }}>
         <IconButton aria-label="comments" onClick={handleScroll}>
           <CommentOutlinedIcon />
         </IconButton>
-        <Typography variant="body2">{article.commentsCount}</Typography>
+        <Typography variant="body2">{article._count.comments}</Typography>
       </Box>
     </>
   );

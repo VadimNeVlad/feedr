@@ -3,63 +3,67 @@ import { FollowingListProps } from "../../utils/types/props";
 import { Card, CardContent, CardHeader, Typography } from "@mui/material";
 import { FollowingItem } from "../FollowingItem/FollowingItem";
 import { Link } from "react-router-dom";
+import { FollowingListSkeleton } from "../Skeletons/FollowingListSkeleton/FollowingListSkeleton";
 
 export const FollowingList: React.FC<FollowingListProps> = ({
   followType,
   listType,
   id,
   size = "lg",
+  isLoading,
 }) => {
   const [followingCount, setFollowingCount] = useState(followType?.length);
   return (
     <>
-      {size === "lg" && (
-        <Typography variant="h4" fontWeight={700} sx={{ mb: 2 }}>
-          {followingCount} Following
-        </Typography>
-      )}
+      {isLoading && <FollowingListSkeleton />}
 
-      {followType && followType.length > 0 && (
-        <Card sx={{ mb: 2 }}>
-          {size === "sm" && listType === "followings" && (
-            <CardHeader
-              title="Following"
-              titleTypographyProps={{
-                variant: "h6",
-                fontWeight: 700,
-                fontSize: 16,
-              }}
-              sx={{ pb: 0 }}
-            />
+      {!isLoading && followType && followType.length > 0 && (
+        <>
+          {size === "lg" && (
+            <Typography variant="h4" fontWeight={700} sx={{ mb: 2 }}>
+              {followingCount} Following
+            </Typography>
           )}
 
-          <CardContent>
-            {followType.map((followTypeUser) => (
-              <FollowingItem
-                key={
-                  listType === "followers"
-                    ? followTypeUser.followerId
-                    : followTypeUser.followingId
-                }
-                followTypeUser={
-                  listType === "followers"
-                    ? followTypeUser.follower
-                    : followTypeUser.following
-                }
-                size={size}
-                setFollowingCount={setFollowingCount}
+          <Card sx={{ mb: 2 }}>
+            {size === "sm" && listType === "followings" && (
+              <CardHeader
+                title="Following"
+                titleTypographyProps={{
+                  variant: "h6",
+                  fontWeight: 700,
+                  fontSize: 16,
+                }}
+                sx={{ pb: 0 }}
               />
-            ))}
-
-            {size === "sm" && followType.length > 5 && (
-              <Link to={`/user/${id}/following`}>
-                <Typography variant="body2" sx={{ mt: 3 }}>
-                  See All ({followType.length})
-                </Typography>
-              </Link>
             )}
-          </CardContent>
-        </Card>
+            <CardContent>
+              {followType.map((followTypeUser) => (
+                <FollowingItem
+                  key={
+                    listType === "followers"
+                      ? followTypeUser.followerId
+                      : followTypeUser.followingId
+                  }
+                  followTypeUser={
+                    listType === "followers"
+                      ? followTypeUser.follower
+                      : followTypeUser.following
+                  }
+                  size={size}
+                  setFollowingCount={setFollowingCount}
+                />
+              ))}
+              {size === "sm" && followType.length > 5 && (
+                <Link to={`/user/${id}/following`}>
+                  <Typography variant="body2" sx={{ mt: 3 }}>
+                    See All ({followType.length})
+                  </Typography>
+                </Link>
+              )}
+            </CardContent>
+          </Card>
+        </>
       )}
     </>
   );

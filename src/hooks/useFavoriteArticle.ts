@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { Article } from "../utils/types/articles";
 import { useSelector } from "react-redux";
 import { RootState } from "../app/store";
@@ -6,7 +6,6 @@ import { RootState } from "../app/store";
 export const useFavoriteArticle = (
   article: Article
 ): [boolean, (value: boolean) => void] => {
-  const [isFavorite, setIsFavorite] = useState(false);
   const currentUser = useSelector((state: RootState) => state.auth.user);
 
   const exists = useMemo(
@@ -17,9 +16,7 @@ export const useFavoriteArticle = (
     [article.favorited, currentUser]
   );
 
-  useEffect(() => {
-    setIsFavorite(exists);
-  }, [exists]);
+  const [isFavorite, setIsFavorite] = useState(exists);
 
   return [isFavorite, setIsFavorite];
 };

@@ -1,35 +1,25 @@
 import React from "react";
 import { ArticleItem } from "../ArticleItem/ArticleItem";
-import { Box, LinearProgress } from "@mui/material";
-import CircularProgress from "@mui/material/CircularProgress";
+import { LinearProgress } from "@mui/material";
 import { ArticleListProps } from "../../utils/types/props";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { ArticlesListSkeleton } from "../Skeletons/ArticlesListSkeleton/ArticlesListSkeleton";
 
 export const ArticlesList: React.FC<ArticleListProps> = ({
   articles,
+  articlesCount,
   isLoading,
   handleNextPage,
 }) => {
   return (
     <>
-      {isLoading && (
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "calc(100vh - 168px)",
-          }}
-        >
-          <CircularProgress />
-        </Box>
-      )}
+      {isLoading && <ArticlesListSkeleton />}
 
       {!isLoading && articles && (
         <InfiniteScroll
-          dataLength={articles.length}
+          dataLength={articlesCount || articles.length}
           next={handleNextPage!}
-          hasMore={articles.length === 10}
+          hasMore={articlesCount === 10}
           loader={<LinearProgress />}
         >
           {articles.length > 0 ? (

@@ -8,7 +8,7 @@ export const articlesApi = api.injectEndpoints({
         url: "articles",
         method: "GET",
         params: {
-          page: page,
+          page,
           per_page: 10,
           sort_by: sortBy,
         },
@@ -74,7 +74,7 @@ export const articlesApi = api.injectEndpoints({
       async onQueryStarted(id, { dispatch, queryFulfilled }) {
         const patchResult = dispatch(
           articlesApi.util.updateQueryData("getSingleArticle", id, (draft) => {
-            draft.favoritesCount += 1;
+            draft._count.favorited += 1;
           })
         );
         try {
@@ -93,7 +93,7 @@ export const articlesApi = api.injectEndpoints({
       async onQueryStarted(id, { dispatch, queryFulfilled }) {
         const patchResult = dispatch(
           articlesApi.util.updateQueryData("getSingleArticle", id, (draft) => {
-            draft.favoritesCount -= 1;
+            draft._count.favorited -= 1;
           })
         );
         try {

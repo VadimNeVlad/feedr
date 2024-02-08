@@ -9,13 +9,16 @@ export interface User {
   image?: string;
   location?: string;
   websiteUrl?: string;
-  commentsCount: number;
   createdAt: Date;
   updatedAt: Date;
   articles: Article[];
   favorites: Article[];
   following: Follow[];
   followers: Follow[];
+  _count: {
+    articles: number;
+    comments: number;
+  };
 }
 
 export interface ChangePasswordData {

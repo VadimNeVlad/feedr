@@ -10,11 +10,13 @@ export interface Article {
   createdAt: Date;
   updatedAt: Date;
   image: string;
-  favoritesCount: number;
   author: User;
   authorId: string;
   favorited: User[];
-  commentsCount: number;
+  _count: {
+    comments: number;
+    favorited: number;
+  };
 }
 
 export interface ArticleData {
@@ -33,4 +35,12 @@ export interface UpdateArticleData {
 export interface ArticlesParams {
   page?: number;
   sortBy?: string;
+  tagName?: string;
+}
+
+export interface ArticlesResponse {
+  articles: Article[];
+  _count: {
+    articles: number;
+  };
 }

@@ -11,7 +11,7 @@ export const Home: React.FC = () => {
   const searchParams = new URLSearchParams(window.location.search);
 
   const [page, setPage] = useState(0);
-  const [sortBy, setSortBy] = useState(searchParams.get("sortBy") ?? "latest");
+  const [sortBy, setSortBy] = useState(searchParams.get("sortBy") || "latest");
   const [customFetching, setCustomFetching] = useState(true);
 
   const { data: articles, status } = useGetArticlesQuery({ page, sortBy });
@@ -50,6 +50,7 @@ export const Home: React.FC = () => {
             />
             <ArticlesList
               articles={articles}
+              articlesCount={articles?.length}
               isLoading={customFetching}
               handleNextPage={handleNextPage}
             />

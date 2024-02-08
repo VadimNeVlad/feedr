@@ -20,6 +20,7 @@ export interface AuthFormProps {
 export interface ArticleListProps {
   articles: Article[] | undefined;
   isLoading?: boolean;
+  articlesCount?: number;
   handleNextPage?: () => void;
 }
 
@@ -102,6 +103,7 @@ export interface FollowingListProps {
   listType: "followers" | "followings";
   id?: string;
   size?: "sm" | "lg";
+  isLoading?: boolean;
 }
 
 export interface FollowingItemProps {
@@ -120,4 +122,11 @@ export interface TagsAutocompleteProps {
 export interface SortingButtonsProps {
   value: string;
   handleSortChange: (value: string) => void;
+}
+
+export interface ArticleActionsProps {
+  articleId: string;
+  deleteArticleSuccess: boolean;
+  isDeleting: boolean;
+  setOpen: () => void;
 }

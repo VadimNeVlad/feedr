@@ -3,6 +3,7 @@ import { ArticleItemProps } from "../../utils/types/props";
 import {
   Avatar,
   Box,
+  Button,
   Card,
   CardActions,
   CardContent,
@@ -80,9 +81,16 @@ export const ArticleItem: React.FC<ArticleItemProps> = ({ article }) => {
 
         <Box sx={{ display: "flex" }}>
           {article.tagList.map((tag) => (
-            <Typography key={tag.name} variant="body1" sx={{ mr: 1 }}>
-              #{tag.name}
-            </Typography>
+            <Link to={`/tag/${tag.name}`} key={tag.name}>
+              <Button
+                variant="text"
+                size="small"
+                color="inherit"
+                sx={{ mr: 0.5 }}
+              >
+                #{tag.name}
+              </Button>
+            </Link>
           ))}
         </Box>
       </CardContent>
@@ -96,7 +104,7 @@ export const ArticleItem: React.FC<ArticleItemProps> = ({ article }) => {
             <CommentOutlinedIcon />
           </IconButton>
           <Typography variant="body2" style={{ marginLeft: "-6px" }}>
-            {article.commentsCount}
+            {article._count.comments}
           </Typography>
         </Box>
 

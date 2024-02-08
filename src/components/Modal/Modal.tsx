@@ -8,13 +8,11 @@ import {
 } from "@mui/material";
 import React from "react";
 import { ModalProps } from "../../utils/types/props";
-import LoadingButton from "@mui/lab/LoadingButton";
 
 export const Modal: React.FC<ModalProps> = ({
   open,
   children,
   title,
-  isDeleting,
   handleClose,
   deleteAction,
 }) => {
@@ -33,9 +31,9 @@ export const Modal: React.FC<ModalProps> = ({
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
-        <LoadingButton autoFocus loading={isDeleting} onClick={deleteAction}>
+        <Button autoFocus onClick={deleteAction}>
           {title}
-        </LoadingButton>
+        </Button>
       </DialogActions>
     </Dialog>
   );

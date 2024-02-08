@@ -9,7 +9,6 @@ import { ArticlesList } from "../../components/ArticlesList/ArticlesList";
 import { FollowingList } from "../../components/FollowingList/FollowingList";
 import { useGetFollowingsQuery } from "../../features/follows/followsApi";
 import { Layout } from "../../components/Layout/Layout";
-import { FollowingListSkeleton } from "../../components/Skeletons/FollowingListSkeleton/FollowingListSkeleton";
 
 export const Profile: React.FC = () => {
   const { id } = useParams();
@@ -18,8 +17,13 @@ export const Profile: React.FC = () => {
     id || "",
     { refetchOnMountOrArgChange: true }
   );
-  const { currentData: articles, isLoading: articlesIsLoading } =
-    useGetArticlesByAuthorQuery(id || "");
+  const {
+    currentData: articles,
+    isLoading: articlesIsLoading,
+    isFetching: articlesIsFetching,
+  } = useGetArticlesByAuthorQuery(id || "", {
+    refetchOnMountOrArgChange: true,
+  });
   const {
     data: following,
     isLoading: followingsIsLoading,
@@ -56,23 +60,24 @@ export const Profile: React.FC = () => {
               <ProfileContent user={user} />
             </Grid>
             <Grid item xs={3}>
-              {followingsIsFetching ? (
-                <FollowingListSkeleton />
-              ) : (
-                <FollowingList
-                  listType="followings"
-                  followType={following}
-                  id={user.id}
-                  size="sm"
-                />
-              )}
+              <FollowingList
+                isLoading={followingsIsFetching}
+                listType="followings"
+                followType={following}
+                id={user.id}
+                size="sm"
+              />
               <ProfileCountInfo
-                commentsCount={user.commentsCount}
-                articlesCount={articles.length}
+                commentsCount={user._count.comments}
+                articlesCount={user._count.articles}
               />
             </Grid>
             <Grid item xs={9}>
-              <ArticlesList articles={articles} />
+              <ArticlesList
+                articles={articles}
+                isLoading={articlesIsFetching}
+                articlesCount={user._count.articles}
+              />
             </Grid>
           </Grid>
         </Container>
