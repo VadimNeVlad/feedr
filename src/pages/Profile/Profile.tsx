@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, CircularProgress, Container, Grid } from "@mui/material";
+import { Box, Container, Grid } from "@mui/material";
 import { useGetUserByIdQuery } from "../../features/users/usersApi";
 import { useParams } from "react-router-dom";
 import { ProfileContent } from "../../components/ProfileContent/ProfileContent";
@@ -9,6 +9,7 @@ import { ArticlesList } from "../../components/ArticlesList/ArticlesList";
 import { FollowingList } from "../../components/FollowingList/FollowingList";
 import { useGetFollowingsQuery } from "../../features/follows/followsApi";
 import { Layout } from "../../components/Layout/Layout";
+import { ProfileSkeleton } from "../../components/Skeletons/ProfileSkeleton/ProfileSkeleton";
 
 export const Profile: React.FC = () => {
   const { id } = useParams();
@@ -18,7 +19,7 @@ export const Profile: React.FC = () => {
     { refetchOnMountOrArgChange: true }
   );
   const {
-    currentData: articles,
+    data: articles,
     isLoading: articlesIsLoading,
     isFetching: articlesIsFetching,
   } = useGetArticlesByAuthorQuery(id || "", {
@@ -40,18 +41,7 @@ export const Profile: React.FC = () => {
     <Layout>
       <Box sx={{ width: "100%", height: "170px", bgcolor: "#000" }}></Box>
 
-      {isLoading && (
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "calc(100vh - 170px)",
-          }}
-        >
-          <CircularProgress />
-        </Box>
-      )}
+      {isLoading && <ProfileSkeleton />}
 
       {!isLoading && data && (
         <Container maxWidth="lg" sx={{ mt: -4, pb: 3 }}>
@@ -61,8 +51,8 @@ export const Profile: React.FC = () => {
             </Grid>
             <Grid item xs={3}>
               <FollowingList
-                isLoading={followingsIsFetching}
                 listType="followings"
+                isFetching={followingsIsFetching}
                 followType={following}
                 id={user.id}
                 size="sm"
@@ -75,8 +65,8 @@ export const Profile: React.FC = () => {
             <Grid item xs={9}>
               <ArticlesList
                 articles={articles}
-                isLoading={articlesIsFetching}
                 articlesCount={user._count.articles}
+                isFetching={articlesIsFetching}
               />
             </Grid>
           </Grid>

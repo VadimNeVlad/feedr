@@ -10,14 +10,14 @@ export const FollowingList: React.FC<FollowingListProps> = ({
   listType,
   id,
   size = "lg",
-  isLoading,
+  isFetching,
 }) => {
   const [followingCount, setFollowingCount] = useState(followType?.length);
   return (
     <>
-      {isLoading && <FollowingListSkeleton />}
+      {isFetching && <FollowingListSkeleton />}
 
-      {!isLoading && followType && followType.length > 0 && (
+      {!isFetching && followType && followType.length > 0 && (
         <>
           {size === "lg" && (
             <Typography variant="h4" fontWeight={700} sx={{ mb: 2 }}>

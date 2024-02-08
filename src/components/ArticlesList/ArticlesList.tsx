@@ -8,28 +8,30 @@ import { ArticlesListSkeleton } from "../Skeletons/ArticlesListSkeleton/Articles
 export const ArticlesList: React.FC<ArticleListProps> = ({
   articles,
   articlesCount,
-  isLoading,
+  isFetching,
   handleNextPage,
 }) => {
   return (
     <>
-      {isLoading && <ArticlesListSkeleton />}
+      {isFetching && <ArticlesListSkeleton />}
 
-      {!isLoading && articles && (
-        <InfiniteScroll
-          dataLength={articlesCount || articles.length}
-          next={handleNextPage!}
-          hasMore={articlesCount === 10}
-          loader={<LinearProgress />}
-        >
-          {articles.length > 0 ? (
-            articles.map((article) => (
-              <ArticleItem key={article.id} article={article} />
-            ))
-          ) : (
-            <div>No articles yet</div>
-          )}
-        </InfiniteScroll>
+      {!isFetching && articles && (
+        <>
+          <InfiniteScroll
+            dataLength={articlesCount}
+            next={handleNextPage!}
+            hasMore={!!(articlesCount % 10 === 0)}
+            loader={<LinearProgress />}
+          >
+            {articlesCount > 0 ? (
+              articles.map((article) => (
+                <ArticleItem key={article.id} article={article} />
+              ))
+            ) : (
+              <div>No articles yet</div>
+            )}
+          </InfiniteScroll>
+        </>
       )}
     </>
   );

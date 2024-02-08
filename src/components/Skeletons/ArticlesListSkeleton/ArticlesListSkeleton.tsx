@@ -22,7 +22,11 @@ export const ArticlesListSkeleton: React.FC = () => {
         />
         <Skeleton
           variant="text"
-          sx={{ fontSize: "16px", width: "100%", mb: 2 }}
+          sx={{ fontSize: "16px", width: "100%", mb: 0 }}
+        />
+        <Skeleton
+          variant="text"
+          sx={{ fontSize: "16px", width: "100%", mb: 0 }}
         />
         <Skeleton
           variant="text"

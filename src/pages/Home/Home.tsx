@@ -50,8 +50,8 @@ export const Home: React.FC = () => {
             />
             <ArticlesList
               articles={articles}
-              articlesCount={articles?.length}
-              isLoading={customFetching}
+              articlesCount={articles?.length as number}
+              isFetching={customFetching}
               handleNextPage={handleNextPage}
             />
           </Grid>

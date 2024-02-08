@@ -12,8 +12,12 @@ import {
   useUnfollowUserMutation,
 } from "../../features/users/usersApi";
 import { useFollowUser } from "../../hooks/useFollowUser";
+import { ProfileContentSkeleton } from "../Skeletons/ProfileContentSkeleton/ProfileContentSkeleton";
 
-export const ProfileContent: React.FC<ProfileContentProps> = ({ user }) => {
+export const ProfileContent: React.FC<ProfileContentProps> = ({
+  user,
+  isLoading,
+}) => {
   const [folowersCount, setFolowersCount] = useState(user.followers.length);
   const [isFollow, setIsFollow] = useFollowUser(user);
 
@@ -35,61 +39,64 @@ export const ProfileContent: React.FC<ProfileContentProps> = ({ user }) => {
   };
 
   return (
-    <Card sx={{ overflow: "initial", position: "relative" }}>
-      <CardContent sx={{ textAlign: "center" }}>
-        <AvatarPreview
-          userName={user.name}
-          userId={user.id}
-          avatar={user.image}
-        />
+    <>
+      {isLoading && <ProfileContentSkeleton />}
 
-        <Typography variant="h4" fontWeight={700} sx={{ mb: 1 }}>
-          {user.name}
-        </Typography>
-        <Link to={`/user/${user.id}/followers`}>
-          <Typography variant="body1" sx={{ mb: 1 }}>
-            {folowersCount} Followers
-          </Typography>
-        </Link>
-        <Typography variant="body1" sx={{ mb: 3 }}>
-          {user.email}
-        </Typography>
-        <Typography variant="body1" fontSize={"17px"} sx={{ mb: 3 }}>
-          {user.bio ? user.bio : "404 bio not found"}
-        </Typography>
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            gap: 1,
-            justifyContent: "center",
-          }}
-        >
-          <CakeOutlinedIcon sx={{ color: "#000" }} />
-          <Typography variant="body1" fontSize={"17px"}>
-            Joined on {formatDate(user.createdAt, false)}
-          </Typography>
-        </Box>
+      {!isLoading && (
+        <Card sx={{ overflow: "initial", position: "relative" }}>
+          <CardContent sx={{ textAlign: "center" }}>
+            <AvatarPreview
+              userName={user.name}
+              userId={user.id}
+              avatar={user.image}
+            />
 
-        {user.id === currentUser?.id ? (
-          <Link to="/user/edit-profile/profile">
-            <Button
-              variant="contained"
-              sx={{ position: "absolute", top: 20, right: 20 }}
+            <Typography variant="h4" fontWeight={700} sx={{ mb: 1 }}>
+              {user.name}
+            </Typography>
+            <Link to={`/user/${user.id}/followers`}>
+              <Typography variant="body1" sx={{ mb: 3 }}>
+                {folowersCount} Followers
+              </Typography>
+            </Link>
+            <Typography variant="body1" fontSize={"17px"} sx={{ mb: 3 }}>
+              {user.bio ? user.bio : "404 bio not found"}
+            </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 1,
+                justifyContent: "center",
+              }}
             >
-              Edit Profile
-            </Button>
-          </Link>
-        ) : (
-          <Button
-            variant={!isFollow ? "contained" : "outlined"}
-            onClick={handleFollowUser}
-            sx={{ position: "absolute", top: 20, right: 20 }}
-          >
-            {!isFollow ? "Follow" : "Unfollow"}
-          </Button>
-        )}
-      </CardContent>
-    </Card>
+              <CakeOutlinedIcon sx={{ color: "#000" }} />
+              <Typography variant="body1" fontSize={"17px"}>
+                Joined on {formatDate(user.createdAt, false)}
+              </Typography>
+            </Box>
+
+            {user.id === currentUser?.id ? (
+              <Link to="/user/edit-profile/profile">
+                <Button
+                  variant="contained"
+                  sx={{ position: "absolute", top: 20, right: 20 }}
+                >
+                  Edit Profile
+                </Button>
+              </Link>
+            ) : (
+              <Button
+                variant={!isFollow ? "contained" : "outlined"}
+                onClick={handleFollowUser}
+                sx={{ position: "absolute", top: 20, right: 20 }}
+              >
+                {!isFollow ? "Follow" : "Unfollow"}
+              </Button>
+            )}
+          </CardContent>
+        </Card>
+      )}
+    </>
   );
 };
