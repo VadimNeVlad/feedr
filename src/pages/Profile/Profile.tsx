@@ -15,22 +15,23 @@ export const Profile: React.FC = () => {
   const { id } = useParams();
 
   const { data: user, isFetching: userIsFetching } = useGetUserByIdQuery(
-    id || "",
+    id as string,
     { refetchOnMountOrArgChange: true }
   );
   const {
     data: articles,
     isLoading: articlesIsLoading,
     isFetching: articlesIsFetching,
-  } = useGetArticlesByAuthorQuery(id || "", {
+  } = useGetArticlesByAuthorQuery(id as string, {
     refetchOnMountOrArgChange: true,
   });
+
   const {
     data: following,
     isLoading: followingsIsLoading,
     isFetching: followingsIsFetching,
   } = useGetFollowingsQuery(
-    { id: id || "", perPage: 5 },
+    { id: id as string, perPage: 5 },
     { refetchOnMountOrArgChange: true }
   );
 

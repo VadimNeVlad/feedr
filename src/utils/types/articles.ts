@@ -36,6 +36,7 @@ export interface ArticlesParams {
   page?: number;
   sortBy?: string;
   tagName?: string;
+  authorId?: string;
 }
 
 export interface ArticlesResponse {

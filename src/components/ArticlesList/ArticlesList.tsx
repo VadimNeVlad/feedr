@@ -20,10 +20,10 @@ export const ArticlesList: React.FC<ArticleListProps> = ({
           <InfiniteScroll
             dataLength={articlesCount}
             next={handleNextPage!}
-            hasMore={!!(articlesCount % 10 === 0)}
+            hasMore={!!(articles.length % 10 === 0)}
             loader={<LinearProgress />}
           >
-            {articlesCount > 0 ? (
+            {articles.length > 0 ? (
               articles.map((article) => (
                 <ArticleItem key={article.id} article={article} />
               ))

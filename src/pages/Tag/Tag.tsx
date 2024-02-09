@@ -1,40 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { Layout } from "../../components/Layout/Layout";
 import { Container, Grid, Typography } from "@mui/material";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useGetTagArticlesQuery } from "../../features/tags/tagsApi";
 import { ArticlesList } from "../../components/ArticlesList/ArticlesList";
 import { SortingButtons } from "../../components/SortingButtons/SortingButtons";
+import { usePaginate } from "../../utils/types/usePaginate";
 
 export const Tag: React.FC = () => {
   const { tagName } = useParams();
-  const navigate = useNavigate();
-  const searchParams = new URLSearchParams(window.location.search);
 
-  const [page, setPage] = useState(0);
-  const [sortBy, setSortBy] = useState(searchParams.get("sortBy") || "latest");
   const [customFetching, setCustomFetching] = useState(true);
+
+  const { page, sortBy, handleNextPage, handleSortChange } = usePaginate();
 
   const { data, status } = useGetTagArticlesQuery({ tagName, page, sortBy });
 
   useEffect(() => {
-    if (status === "fulfilled") {
-      setCustomFetching(false);
-    }
-    if (status === "pending" && page === 0) {
-      setCustomFetching(true);
-    }
+    if (status === "fulfilled") setCustomFetching(false);
+    if (status === "pending" && page === 0) setCustomFetching(true);
   }, [status, page]);
-
-  const handleNextPage = () => {
-    setPage((prev) => prev + 1);
-  };
-
-  const handleSortChange = (value: string) => {
-    setPage(0);
-    setSortBy(value);
-    navigate(value === "latest" ? "" : `?sortBy=${value}`);
-  };
 
   return (
     <Layout>
@@ -58,7 +43,7 @@ export const Tag: React.FC = () => {
               />
               <ArticlesList
                 articles={data.articles}
-                isLoading={customFetching}
+                isFetching={customFetching}
                 articlesCount={data._count.articles}
                 handleNextPage={handleNextPage}
               />
