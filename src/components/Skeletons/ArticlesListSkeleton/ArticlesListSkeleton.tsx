@@ -14,7 +14,16 @@ export const ArticlesListSkeleton: React.FC = () => {
           }}
         >
           <Skeleton variant="circular" width={40} height={40} />
-          <Skeleton variant="text" sx={{ fontSize: "12px", width: "20%" }} />
+          <Box>
+            <Skeleton
+              variant="text"
+              sx={{ fontSize: "13px", width: "170px" }}
+            />
+            <Skeleton
+              variant="text"
+              sx={{ fontSize: "13px", width: "190px" }}
+            />
+          </Box>
         </Box>
         <Skeleton
           variant="text"

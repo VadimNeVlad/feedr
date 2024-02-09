@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Layout } from "../../components/Layout/Layout";
-import { Container, Grid, Typography } from "@mui/material";
+import {
+  Box,
+  Card,
+  CardContent,
+  Container,
+  Grid,
+  Skeleton,
+  Typography,
+} from "@mui/material";
 import { useParams } from "react-router-dom";
 import { useGetTagArticlesQuery } from "../../features/tags/tagsApi";
 import { ArticlesList } from "../../components/ArticlesList/ArticlesList";
@@ -14,7 +22,18 @@ export const Tag: React.FC = () => {
 
   const { page, sortBy, handleNextPage, handleSortChange } = usePaginate();
 
-  const { data, status } = useGetTagArticlesQuery({ tagName, page, sortBy });
+  const {
+    data: data,
+    isFetching,
+    status,
+  } = useGetTagArticlesQuery(
+    {
+      tagName,
+      page,
+      sortBy,
+    },
+    { refetchOnMountOrArgChange: true }
+  );
 
   useEffect(() => {
     if (status === "fulfilled") setCustomFetching(false);
@@ -23,34 +42,61 @@ export const Tag: React.FC = () => {
 
   return (
     <Layout>
-      {data && (
-        <Container maxWidth="lg" sx={{ mt: 9, pb: 3 }}>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <Typography variant="h4" fontWeight={700} sx={{ mb: 2 }}>
-                {tagName}
-              </Typography>
-            </Grid>
-            <Grid item xs={3}>
-              <Typography variant="body2">
-                {data._count.articles} Articles published{" "}
-              </Typography>
-            </Grid>
-            <Grid item xs={9}>
-              <SortingButtons
-                value={sortBy}
-                handleSortChange={handleSortChange}
-              />
-              <ArticlesList
-                articles={data.articles}
-                isFetching={customFetching}
-                articlesCount={data._count.articles}
-                handleNextPage={handleNextPage}
-              />
-            </Grid>
+      <Container maxWidth="lg" sx={{ mt: 9, pb: 3 }}>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <Card sx={{ mb: 3 }}>
+              <CardContent>
+                <Box
+                  sx={{
+                    width: "105%",
+                    height: "20px",
+                    bgcolor: "#000",
+                    ml: "-16px",
+                    mt: "-16px",
+                    mb: 3,
+                  }}
+                ></Box>
+                <Typography
+                  variant="h4"
+                  fontWeight={700}
+                  textTransform={"capitalize"}
+                  sx={{ mb: 2 }}
+                >
+                  {tagName}
+                </Typography>
+
+                {isFetching && (
+                  <Skeleton
+                    variant="text"
+                    sx={{ fontSize: "17px", width: "270px" }}
+                  />
+                )}
+
+                {!isFetching && data && (
+                  <Typography variant="body1">
+                    {data._count.articles}
+                    {data._count.articles === 1 ? " Article " : " Articles "}
+                    published
+                  </Typography>
+                )}
+              </CardContent>
+            </Card>
           </Grid>
-        </Container>
-      )}
+          <Grid item xs={12}>
+            <SortingButtons
+              value={sortBy}
+              handleSortChange={handleSortChange}
+            />
+            <ArticlesList
+              articles={data?.articles}
+              isFetching={customFetching}
+              articlesCount={data?._count.articles as number}
+              handleNextPage={handleNextPage}
+            />
+          </Grid>
+        </Grid>
+      </Container>
     </Layout>
   );
 };
