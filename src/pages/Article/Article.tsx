@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { Box, CircularProgress, Container, Grid } from "@mui/material";
+import { Box, Container, Grid } from "@mui/material";
 import {
   useDeleteArticleMutation,
   useGetSingleArticleQuery,
@@ -20,6 +20,7 @@ import { useToggle } from "../../hooks/useToggle";
 import { Layout } from "../../components/Layout/Layout";
 import { useDelayedRedirect } from "../../hooks/useDelayedRedirect";
 import { ArticleActions } from "../../components/ArticleActions/ArticleActions";
+import { ArticleSkeleton } from "../../components/Skeletons/ArticleSkeleton/ArticleSkeleton";
 
 export const Article: React.FC = () => {
   const ref = useRef<null | HTMLDivElement>(null);
@@ -29,16 +30,19 @@ export const Article: React.FC = () => {
   const user = useSelector((state: RootState) => state.auth.user);
 
   const { data: article, isFetching: articlesIsFetching } =
-    useGetSingleArticleQuery(id || "", { refetchOnMountOrArgChange: true });
+    useGetSingleArticleQuery(id as string, { refetchOnMountOrArgChange: true });
+
   const {
     data: comments,
     isLoading: commentsIsLoading,
     isFetching: commentsIsFetching,
   } = useGetCommentsQuery(article?.id ?? skipToken);
+
   const { data: author, isLoading: authorIsLoading } = useGetUserByIdQuery(
     article?.authorId ?? skipToken,
     { refetchOnMountOrArgChange: true }
   );
+
   const [
     deleteArticle,
     { isLoading: isDeleting, isSuccess: deleteArticleSuccess, error },
@@ -66,18 +70,7 @@ export const Article: React.FC = () => {
 
   return (
     <Layout>
-      {isLoading && (
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100vh",
-          }}
-        >
-          <CircularProgress />
-        </Box>
-      )}
+      {isLoading && <ArticleSkeleton />}
 
       {!isLoading && data && (
         <Container maxWidth="lg" sx={{ mt: 11, pb: 3 }}>
@@ -101,7 +94,7 @@ export const Article: React.FC = () => {
               <ArticleAuthor author={author} />
               {user?.id === author.id && (
                 <ArticleActions
-                  articleId={id || ""}
+                  articleId={id as string}
                   setOpen={setOpen}
                   isDeleting={isDeleting}
                   deleteArticleSuccess={deleteArticleSuccess}
