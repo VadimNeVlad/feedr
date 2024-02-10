@@ -4,6 +4,7 @@ import { LinearProgress } from "@mui/material";
 import { ArticleListProps } from "../../utils/types/props";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { ArticlesListSkeleton } from "../Skeletons/ArticlesListSkeleton/ArticlesListSkeleton";
+import { NoResultMessage } from "../NoResultMessage/NoResultMessage";
 
 export const ArticlesList: React.FC<ArticleListProps> = ({
   articles,
@@ -28,7 +29,7 @@ export const ArticlesList: React.FC<ArticleListProps> = ({
                 <ArticleItem key={article.id} article={article} />
               ))
             ) : (
-              <div>No articles yet</div>
+              <NoResultMessage msg="There are no articles yet" />
             )}
           </InfiniteScroll>
         </>

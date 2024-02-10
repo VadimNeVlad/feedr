@@ -5,6 +5,7 @@ import { useGetArticlesQuery } from "../../features/articles/articlesApi";
 import { Layout } from "../../components/Layout/Layout";
 import { SortingButtons } from "../../components/SortingButtons/SortingButtons";
 import { usePaginate } from "../../utils/types/usePaginate";
+import { Link } from "react-router-dom";
 
 export const Home: React.FC = () => {
   const [customFetching, setCustomFetching] = useState(true);
@@ -23,7 +24,7 @@ export const Home: React.FC = () => {
       <Container maxWidth="lg" sx={{ mt: 9, pb: 3 }}>
         <Grid container spacing={2}>
           <Grid item xs={3}>
-            <h1>Hello</h1>
+            <Link to="/tags">Tags</Link>
             <h2>hi</h2>
           </Grid>
           <Grid item xs={9}>

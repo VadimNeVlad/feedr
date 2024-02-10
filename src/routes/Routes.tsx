@@ -13,6 +13,7 @@ import { EditProfile } from "../pages/EditProfile/EditProfile";
 import { ProfileSettings } from "../pages/EditProfile/ProfileSettings/ProfileSettings";
 import { AccountSettings } from "../pages/EditProfile/AccountSettings/AccountSettings";
 import { Tag } from "../pages/Tag/Tag";
+import { Tags } from "../pages/Tags/Tags";
 
 export const Routes = () => {
   const location = useLocation();
@@ -41,6 +42,7 @@ export const Routes = () => {
       <Route path="/articles/:id/:slug" element={<Article />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/tags" element={<Tags />} />
       <Route path="/tag/:tagName" element={<Tag />} />
     </RouterRoutes>
   );

@@ -12,6 +12,7 @@ export const followsApi = api.injectEndpoints({
           q: searchQuery,
         },
       }),
+      providesTags: ["Tag"],
     }),
     getTagArticles: build.query<ArticlesResponse, ArticlesParams>({
       query: ({ page = 0, sortBy = "latest", tagName }) => ({

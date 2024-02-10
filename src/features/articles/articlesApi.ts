@@ -48,7 +48,7 @@ export const articlesApi = api.injectEndpoints({
         method: "POST",
         body,
       }),
-      invalidatesTags: [{ type: "Article", id: "LIST" }],
+      invalidatesTags: [{ type: "Article", id: "LIST" }, { type: "Tag" }],
     }),
     updateArticle: build.mutation<Article, FormData>({
       query: (body) => ({
@@ -56,14 +56,14 @@ export const articlesApi = api.injectEndpoints({
         method: "PUT",
         body,
       }),
-      invalidatesTags: ["Article"],
+      invalidatesTags: ["Article", "Tag"],
     }),
     deleteArticle: build.mutation<Article, string>({
       query: (slug) => ({
         url: `articles/${slug}`,
         method: "DELETE",
       }),
-      invalidatesTags: [{ type: "Article", id: "LIST" }],
+      invalidatesTags: [{ type: "Article", id: "LIST" }, { type: "Tag" }],
     }),
     favoriteArticle: build.mutation<Article, string>({
       query: (id) => ({

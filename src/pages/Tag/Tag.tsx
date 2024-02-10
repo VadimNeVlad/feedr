@@ -74,7 +74,7 @@ export const Tag: React.FC = () => {
                 )}
 
                 {!isFetching && data && (
-                  <Typography variant="body1">
+                  <Typography variant="body1" color="text.secondary">
                     {data._count.articles}
                     {data._count.articles === 1 ? " Article " : " Articles "}
                     published

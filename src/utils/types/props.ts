@@ -5,6 +5,7 @@ import { Comment } from "./comment";
 import { User } from "./user";
 import { Follow } from "./follow";
 import { Control } from "react-hook-form";
+import { Tag } from "./tag";
 
 export interface LayoutProps {
   children: React.ReactNode;
@@ -130,4 +131,24 @@ export interface ArticleActionsProps {
   deleteArticleSuccess: boolean;
   isDeleting: boolean;
   setOpen: () => void;
+}
+
+export interface TagslistProps {
+  tags: Tag[] | undefined;
+  isLoading?: boolean;
+  isFetching?: boolean;
+}
+
+export interface TagItemProps {
+  tag: Tag;
+}
+
+export interface SearchInputProps {
+  inputRef: React.RefObject<HTMLInputElement>;
+  placeholder: string;
+  setSearchValue: (value: React.SetStateAction<string>) => void;
+}
+
+export interface NoResultMessageProps {
+  msg: string;
 }
