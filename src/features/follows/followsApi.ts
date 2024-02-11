@@ -11,6 +11,7 @@ export const followsApi = api.injectEndpoints({
           per_page: perPage,
         },
       }),
+      providesTags: ["Follow"],
     }),
     getFollowers: build.query<Follow[], FollowParams>({
       query: ({ id, perPage = 100 }) => ({
@@ -20,6 +21,7 @@ export const followsApi = api.injectEndpoints({
           per_page: perPage,
         },
       }),
+      providesTags: ["Follow"],
     }),
   }),
 });

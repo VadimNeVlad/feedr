@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CakeOutlinedIcon from "@mui/icons-material/CakeOutlined";
 import { Box, Button, Card, CardContent, Typography } from "@mui/material";
 import { formatDate } from "../../utils/helpers/formatDate";
@@ -38,6 +38,10 @@ export const ProfileContent: React.FC<ProfileContentProps> = ({
     }
   };
 
+  useEffect(() => {
+    setFolowersCount(user.followers.length);
+  }, [user.followers.length]);
+
   return (
     <>
       {isLoading && <ProfileContentSkeleton />}
@@ -50,15 +54,22 @@ export const ProfileContent: React.FC<ProfileContentProps> = ({
               userId={user.id}
               avatar={user.image}
             />
-
             <Typography variant="h4" fontWeight={700} sx={{ mb: 1 }}>
               {user.name}
             </Typography>
-            <Link to={`/user/${user.id}/followers`}>
+
+            {folowersCount > 0 ? (
+              <Link to={`/user/${user.id}/followers`}>
+                <Typography variant="body1" sx={{ mb: 3 }}>
+                  {folowersCount} Followers
+                </Typography>
+              </Link>
+            ) : (
               <Typography variant="body1" sx={{ mb: 3 }}>
                 {folowersCount} Followers
               </Typography>
-            </Link>
+            )}
+
             <Typography variant="body1" fontSize={"17px"} sx={{ mb: 3 }}>
               {user.bio ? user.bio : "404 bio not found"}
             </Typography>

@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { Editor } from "../../components/Editor/Editor";
 import { useForm } from "react-hook-form";
-import { ArticleData } from "../../utils/types/articles";
+import { Article } from "../../utils/types/articles";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useCreateArticleMutation } from "../../features/articles/articlesApi";
 import { splitTags } from "../../utils/helpers/splitTags";
@@ -38,7 +38,7 @@ export const AddArticle: React.FC = () => {
     handleSubmit,
     control,
     formState: { isValid },
-  } = useForm<ArticleData>({
+  } = useForm<Pick<Article, "title">>({
     resolver: yupResolver<any>(articleSchema),
   });
 
@@ -46,7 +46,7 @@ export const AddArticle: React.FC = () => {
 
   useDelayedRedirect(isSuccess, error, "Article created successfully");
 
-  const onSubmit = (data: ArticleData) => {
+  const onSubmit = (data: Pick<Article, "title">) => {
     const formData = new FormData();
     const formattedTags = splitTags(tags);
 

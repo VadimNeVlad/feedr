@@ -20,16 +20,8 @@ export interface Article {
 }
 
 export interface ArticleData {
-  title: string;
-  body: string;
-  tagList: string[];
-}
-
-export interface UpdateArticleData {
-  slug: string;
-  title: string;
-  body: string;
-  image: string;
+  articles: Article[];
+  _count: number;
 }
 
 export interface ArticlesParams {

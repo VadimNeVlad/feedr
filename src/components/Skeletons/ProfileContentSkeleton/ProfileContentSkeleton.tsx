@@ -3,7 +3,7 @@ import React from "react";
 
 export const ProfileContentSkeleton: React.FC = () => {
   return (
-    <Card>
+    <Card sx={{ overflow: "initial", position: "relative" }}>
       <CardContent
         sx={{
           display: "flex",
@@ -11,7 +11,12 @@ export const ProfileContentSkeleton: React.FC = () => {
           flexDirection: "column",
         }}
       >
-        <Skeleton variant="circular" width={80} height={80} sx={{ mb: 2 }} />
+        <Skeleton
+          variant="circular"
+          width={80}
+          height={80}
+          sx={{ mb: 2, mt: -5 }}
+        />
         <Skeleton
           variant="text"
           sx={{ fontSize: "36px", width: "250px", mb: 1 }}

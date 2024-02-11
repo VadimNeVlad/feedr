@@ -1,9 +1,13 @@
 import { api } from "../../app/services";
-import { Article, ArticlesParams } from "../../utils/types/articles";
+import {
+  Article,
+  ArticleData,
+  ArticlesParams,
+} from "../../utils/types/articles";
 
 export const articlesApi = api.injectEndpoints({
   endpoints: (build) => ({
-    getArticles: build.query<Article[], ArticlesParams>({
+    getArticles: build.query<ArticleData, ArticlesParams>({
       query: ({ page = 0, sortBy = "latest" }) => ({
         url: "articles",
         method: "GET",
@@ -21,7 +25,7 @@ export const articlesApi = api.injectEndpoints({
         if (arg.page === 0) {
           return newCache;
         }
-        currentCache.push(...newCache);
+        currentCache.articles.push(...newCache.articles);
       },
       forceRefetch({ currentArg, previousArg }) {
         return currentArg !== previousArg;
@@ -29,7 +33,10 @@ export const articlesApi = api.injectEndpoints({
       providesTags: (result) =>
         result
           ? [
-              ...result.map(({ id }) => ({ type: "Article" as const, id })),
+              ...result.articles.map(({ id }) => ({
+                type: "Article" as const,
+                id,
+              })),
               { type: "Article", id: "LIST" },
             ]
           : [{ type: "Article", id: "LIST" }],
@@ -70,7 +77,7 @@ export const articlesApi = api.injectEndpoints({
         url: `articles/${id}/favorite`,
         method: "POST",
       }),
-
+      invalidatesTags: [{ type: "Article", id: "LIST" }],
       async onQueryStarted(id, { dispatch, queryFulfilled }) {
         const patchResult = dispatch(
           articlesApi.util.updateQueryData("getSingleArticle", id, (draft) => {
@@ -89,7 +96,7 @@ export const articlesApi = api.injectEndpoints({
         url: `articles/${id}/favorite`,
         method: "DELETE",
       }),
-
+      invalidatesTags: [{ type: "Article", id: "LIST" }],
       async onQueryStarted(id, { dispatch, queryFulfilled }) {
         const patchResult = dispatch(
           articlesApi.util.updateQueryData("getSingleArticle", id, (draft) => {

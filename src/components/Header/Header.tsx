@@ -5,6 +5,7 @@ import { Box, Button, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { RootState } from "../../app/store";
 import { useGetCurrentUserQuery } from "../../features/users/usersApi";
+import { SearchInput } from "../SearchInput/SearchInput";
 
 export const Header: React.FC = () => {
   const token = useSelector((state: RootState) => state.auth.token);
@@ -37,6 +38,7 @@ export const Header: React.FC = () => {
           <Link to={"/"}>
             FeeD<span style={{ color: "#1976d2" }}>R</span>
           </Link>
+          {/* <SearchInput placeholder="Search..." /> */}
         </Typography>
 
         {data && (

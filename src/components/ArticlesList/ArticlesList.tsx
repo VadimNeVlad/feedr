@@ -9,19 +9,19 @@ import { NoResultMessage } from "../NoResultMessage/NoResultMessage";
 export const ArticlesList: React.FC<ArticleListProps> = ({
   articles,
   articlesCount,
-  isFetching,
+  isLoading,
   handleNextPage,
 }) => {
   return (
     <>
-      {isFetching && <ArticlesListSkeleton />}
+      {isLoading && <ArticlesListSkeleton />}
 
-      {!isFetching && articles && (
+      {!isLoading && articles && articlesCount && (
         <>
           <InfiniteScroll
             dataLength={articlesCount}
             next={handleNextPage!}
-            hasMore={!!(articles.length % 10 === 0)}
+            hasMore={articlesCount > articles.length}
             loader={<LinearProgress />}
           >
             {articles.length > 0 ? (

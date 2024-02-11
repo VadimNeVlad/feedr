@@ -20,8 +20,8 @@ export interface AuthFormProps {
 
 export interface ArticleListProps {
   articles: Article[] | undefined;
-  isFetching?: boolean;
-  articlesCount: number;
+  isLoading?: boolean;
+  articlesCount?: number;
   handleNextPage?: () => void;
 }
 
@@ -105,7 +105,6 @@ export interface FollowingListProps {
   listType: "followers" | "followings";
   id?: string;
   size?: "sm" | "lg";
-  isFetching?: boolean;
 }
 
 export interface FollowingItemProps {

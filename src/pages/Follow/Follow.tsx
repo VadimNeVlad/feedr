@@ -1,47 +1,31 @@
 import React from "react";
 import { useLocation, useParams } from "react-router-dom";
-import { Box, CircularProgress, Container } from "@mui/material";
+import { Container } from "@mui/material";
 import { FollowingList } from "../../components/FollowingList/FollowingList";
 import {
   useGetFollowersQuery,
   useGetFollowingsQuery,
 } from "../../features/follows/followsApi";
 import { Layout } from "../../components/Layout/Layout";
+import { FollowSkeleton } from "../../components/Skeletons/FollowSkeleton/FollowSkeleton";
 
 export const Follow: React.FC = () => {
   const { id } = useParams();
   const location = useLocation();
   const isFollowers = location.pathname.includes("/followers");
 
-  const { data: followers, isFetching: followersListIsLoading } =
-    useGetFollowersQuery(
-      { id: id || "" },
-      { refetchOnMountOrArgChange: true, skip: !isFollowers }
-    );
+  const { data: followers, isLoading: followersListIsLoading } =
+    useGetFollowersQuery({ id: id || "" }, { skip: !isFollowers });
 
-  const { data: following, isFetching: followingsListIsLoading } =
-    useGetFollowingsQuery(
-      { id: id || "" },
-      { refetchOnMountOrArgChange: true, skip: isFollowers }
-    );
+  const { data: following, isLoading: followingsListIsLoading } =
+    useGetFollowingsQuery({ id: id || "" }, { skip: isFollowers });
 
   const isLoading = followingsListIsLoading || followersListIsLoading;
   const data = following || followers;
 
   return (
     <Layout>
-      {isLoading && (
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100vh",
-          }}
-        >
-          <CircularProgress />
-        </Box>
-      )}
+      {isLoading && <FollowSkeleton />}
 
       {!isLoading && data && (
         <Container maxWidth="lg" sx={{ mt: 11, pb: 3 }}>

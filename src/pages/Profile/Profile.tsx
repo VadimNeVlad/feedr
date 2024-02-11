@@ -10,68 +10,63 @@ import { FollowingList } from "../../components/FollowingList/FollowingList";
 import { useGetFollowingsQuery } from "../../features/follows/followsApi";
 import { Layout } from "../../components/Layout/Layout";
 import { ProfileSkeleton } from "../../components/Skeletons/ProfileSkeleton/ProfileSkeleton";
+import { generateColor } from "../../utils/helpers/generateColor";
 
 export const Profile: React.FC = () => {
   const { id } = useParams();
 
-  const { data: user, isFetching: userIsFetching } = useGetUserByIdQuery(
-    id as string,
-    { refetchOnMountOrArgChange: true }
-  );
-  const {
-    data: articles,
-    isLoading: articlesIsLoading,
-    isFetching: articlesIsFetching,
-  } = useGetArticlesByAuthorQuery(id as string, {
-    refetchOnMountOrArgChange: true,
-  });
-
-  const {
-    data: following,
-    isLoading: followingsIsLoading,
-    isFetching: followingsIsFetching,
-  } = useGetFollowingsQuery(
-    { id: id as string, perPage: 5 },
-    { refetchOnMountOrArgChange: true }
+  const { data: user, isLoading: userIsLoading } = useGetUserByIdQuery(
+    id as string
   );
 
-  const isLoading = userIsFetching || articlesIsLoading || followingsIsLoading;
+  const { data: articles, isLoading: articlesIsLoading } =
+    useGetArticlesByAuthorQuery(id as string);
+
+  const { data: following, isLoading: followingsIsLoading } =
+    useGetFollowingsQuery({ id: id as string, perPage: 5 });
+
+  const isLoading = userIsLoading || articlesIsLoading || followingsIsLoading;
   const data = user && articles && following;
 
   return (
     <Layout>
-      <Box sx={{ width: "100%", height: "170px", bgcolor: "#000" }}></Box>
-
       {isLoading && <ProfileSkeleton />}
 
       {!isLoading && data && (
-        <Container maxWidth="lg" sx={{ mt: -4, pb: 3 }}>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <ProfileContent user={user} />
+        <>
+          <Box
+            sx={{
+              width: "100%",
+              height: "170px",
+              bgcolor: generateColor(user.name),
+            }}
+          ></Box>
+          <Container maxWidth="lg" sx={{ mt: -4, pb: 3 }}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <ProfileContent user={user} />
+              </Grid>
+              <Grid item xs={3}>
+                <FollowingList
+                  listType="followings"
+                  followType={following}
+                  id={user.id}
+                  size="sm"
+                />
+                <ProfileCountInfo
+                  commentsCount={user._count.comments}
+                  articlesCount={user._count.articles}
+                />
+              </Grid>
+              <Grid item xs={9}>
+                <ArticlesList
+                  articles={articles}
+                  articlesCount={user._count.articles}
+                />
+              </Grid>
             </Grid>
-            <Grid item xs={3}>
-              <FollowingList
-                listType="followings"
-                isFetching={followingsIsFetching}
-                followType={following}
-                id={user.id}
-                size="sm"
-              />
-              <ProfileCountInfo
-                commentsCount={user._count.comments}
-                articlesCount={user._count.articles}
-              />
-            </Grid>
-            <Grid item xs={9}>
-              <ArticlesList
-                articles={articles}
-                articlesCount={user._count.articles}
-                isFetching={articlesIsFetching}
-              />
-            </Grid>
-          </Grid>
-        </Container>
+          </Container>
+        </>
       )}
     </Layout>
   );

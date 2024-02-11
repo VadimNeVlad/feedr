@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useImagePreview } from "../../hooks/useImagePreview";
+import { generateColor } from "../../utils/helpers/generateColor";
 
 export const AvatarPreview: React.FC<AvatarPreviewProps> = ({
   userName,
@@ -56,6 +57,7 @@ export const AvatarPreview: React.FC<AvatarPreviewProps> = ({
           mb: 3,
           mt: "-50px",
           border: "5px solid #000",
+          borderColor: generateColor(userName),
           cursor: "pointer",
         }}
       >

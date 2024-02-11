@@ -2,6 +2,7 @@ import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
 import { TagItemProps } from "../../utils/types/props";
+import { generateColor } from "../../utils/helpers/generateColor";
 
 export const TagItem: React.FC<TagItemProps> = ({ tag }) => {
   return (
@@ -13,7 +14,7 @@ export const TagItem: React.FC<TagItemProps> = ({ tag }) => {
               sx={{
                 width: "115%",
                 height: "20px",
-                bgcolor: "#000",
+                bgcolor: generateColor(tag.name),
                 ml: "-16px",
                 mt: "-16px",
                 mb: 3,

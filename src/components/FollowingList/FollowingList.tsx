@@ -3,21 +3,17 @@ import { FollowingListProps } from "../../utils/types/props";
 import { Card, CardContent, CardHeader, Typography } from "@mui/material";
 import { FollowingItem } from "../FollowingItem/FollowingItem";
 import { Link } from "react-router-dom";
-import { FollowingListSkeleton } from "../Skeletons/FollowingListSkeleton/FollowingListSkeleton";
 
 export const FollowingList: React.FC<FollowingListProps> = ({
   followType,
   listType,
   id,
   size = "lg",
-  isFetching,
 }) => {
   const [followingCount, setFollowingCount] = useState(followType?.length);
   return (
     <>
-      {isFetching && <FollowingListSkeleton />}
-
-      {!isFetching && followType && followType.length > 0 && (
+      {followType && followType.length > 0 && (
         <>
           {size === "lg" && (
             <Typography variant="h4" fontWeight={700} sx={{ mb: 2 }}>
@@ -54,7 +50,7 @@ export const FollowingList: React.FC<FollowingListProps> = ({
                   setFollowingCount={setFollowingCount}
                 />
               ))}
-              {size === "sm" && followType.length > 5 && (
+              {size === "sm" && followType.length > 4 && (
                 <Link to={`/user/${id}/following`}>
                   <Typography variant="body2" sx={{ mt: 3 }}>
                     See All ({followType.length})

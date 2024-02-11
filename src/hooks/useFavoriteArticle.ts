@@ -8,7 +8,7 @@ export const useFavoriteArticle = (
 ): [boolean, (value: boolean) => void] => {
   const currentUser = useSelector((state: RootState) => state.auth.user);
 
-  const exists = useMemo(
+  const isCurrentUserFavorited = useMemo(
     () =>
       article.favorited.some((userItem) =>
         currentUser ? userItem.id === currentUser.id : null
@@ -16,7 +16,7 @@ export const useFavoriteArticle = (
     [article.favorited, currentUser]
   );
 
-  const [isFavorite, setIsFavorite] = useState(exists);
+  const [isFavorite, setIsFavorite] = useState(isCurrentUserFavorited);
 
   return [isFavorite, setIsFavorite];
 };

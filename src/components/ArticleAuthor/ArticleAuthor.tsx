@@ -20,6 +20,7 @@ import { RootState } from "../../app/store";
 import { useNavigate } from "react-router-dom";
 import { IMAGE_URL } from "../../utils/constants/constants";
 import { useFollowUser } from "../../hooks/useFollowUser";
+import { generateColor } from "../../utils/helpers/generateColor";
 
 export const ArticleAuthor: React.FC<ArticleAuthorProps> = ({ author }) => {
   const [isFollow, setIsFollow] = useFollowUser(author);
@@ -43,7 +44,13 @@ export const ArticleAuthor: React.FC<ArticleAuthorProps> = ({ author }) => {
   return (
     <>
       <Card>
-        <Box sx={{ width: "100%", height: "20px", bgcolor: "#000" }}></Box>
+        <Box
+          sx={{
+            width: "100%",
+            height: "20px",
+            bgcolor: generateColor(author.name),
+          }}
+        ></Box>
         <CardHeader
           sx={{ cursor: "pointer" }}
           avatar={

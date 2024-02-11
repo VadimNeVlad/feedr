@@ -29,8 +29,8 @@ export const Article: React.FC = () => {
   const [open, setOpen] = useToggle();
   const user = useSelector((state: RootState) => state.auth.user);
 
-  const { data: article, isFetching: articlesIsFetching } =
-    useGetSingleArticleQuery(id as string, { refetchOnMountOrArgChange: true });
+  const { data: article, isLoading: articlesIsLoading } =
+    useGetSingleArticleQuery(id as string);
 
   const {
     data: comments,
@@ -39,8 +39,7 @@ export const Article: React.FC = () => {
   } = useGetCommentsQuery(article?.id ?? skipToken);
 
   const { data: author, isLoading: authorIsLoading } = useGetUserByIdQuery(
-    article?.authorId ?? skipToken,
-    { refetchOnMountOrArgChange: true }
+    article?.authorId ?? skipToken
   );
 
   const [
@@ -49,7 +48,7 @@ export const Article: React.FC = () => {
   ] = useDeleteArticleMutation();
 
   const data = article && comments && author;
-  const isLoading = articlesIsFetching || commentsIsLoading || authorIsLoading;
+  const isLoading = articlesIsLoading || commentsIsLoading || authorIsLoading;
 
   useDelayedRedirect(
     deleteArticleSuccess,

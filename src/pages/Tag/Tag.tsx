@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Layout } from "../../components/Layout/Layout";
 import {
   Box,
@@ -14,31 +14,16 @@ import { useGetTagArticlesQuery } from "../../features/tags/tagsApi";
 import { ArticlesList } from "../../components/ArticlesList/ArticlesList";
 import { SortingButtons } from "../../components/SortingButtons/SortingButtons";
 import { usePaginate } from "../../utils/types/usePaginate";
+import { generateColor } from "../../utils/helpers/generateColor";
 
 export const Tag: React.FC = () => {
   const { tagName } = useParams();
-
-  const [customFetching, setCustomFetching] = useState(true);
-
   const { page, sortBy, handleNextPage, handleSortChange } = usePaginate();
-
-  const {
-    data: data,
-    isFetching,
-    status,
-  } = useGetTagArticlesQuery(
-    {
-      tagName,
-      page,
-      sortBy,
-    },
-    { refetchOnMountOrArgChange: true }
-  );
-
-  useEffect(() => {
-    if (status === "fulfilled") setCustomFetching(false);
-    if (status === "pending" && page === 0) setCustomFetching(true);
-  }, [status, page]);
+  const { data: data, isLoading } = useGetTagArticlesQuery({
+    tagName,
+    page,
+    sortBy,
+  });
 
   return (
     <Layout>
@@ -51,7 +36,7 @@ export const Tag: React.FC = () => {
                   sx={{
                     width: "105%",
                     height: "20px",
-                    bgcolor: "#000",
+                    bgcolor: generateColor(tagName as string),
                     ml: "-16px",
                     mt: "-16px",
                     mb: 3,
@@ -66,14 +51,14 @@ export const Tag: React.FC = () => {
                   {tagName}
                 </Typography>
 
-                {isFetching && (
+                {isLoading && (
                   <Skeleton
                     variant="text"
                     sx={{ fontSize: "17px", width: "270px" }}
                   />
                 )}
 
-                {!isFetching && data && (
+                {!isLoading && data && (
                   <Typography variant="body1" color="text.secondary">
                     {data._count.articles}
                     {data._count.articles === 1 ? " Article " : " Articles "}
@@ -90,7 +75,7 @@ export const Tag: React.FC = () => {
             />
             <ArticlesList
               articles={data?.articles}
-              isFetching={customFetching}
+              isLoading={isLoading}
               articlesCount={data?._count.articles as number}
               handleNextPage={handleNextPage}
             />

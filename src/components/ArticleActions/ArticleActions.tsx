@@ -17,7 +17,7 @@ export const ArticleActions: React.FC<ArticleActionsProps> = ({
           fullWidth
           variant="outlined"
           disabled={deleteArticleSuccess}
-          sx={{ mt: 2 }}
+          sx={{ mt: 2, bgcolor: "background.paper" }}
         >
           Edit Article
         </Button>

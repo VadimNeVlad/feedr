@@ -26,6 +26,7 @@ import { removeTags } from "../../utils/helpers/removeTags";
 import CommentOutlinedIcon from "@mui/icons-material/CommentOutlined";
 import { IMAGE_URL } from "../../utils/constants/constants";
 import { useFavoriteArticle } from "../../hooks/useFavoriteArticle";
+import { generateColor } from "../../utils/helpers/generateColor";
 
 export const ArticleItem: React.FC<ArticleItemProps> = ({ article }) => {
   const navigate = useNavigate();
@@ -88,7 +89,8 @@ export const ArticleItem: React.FC<ArticleItemProps> = ({ article }) => {
                 color="inherit"
                 sx={{ mr: 0.5 }}
               >
-                #{tag.name}
+                <span style={{ color: generateColor(tag.name) }}>#</span>
+                {tag.name}
               </Button>
             </Link>
           ))}

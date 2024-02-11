@@ -14,7 +14,7 @@ import {
 } from "../../features/articles/articlesApi";
 import { useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { UpdateArticleData } from "../../utils/types/articles";
+import { Article } from "../../utils/types/articles";
 import { Editor } from "../../components/Editor/Editor";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { IMAGE_URL } from "../../utils/constants/constants";
@@ -51,7 +51,7 @@ export const EditArticle: React.FC = () => {
     watch,
     control,
     formState: { isValid },
-  } = useForm<UpdateArticleData>();
+  } = useForm<Pick<Article, "title">>();
 
   const tags = useMemo(
     () => article?.tagList.map((tag) => tag.name),
@@ -72,7 +72,7 @@ export const EditArticle: React.FC = () => {
     if (article?.body) setContent(article.body);
   }, [article, setPreview]);
 
-  const onSubmit = (data: UpdateArticleData) => {
+  const onSubmit = (data: Pick<Article, "title">) => {
     const formData = new FormData();
     formData.append("title", data.title);
     formData.append("body", content);

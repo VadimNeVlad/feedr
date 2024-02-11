@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { ArticlesList } from "../../components/ArticlesList/ArticlesList";
 import { Container, Grid } from "@mui/material";
 import { useGetArticlesQuery } from "../../features/articles/articlesApi";
@@ -8,16 +8,8 @@ import { usePaginate } from "../../utils/types/usePaginate";
 import { Link } from "react-router-dom";
 
 export const Home: React.FC = () => {
-  const [customFetching, setCustomFetching] = useState(true);
-
   const { page, sortBy, handleNextPage, handleSortChange } = usePaginate();
-
-  const { data: articles, status } = useGetArticlesQuery({ page, sortBy });
-
-  useEffect(() => {
-    if (status === "fulfilled") setCustomFetching(false);
-    if (status === "pending" && page === 0) setCustomFetching(true);
-  }, [status, page]);
+  const { data: articles, isLoading } = useGetArticlesQuery({ page, sortBy });
 
   return (
     <Layout>
@@ -33,9 +25,9 @@ export const Home: React.FC = () => {
               handleSortChange={handleSortChange}
             />
             <ArticlesList
-              articles={articles}
-              articlesCount={articles?.length as number}
-              isFetching={customFetching}
+              articles={articles?.articles}
+              isLoading={isLoading}
+              articlesCount={articles?._count as number}
               handleNextPage={handleNextPage}
             />
           </Grid>
