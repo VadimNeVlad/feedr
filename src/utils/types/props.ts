@@ -151,3 +151,7 @@ export interface SearchInputProps {
 export interface NoResultMessageProps {
   msg: string;
 }
+
+export interface ArticleTagItemProps {
+  tag: Tag;
+}

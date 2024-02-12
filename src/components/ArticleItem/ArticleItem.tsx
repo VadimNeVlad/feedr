@@ -3,7 +3,6 @@ import { ArticleItemProps } from "../../utils/types/props";
 import {
   Avatar,
   Box,
-  Button,
   Card,
   CardActions,
   CardContent,
@@ -26,7 +25,7 @@ import { removeTags } from "../../utils/helpers/removeTags";
 import CommentOutlinedIcon from "@mui/icons-material/CommentOutlined";
 import { IMAGE_URL } from "../../utils/constants/constants";
 import { useFavoriteArticle } from "../../hooks/useFavoriteArticle";
-import { generateColor } from "../../utils/helpers/generateColor";
+import { ArticleTagItem } from "../ArticleTagItem/ArticleTagItem";
 
 export const ArticleItem: React.FC<ArticleItemProps> = ({ article }) => {
   const navigate = useNavigate();
@@ -82,17 +81,7 @@ export const ArticleItem: React.FC<ArticleItemProps> = ({ article }) => {
 
         <Box sx={{ display: "flex" }}>
           {article.tagList.map((tag) => (
-            <Link to={`/tag/${tag.name}`} key={tag.name}>
-              <Button
-                variant="text"
-                size="small"
-                color="inherit"
-                sx={{ mr: 0.5 }}
-              >
-                <span style={{ color: generateColor(tag.name) }}>#</span>
-                {tag.name}
-              </Button>
-            </Link>
+            <ArticleTagItem key={tag.name} tag={tag} />
           ))}
         </Box>
       </CardContent>

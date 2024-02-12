@@ -13,6 +13,7 @@ import { trimFirstLetter } from "../../utils/helpers/trimString";
 import { Editor } from "../Editor/Editor";
 import { IMAGE_URL } from "../../utils/constants/constants";
 import { useNavigate } from "react-router-dom";
+import { ArticleTagItem } from "../ArticleTagItem/ArticleTagItem";
 
 export const ArticleContent: React.FC<ArticleContentProps> = ({ article }) => {
   const navigate = useNavigate();
@@ -55,9 +56,7 @@ export const ArticleContent: React.FC<ArticleContentProps> = ({ article }) => {
 
         <Box style={{ display: "flex" }}>
           {article.tagList.map((tag) => (
-            <Typography key={tag.name} variant="body1" sx={{ mr: 1 }}>
-              #{tag.name}
-            </Typography>
+            <ArticleTagItem key={tag.name} tag={tag} />
           ))}
         </Box>
 
