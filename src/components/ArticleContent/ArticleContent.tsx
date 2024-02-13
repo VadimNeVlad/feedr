@@ -50,11 +50,11 @@ export const ArticleContent: React.FC<ArticleContentProps> = ({ article }) => {
       />
 
       <CardContent>
-        <Typography variant="h4" fontWeight={700} sx={{ mb: 2 }}>
+        <Typography variant="h4" fontWeight={700} sx={{ mb: 1 }}>
           {article.title}
         </Typography>
 
-        <Box style={{ display: "flex" }}>
+        <Box sx={{ display: "flex", mb: 5 }}>
           {article.tagList.map((tag) => (
             <ArticleTagItem key={tag.name} tag={tag} />
           ))}

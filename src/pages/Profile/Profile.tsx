@@ -11,16 +11,18 @@ import { useGetFollowingsQuery } from "../../features/follows/followsApi";
 import { Layout } from "../../components/Layout/Layout";
 import { ProfileSkeleton } from "../../components/Skeletons/ProfileSkeleton/ProfileSkeleton";
 import { generateColor } from "../../utils/helpers/generateColor";
+import { usePaginate } from "../../utils/types/usePaginate";
 
 export const Profile: React.FC = () => {
   const { id } = useParams();
+  const { page, handleNextPage } = usePaginate(false);
 
   const { data: user, isLoading: userIsLoading } = useGetUserByIdQuery(
     id as string
   );
 
   const { data: articles, isLoading: articlesIsLoading } =
-    useGetArticlesByAuthorQuery(id as string);
+    useGetArticlesByAuthorQuery({ authorId: id as string, page });
 
   const { data: following, isLoading: followingsIsLoading } =
     useGetFollowingsQuery({ id: id as string, perPage: 5 });
@@ -60,8 +62,9 @@ export const Profile: React.FC = () => {
               </Grid>
               <Grid item xs={9}>
                 <ArticlesList
-                  articles={articles}
-                  articlesCount={user._count.articles}
+                  articles={articles.articles}
+                  articlesCount={articles._count}
+                  handleNextPage={handleNextPage}
                 />
               </Grid>
             </Grid>

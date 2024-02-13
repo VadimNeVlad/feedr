@@ -8,13 +8,14 @@ import {
 export const articlesApi = api.injectEndpoints({
   endpoints: (build) => ({
     getArticles: build.query<ArticleData, ArticlesParams>({
-      query: ({ page = 0, sortBy = "latest" }) => ({
+      query: ({ page = 0, sortBy = "latest", q }) => ({
         url: "articles",
         method: "GET",
         params: {
           page,
           per_page: 10,
           sort_by: sortBy,
+          q,
         },
       }),
 
@@ -41,8 +42,27 @@ export const articlesApi = api.injectEndpoints({
             ]
           : [{ type: "Article", id: "LIST" }],
     }),
-    getArticlesByAuthor: build.query<Article[], string>({
-      query: (id) => `articles/author/${id}`,
+    getArticlesByAuthor: build.query<ArticleData, ArticlesParams>({
+      query: ({ page = 0, authorId }) => ({
+        url: `articles/author/${authorId}`,
+        method: "GET",
+        params: {
+          page,
+          per_page: 10,
+        },
+      }),
+      serializeQueryArgs: ({ endpointName }) => {
+        return endpointName;
+      },
+      merge: (currentCache, newCache, { arg }) => {
+        if (arg.page === 0) {
+          return newCache;
+        }
+        currentCache.articles.push(...newCache.articles);
+      },
+      forceRefetch({ currentArg, previousArg }) {
+        return currentArg !== previousArg;
+      },
       providesTags: [{ type: "Article", id: "LIST" }],
     }),
     getSingleArticle: build.query<Article, string>({

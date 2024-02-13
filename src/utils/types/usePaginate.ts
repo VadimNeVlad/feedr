@@ -1,12 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export const usePaginate = (initPage?: number) => {
+export const usePaginate = (withSortingBtns = true) => {
   const navigate = useNavigate();
   const searchParams = new URLSearchParams(window.location.search);
 
-  const [page, setPage] = useState(initPage || 0);
-
+  const [page, setPage] = useState(0);
   const [sortBy, setSortBy] = useState(searchParams.get("sortBy") || "latest");
 
   const handleNextPage = () => {
@@ -18,6 +17,12 @@ export const usePaginate = (initPage?: number) => {
     setSortBy(value);
     navigate(value === "latest" ? "" : `?sortBy=${value}`);
   };
+
+  useEffect(() => {
+    if (!withSortingBtns) {
+      setPage(0);
+    }
+  }, [withSortingBtns]);
 
   return {
     page,

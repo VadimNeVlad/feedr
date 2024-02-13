@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { UserDropdown } from "../UserDropdown/UserDropdown";
 import { useSelector } from "react-redux";
 import { Box, Button, Typography } from "@mui/material";
@@ -8,8 +8,11 @@ import { useGetCurrentUserQuery } from "../../features/users/usersApi";
 import { SearchInput } from "../SearchInput/SearchInput";
 
 export const Header: React.FC = () => {
-  const token = useSelector((state: RootState) => state.auth.token);
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const { data: user, isLoading } = useGetCurrentUserQuery();
+
+  const token = useSelector((state: RootState) => state.auth.token);
   const data = user && token;
 
   return (
@@ -34,12 +37,18 @@ export const Header: React.FC = () => {
           minHeight: "56px",
         }}
       >
-        <Typography variant="h5">
-          <Link to={"/"}>
-            FeeD<span style={{ color: "#1976d2" }}>R</span>
-          </Link>
-          {/* <SearchInput placeholder="Search..." /> */}
-        </Typography>
+        <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
+          <Typography variant="h5">
+            <Link to={"/"}>
+              FeeD<span style={{ color: "#1976d2" }}>R</span>
+            </Link>
+          </Typography>
+          <SearchInput
+            inputRef={inputRef}
+            placeholder="Search..."
+            isGeneralSearch
+          />
+        </Box>
 
         {data && (
           <Box sx={{ display: "flex", alignItems: "center" }}>

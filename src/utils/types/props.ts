@@ -145,7 +145,8 @@ export interface TagItemProps {
 export interface SearchInputProps {
   inputRef: React.RefObject<HTMLInputElement>;
   placeholder: string;
-  setSearchValue: (value: React.SetStateAction<string>) => void;
+  isGeneralSearch?: boolean;
+  setSearchValue?: (value: React.SetStateAction<string>) => void;
 }
 
 export interface NoResultMessageProps {

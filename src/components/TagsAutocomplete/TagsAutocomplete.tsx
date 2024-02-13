@@ -29,6 +29,7 @@ export const TagsAutocomplete: React.FC<TagsAutocompleteProps> = ({
           {...field}
           multiple
           freeSolo
+          autoSelect
           defaultValue={[]}
           value={field.value}
           disabled={disabled}

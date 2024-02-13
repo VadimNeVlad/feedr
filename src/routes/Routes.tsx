@@ -14,6 +14,7 @@ import { ProfileSettings } from "../pages/EditProfile/ProfileSettings/ProfileSet
 import { AccountSettings } from "../pages/EditProfile/AccountSettings/AccountSettings";
 import { Tag } from "../pages/Tag/Tag";
 import { Tags } from "../pages/Tags/Tags";
+import { Search } from "../pages/Search/Search";
 
 export const Routes = () => {
   const location = useLocation();
@@ -44,6 +45,7 @@ export const Routes = () => {
       <Route path="/register" element={<Register />} />
       <Route path="/tags" element={<Tags />} />
       <Route path="/tag/:tagName" element={<Tag />} />
+      <Route path="/search" element={<Search />} />
     </RouterRoutes>
   );
 };

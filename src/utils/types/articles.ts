@@ -29,6 +29,7 @@ export interface ArticlesParams {
   sortBy?: string;
   tagName?: string;
   authorId?: string;
+  q?: string;
 }
 
 export interface ArticlesResponse {
