@@ -17,7 +17,7 @@ export const Home: React.FC = () => {
         <Grid container spacing={2}>
           <Grid item xs={3}>
             <Link to="/tags">Tags</Link>
-            <h2>hi</h2>
+            <Link to="/reading-list">Reading List</Link>
           </Grid>
           <Grid item xs={9}>
             <SortingButtons

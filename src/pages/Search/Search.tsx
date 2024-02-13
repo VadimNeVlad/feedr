@@ -2,7 +2,6 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import { Layout } from "../../components/Layout/Layout";
 import { Container, Grid, Typography } from "@mui/material";
-import { SortingButtons } from "../../components/SortingButtons/SortingButtons";
 import { ArticlesList } from "../../components/ArticlesList/ArticlesList";
 import { useGetArticlesQuery } from "../../features/articles/articlesApi";
 import { usePaginate } from "../../utils/types/usePaginate";
@@ -12,7 +11,7 @@ export const Search: React.FC = () => {
   const location = useLocation();
   const searchParam = new URLSearchParams(location.search).get("q");
 
-  const { page, sortBy, handleNextPage, handleSortChange } = usePaginate();
+  const { page, sortBy, handleNextPage } = usePaginate();
   const { data, isLoading } = useGetArticlesQuery({
     page,
     sortBy,
@@ -31,10 +30,6 @@ export const Search: React.FC = () => {
           <Grid container spacing={2}>
             <Grid item xs={12}></Grid>
             <Grid item xs={12}>
-              <SortingButtons
-                value={sortBy}
-                handleSortChange={handleSortChange}
-              />
               <ArticlesList
                 articles={data?.articles}
                 isLoading={isLoading}

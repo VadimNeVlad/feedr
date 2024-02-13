@@ -156,3 +156,7 @@ export interface NoResultMessageProps {
 export interface ArticleTagItemProps {
   tag: Tag;
 }
+
+export interface ReadingListItemProps {
+  article: Article;
+}

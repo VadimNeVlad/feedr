@@ -69,6 +69,10 @@ export const articlesApi = api.injectEndpoints({
       query: (id) => `articles/${id}`,
       providesTags: (_res, _err, id) => [{ type: "Article", id }],
     }),
+    getReadingList: build.query<ArticleData, void>({
+      query: () => "articles/user/reading-list",
+      providesTags: [{ type: "Article", id: "LIST" }],
+    }),
     createArticle: build.mutation<Article, FormData>({
       query: (body) => ({
         url: "articles",
@@ -137,6 +141,7 @@ export const {
   useGetArticlesQuery,
   useGetArticlesByAuthorQuery,
   useGetSingleArticleQuery,
+  useGetReadingListQuery,
   useCreateArticleMutation,
   useUpdateArticleMutation,
   useDeleteArticleMutation,

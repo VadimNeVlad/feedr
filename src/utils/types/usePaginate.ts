@@ -8,9 +8,7 @@ export const usePaginate = (withSortingBtns = true) => {
   const [page, setPage] = useState(0);
   const [sortBy, setSortBy] = useState(searchParams.get("sortBy") || "latest");
 
-  const handleNextPage = () => {
-    setPage((prev) => prev + 1);
-  };
+  const handleNextPage = () => setPage((prev) => prev + 1);
 
   const handleSortChange = (value: string) => {
     setPage(0);

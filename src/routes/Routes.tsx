@@ -15,6 +15,7 @@ import { AccountSettings } from "../pages/EditProfile/AccountSettings/AccountSet
 import { Tag } from "../pages/Tag/Tag";
 import { Tags } from "../pages/Tags/Tags";
 import { Search } from "../pages/Search/Search";
+import { ReadingList } from "../pages/ReadingList/ReadingList";
 
 export const Routes = () => {
   const location = useLocation();
@@ -36,6 +37,7 @@ export const Routes = () => {
           <Route index path="*" element={<ProfileSettings />} />
           <Route path="account" element={<AccountSettings />} />
         </Route>
+        <Route path="/reading-list" element={<ReadingList />} />
       </Route>
 
       {/* Public routes */}

@@ -56,7 +56,9 @@ export const UserDropdown: React.FC<UserDropdownProps> = ({
         <MenuItem onClick={() => navigate("/add-article")}>
           Create Article
         </MenuItem>
-        <MenuItem onClick={handleClose}>Reading List</MenuItem>
+        <MenuItem onClick={() => navigate("/reading-list")}>
+          Reading List
+        </MenuItem>
         <MenuItem onClick={() => navigate(`/user/edit-profile/profile`)}>
           Settings
         </MenuItem>
