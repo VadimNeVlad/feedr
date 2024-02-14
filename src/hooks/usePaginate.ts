@@ -20,7 +20,7 @@ export const usePaginate = (withSortingBtns = true) => {
     if (!withSortingBtns) {
       setPage(0);
     }
-  }, [withSortingBtns]);
+  }, [withSortingBtns, page]);
 
   return {
     page,

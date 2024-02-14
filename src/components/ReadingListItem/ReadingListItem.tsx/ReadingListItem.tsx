@@ -31,15 +31,17 @@ export const ReadingListItem: React.FC<ReadingListItemProps> = ({
           }}
         >
           <Box sx={{ display: "flex", alignItems: "flex-start", gap: 2 }}>
-            <Avatar
-              src={
-                article.author.image &&
-                `${IMAGE_URL}avatars/${article.author.image}`
-              }
-              sx={{ width: "30px", height: "30px", mt: 1 }}
-            >
-              {trimFirstLetter(article.author.name)}
-            </Avatar>
+            <Link to={`/user/${article.author.id}`}>
+              <Avatar
+                src={
+                  article.author.image &&
+                  `${IMAGE_URL}avatars/${article.author.image}`
+                }
+                sx={{ width: "30px", height: "30px", mt: 1 }}
+              >
+                {trimFirstLetter(article.author.name)}
+              </Avatar>
+            </Link>
             <Box>
               <Typography
                 variant="h6"

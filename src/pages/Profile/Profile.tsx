@@ -11,7 +11,7 @@ import { useGetFollowingsQuery } from "../../features/follows/followsApi";
 import { Layout } from "../../components/Layout/Layout";
 import { ProfileSkeleton } from "../../components/Skeletons/ProfileSkeleton/ProfileSkeleton";
 import { generateColor } from "../../utils/helpers/generateColor";
-import { usePaginate } from "../../utils/types/usePaginate";
+import { usePaginate } from "../../hooks/usePaginate";
 
 export const Profile: React.FC = () => {
   const { id } = useParams();

@@ -4,7 +4,7 @@ import { Layout } from "../../components/Layout/Layout";
 import { Container, Grid, Typography } from "@mui/material";
 import { ArticlesList } from "../../components/ArticlesList/ArticlesList";
 import { useGetArticlesQuery } from "../../features/articles/articlesApi";
-import { usePaginate } from "../../utils/types/usePaginate";
+import { usePaginate } from "../../hooks/usePaginate";
 import { NoResultMessage } from "../../components/NoResultMessage/NoResultMessage";
 
 export const Search: React.FC = () => {

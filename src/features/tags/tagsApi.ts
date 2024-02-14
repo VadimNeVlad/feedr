@@ -34,6 +34,12 @@ export const followsApi = api.injectEndpoints({
         currentCache.articles.push(...newCache.articles);
       },
       forceRefetch({ currentArg, previousArg }) {
+        if (
+          currentArg?.page === previousArg?.page &&
+          currentArg?.sortBy === previousArg?.sortBy
+        ) {
+          return false;
+        }
         return currentArg !== previousArg;
       },
       providesTags: ["Tag"],

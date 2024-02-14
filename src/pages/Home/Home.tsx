@@ -4,7 +4,7 @@ import { Container, Grid } from "@mui/material";
 import { useGetArticlesQuery } from "../../features/articles/articlesApi";
 import { Layout } from "../../components/Layout/Layout";
 import { SortingButtons } from "../../components/SortingButtons/SortingButtons";
-import { usePaginate } from "../../utils/types/usePaginate";
+import { usePaginate } from "../../hooks/usePaginate";
 import { Link } from "react-router-dom";
 
 export const Home: React.FC = () => {

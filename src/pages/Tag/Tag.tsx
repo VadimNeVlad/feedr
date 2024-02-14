@@ -13,7 +13,7 @@ import { useParams } from "react-router-dom";
 import { useGetTagArticlesQuery } from "../../features/tags/tagsApi";
 import { ArticlesList } from "../../components/ArticlesList/ArticlesList";
 import { SortingButtons } from "../../components/SortingButtons/SortingButtons";
-import { usePaginate } from "../../utils/types/usePaginate";
+import { usePaginate } from "../../hooks/usePaginate";
 import { generateColor } from "../../utils/helpers/generateColor";
 
 export const Tag: React.FC = () => {

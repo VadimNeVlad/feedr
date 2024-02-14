@@ -5,6 +5,10 @@ import {
   ArticlesParams,
 } from "../../utils/types/articles";
 
+// for infinite scroll merge function
+let articlesPrevPage: number | undefined = 0;
+let authorArticlesPrevPage: number | undefined = 0;
+
 export const articlesApi = api.injectEndpoints({
   endpoints: (build) => ({
     getArticles: build.query<ArticleData, ArticlesParams>({
@@ -24,11 +28,24 @@ export const articlesApi = api.injectEndpoints({
       },
       merge: (currentCache, newCache, { arg }) => {
         if (arg.page === 0) {
+          articlesPrevPage = 0;
           return newCache;
         }
-        currentCache.articles.push(...newCache.articles);
+
+        if (arg.page === articlesPrevPage) {
+          return currentCache;
+        } else {
+          currentCache.articles.push(...newCache.articles);
+          articlesPrevPage = arg.page;
+        }
       },
       forceRefetch({ currentArg, previousArg }) {
+        if (
+          currentArg?.page === previousArg?.page &&
+          currentArg?.sortBy === previousArg?.sortBy
+        ) {
+          return false;
+        }
         return currentArg !== previousArg;
       },
       providesTags: (result) =>
@@ -56,9 +73,16 @@ export const articlesApi = api.injectEndpoints({
       },
       merge: (currentCache, newCache, { arg }) => {
         if (arg.page === 0) {
+          authorArticlesPrevPage = 0;
           return newCache;
         }
-        currentCache.articles.push(...newCache.articles);
+
+        if (arg.page === authorArticlesPrevPage) {
+          return currentCache;
+        } else {
+          currentCache.articles.push(...newCache.articles);
+          authorArticlesPrevPage = arg.page;
+        }
       },
       forceRefetch({ currentArg, previousArg }) {
         return currentArg !== previousArg;
