@@ -30,9 +30,7 @@ export interface ArticleItemProps {
 }
 
 export interface UserDropdownProps {
-  id: string;
-  userName: string;
-  avatar?: string;
+  user: User;
 }
 
 export interface EditorToolbarProps {
@@ -158,5 +156,9 @@ export interface ArticleTagItemProps {
 }
 
 export interface ReadingListItemProps {
+  article: Article;
+}
+
+export interface NavSidebarProps {
   article: Article;
 }

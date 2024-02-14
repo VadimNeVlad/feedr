@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {
   Avatar,
+  Box,
   Divider,
   IconButton,
   Menu,
@@ -15,11 +16,7 @@ import { trimFirstLetter } from "../../utils/helpers/trimString";
 import { useNavigate } from "react-router-dom";
 import { IMAGE_URL } from "../../utils/constants/constants";
 
-export const UserDropdown: React.FC<UserDropdownProps> = ({
-  id,
-  userName,
-  avatar,
-}) => {
+export const UserDropdown: React.FC<UserDropdownProps> = ({ user }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -41,16 +38,25 @@ export const UserDropdown: React.FC<UserDropdownProps> = ({
   return (
     <>
       <IconButton onClick={handleClick}>
-        <Avatar src={avatar && `${IMAGE_URL}avatars/${avatar}`}>
-          {trimFirstLetter(userName)}
+        <Avatar src={user.image && `${IMAGE_URL}avatars/${user.image}`}>
+          {trimFirstLetter(user.name)}
         </Avatar>
       </IconButton>
 
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-        <MenuItem onClick={() => navigate(`/user/${id}`)}>
-          <Typography fontWeight={700} variant="subtitle1">
-            {userName}
-          </Typography>
+        <MenuItem onClick={() => navigate(`/user/${user.id}`)}>
+          <Box>
+            <Typography fontWeight={700} variant="subtitle1">
+              {user.name}
+            </Typography>
+            <Typography
+              variant="subtitle2"
+              color="text.secondary"
+              sx={{ mt: -0.5 }}
+            >
+              {user.email}
+            </Typography>
+          </Box>
         </MenuItem>
         <Divider />
         <MenuItem onClick={() => navigate("/add-article")}>

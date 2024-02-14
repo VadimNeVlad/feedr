@@ -11,7 +11,7 @@ export const ArticleTagItem: React.FC<ArticleTagItemProps> = ({ tag }) => {
         variant="outlined"
         size="small"
         color="inherit"
-        sx={{ mr: 0.5, fontSize: 12, color: generateColor(tag.name) }}
+        sx={{ fontSize: 12, color: generateColor(tag.name) }}
       >
         #{tag.name}
       </Button>

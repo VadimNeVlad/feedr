@@ -1,11 +1,11 @@
 import React from "react";
 import { ArticlesList } from "../../components/ArticlesList/ArticlesList";
-import { Container, Grid } from "@mui/material";
+import { Box, Container, Grid } from "@mui/material";
 import { useGetArticlesQuery } from "../../features/articles/articlesApi";
 import { Layout } from "../../components/Layout/Layout";
 import { SortingButtons } from "../../components/SortingButtons/SortingButtons";
 import { usePaginate } from "../../hooks/usePaginate";
-import { Link } from "react-router-dom";
+import { NavSidebar } from "../../components/NavSidebar/NavSidebar";
 
 export const Home: React.FC = () => {
   const { page, sortBy, handleNextPage, handleSortChange } = usePaginate();
@@ -13,13 +13,14 @@ export const Home: React.FC = () => {
 
   return (
     <Layout>
-      <Container maxWidth="lg" sx={{ mt: 9, pb: 3 }}>
+      <Container maxWidth="lg" sx={{ mt: { xs: 7, md: 9 }, pb: 3 }}>
         <Grid container spacing={2}>
           <Grid item xs={3}>
-            <Link to="/tags">Tags</Link>
-            <Link to="/reading-list">Reading List</Link>
+            <Box sx={{ display: { xs: "none", md: "block" } }}>
+              <NavSidebar />
+            </Box>
           </Grid>
-          <Grid item xs={9}>
+          <Grid item xs={12} md={9}>
             <SortingButtons
               value={sortBy}
               handleSortChange={handleSortChange}

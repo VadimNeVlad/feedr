@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 import { RootState } from "../../app/store";
 import { useGetCurrentUserQuery } from "../../features/users/usersApi";
 import { SearchInput } from "../SearchInput/SearchInput";
+import { MobileMenu } from "./MobileMenu/MobileMenu";
+import { HeaderAuthBtns } from "./HeaderAuthBtns/HeaderAuthBtns";
 
 export const Header: React.FC = () => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -35,47 +37,41 @@ export const Header: React.FC = () => {
           alignItems: "center",
           padding: "0px 15px",
           minHeight: "56px",
+          maxWidth: "1860px",
+          margin: "0 auto",
         }}
       >
         <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
+          <MobileMenu />
           <Typography variant="h5">
             <Link to={"/"}>
               FeeD<span style={{ color: "#1976d2" }}>R</span>
             </Link>
           </Typography>
-          <SearchInput
-            inputRef={inputRef}
-            placeholder="Search..."
-            isGeneralSearch
-          />
+          <Box sx={{ display: { xs: "none", md: "block" } }}>
+            <SearchInput
+              inputRef={inputRef}
+              placeholder="Search..."
+              isGeneralSearch
+            />
+          </Box>
         </Box>
 
         {data && (
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <Link to={"/add-article"}>
-              <Button variant="outlined" sx={{ mr: 2 }}>
+              <Button
+                variant="outlined"
+                sx={{ display: { xs: "none", md: "block" }, mr: 2 }}
+              >
                 Create Article
               </Button>
             </Link>
-
-            <UserDropdown
-              id={user.id}
-              userName={user.name}
-              avatar={user.image}
-            />
+            <UserDropdown user={user} />
           </Box>
         )}
 
-        {!data && !isLoading && (
-          <>
-            <Button variant="text">
-              <Link to={"/login"}>Login</Link>
-            </Button>
-            <Button variant="contained">
-              <Link to={"/register"}>Create Account</Link>
-            </Button>
-          </>
-        )}
+        {!data && !isLoading && <HeaderAuthBtns />}
       </Box>
     </Box>
   );

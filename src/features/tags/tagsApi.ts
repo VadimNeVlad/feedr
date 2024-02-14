@@ -36,7 +36,8 @@ export const followsApi = api.injectEndpoints({
       forceRefetch({ currentArg, previousArg }) {
         if (
           currentArg?.page === previousArg?.page &&
-          currentArg?.sortBy === previousArg?.sortBy
+          currentArg?.sortBy === previousArg?.sortBy &&
+          currentArg?.tagName === previousArg?.tagName
         ) {
           return false;
         }

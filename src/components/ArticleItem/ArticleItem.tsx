@@ -26,6 +26,7 @@ import CommentOutlinedIcon from "@mui/icons-material/CommentOutlined";
 import { IMAGE_URL } from "../../utils/constants/constants";
 import { useFavoriteArticle } from "../../hooks/useFavoriteArticle";
 import { ArticleTagItem } from "../ArticleTagItem/ArticleTagItem";
+import { limitText } from "../../utils/helpers/limitText";
 
 export const ArticleItem: React.FC<ArticleItemProps> = ({ article }) => {
   const navigate = useNavigate();
@@ -49,7 +50,7 @@ export const ArticleItem: React.FC<ArticleItemProps> = ({ article }) => {
   return (
     <Card sx={{ mb: 2 }}>
       <CardHeader
-        sx={{ cursor: "pointer" }}
+        sx={{ cursor: "pointer", pb: 0 }}
         avatar={
           <Avatar
             src={
@@ -61,25 +62,26 @@ export const ArticleItem: React.FC<ArticleItemProps> = ({ article }) => {
           </Avatar>
         }
         title={article.author.name}
+        titleTypographyProps={{ fontWeight: 700 }}
         subheader={formatDate(article.createdAt)}
         onClick={() => navigate(`/user/${article.authorId}`)}
       />
 
-      <CardContent>
+      <CardContent sx={{ pb: 1.5 }}>
         <Typography
           variant="h5"
           fontWeight={700}
-          sx={{ display: "block", mb: 2 }}
+          sx={{ display: "block", mb: 1.5 }}
         >
           <Link to={`/articles/${article.id}/${article.slug}`}>
             {article.title}
           </Link>
         </Typography>
-        <Typography variant="body2" sx={{ mb: 3 }}>
-          {removeTags(article.body)}
+        <Typography variant="body2" sx={{ mb: 2 }}>
+          {removeTags(limitText(article.body, 80))}
         </Typography>
 
-        <Box sx={{ display: "flex" }}>
+        <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
           {article.tagList.map((tag) => (
             <ArticleTagItem key={tag.name} tag={tag} />
           ))}
