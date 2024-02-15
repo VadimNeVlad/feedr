@@ -98,8 +98,12 @@ export const EditArticle: React.FC = () => {
       )}
 
       {!isLoading && article && (
-        <Container maxWidth="lg" sx={{ mt: 11, pb: 3 }}>
-          <Typography variant="h4" fontWeight={700} sx={{ mb: 2 }}>
+        <Container maxWidth="lg" sx={{ mt: 10, pb: 3, minHeight: "100vh" }}>
+          <Typography
+            variant="h4"
+            fontWeight={700}
+            sx={{ fontSize: { xs: 28, md: 34 }, mb: 2 }}
+          >
             Edit article
           </Typography>
 
@@ -146,6 +150,7 @@ export const EditArticle: React.FC = () => {
                   variant="contained"
                   disabled={isDisabled}
                   loading={updatePending}
+                  sx={{ mt: 3.5 }}
                 >
                   Update article
                 </LoadingButton>

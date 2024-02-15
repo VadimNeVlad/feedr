@@ -42,7 +42,12 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({ editor }) => {
       >
         <HeadingToolbarButtons editor={editor} />
         <Divider flexItem orientation="vertical" sx={{ mx: 0.5, my: 1 }} />
-        <ToggleButtonGroup size="small" exclusive aria-label="text alignment">
+        <ToggleButtonGroup
+          size="small"
+          exclusive
+          aria-label="text alignment"
+          sx={{ flexWrap: "wrap" }}
+        >
           <ToggleButton
             onClick={() => editor.chain().focus().setTextAlign("left").run()}
             selected={editor.isActive({ textAlign: "left" })}
@@ -78,7 +83,11 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({ editor }) => {
         </ToggleButtonGroup>
         <Divider flexItem orientation="vertical" sx={{ mx: 0.5, my: 1 }} />
 
-        <ToggleButtonGroup size="small" aria-label="text formatting">
+        <ToggleButtonGroup
+          size="small"
+          aria-label="text formatting"
+          sx={{ flexWrap: "wrap" }}
+        >
           <ToggleButton
             onClick={() => editor.chain().focus().toggleSuperscript().run()}
             selected={editor.isActive("superscript")}
@@ -224,7 +233,12 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({ editor }) => {
         </ToggleButtonGroup>
         <Divider flexItem orientation="vertical" sx={{ mx: 0.5, my: 1 }} />
 
-        <ToggleButtonGroup size="small" exclusive aria-label="text alignment">
+        <ToggleButtonGroup
+          size="small"
+          exclusive
+          aria-label="text alignment"
+          sx={{ flexWrap: "wrap" }}
+        >
           <ToggleButton
             onClick={() => editor.chain().focus().undo().run()}
             value="undo"
@@ -243,7 +257,12 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({ editor }) => {
 
         <Divider flexItem orientation="vertical" sx={{ mx: 0.5, my: 1 }} />
 
-        <ToggleButtonGroup size="small" exclusive aria-label="text alignment">
+        <ToggleButtonGroup
+          size="small"
+          exclusive
+          aria-label="text alignment"
+          sx={{ flexWrap: "wrap" }}
+        >
           <ToggleButton
             onClick={() => editor.chain().focus().unsetAllMarks().run()}
             value="clear-mark"

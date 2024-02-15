@@ -22,7 +22,7 @@ export const SettingsNavList: React.FC = () => {
   };
   return (
     <nav style={{ width: "100%" }}>
-      <List>
+      <List disablePadding>
         <ListItem disablePadding>
           <Link to="profile" style={{ width: "100%" }}>
             <ListItemButton

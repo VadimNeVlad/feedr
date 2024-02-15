@@ -81,4 +81,8 @@ body {
   .ProseMirror {
     font-size: 16px;
   }
+
+  .editor__frame .ProseMirror {
+    min-height: 200px;
+  }
 }

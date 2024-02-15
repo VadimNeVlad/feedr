@@ -60,8 +60,12 @@ export const AddArticle: React.FC = () => {
 
   return (
     <Layout>
-      <Container maxWidth="lg" sx={{ mt: 11, pb: 3 }}>
-        <Typography variant="h4" fontWeight={700} sx={{ mb: 2 }}>
+      <Container maxWidth="lg" sx={{ mt: 10, pb: 3, minHeight: "100vh" }}>
+        <Typography
+          variant="h4"
+          fontWeight={700}
+          sx={{ fontSize: { xs: 28, md: 34 }, mb: 2 }}
+        >
           Create new article
         </Typography>
 
@@ -103,6 +107,7 @@ export const AddArticle: React.FC = () => {
                 variant="contained"
                 loading={isLoading}
                 disabled={isDisabled}
+                sx={{ mt: 3.5 }}
               >
                 Create article
               </LoadingButton>

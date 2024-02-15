@@ -9,7 +9,14 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
   handleClearPreview,
 }) => {
   return (
-    <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: { xs: "column", sm: "row" },
+        alignItems: "center",
+        mb: 2,
+      }}
+    >
       <input
         ref={fileRef}
         type="file"
@@ -23,7 +30,7 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
             width: 200,
             height: 200,
             objectFit: "contain",
-            mr: 2,
+            mr: { xs: 0, sm: 2 },
           }}
           src={preview}
         />

@@ -10,12 +10,12 @@ import React from "react";
 
 export const ArticleSkeleton: React.FC = () => {
   return (
-    <Container maxWidth="lg" sx={{ mt: 11, pb: 3 }}>
+    <Container maxWidth="lg" sx={{ mt: 9, pb: 3 }}>
       <Grid container spacing={2}>
         <Grid item xs={1}>
           <Box
             sx={{
-              display: "flex",
+              display: { xs: "none", sm: "flex" },
               flexDirection: "column",
               alignItems: "center",
               pb: 2,
@@ -32,7 +32,7 @@ export const ArticleSkeleton: React.FC = () => {
           </Box>
           <Box
             sx={{
-              display: "flex",
+              display: { xs: "none", sm: "flex" },
               flexDirection: "column",
               alignItems: "center",
               pb: 2,
@@ -47,10 +47,10 @@ export const ArticleSkeleton: React.FC = () => {
             <Skeleton variant="text" sx={{ fontSize: "16px", width: "20px" }} />
           </Box>
         </Grid>
-        <Grid item xs={8}>
+        <Grid item xs={12} sm={11} md={8}>
           <Skeleton
             variant="rectangular"
-            sx={{ width: "100%", height: "300px" }}
+            sx={{ width: "100%", height: { xs: 200, sm: 250, md: 300 } }}
           />
           <Card>
             <CardContent>
