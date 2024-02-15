@@ -21,7 +21,7 @@ export const FollowingList: React.FC<FollowingListProps> = ({
             </Typography>
           )}
 
-          <Card sx={{ mb: 2 }}>
+          <Card sx={{ mb: { xs: 0, md: 2 } }}>
             {size === "sm" && listType === "followings" && (
               <CardHeader
                 title="Following"

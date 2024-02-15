@@ -13,12 +13,12 @@ import { ArticlesListSkeleton } from "../ArticlesListSkeleton/ArticlesListSkelet
 
 export const ProfileSkeleton: React.FC = () => {
   return (
-    <Container maxWidth="lg" sx={{ mt: 19, pb: 3 }}>
+    <Container maxWidth="lg" sx={{ mt: { xs: 13.3, md: 17 }, pb: 3 }}>
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <ProfileContentSkeleton />
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={12} md={3}>
           <FollowingListSkeleton />
           <Card>
             <CardContent>
@@ -43,7 +43,7 @@ export const ProfileSkeleton: React.FC = () => {
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={9}>
+        <Grid item xs={12} md={9}>
           <ArticlesListSkeleton />
         </Grid>
       </Grid>

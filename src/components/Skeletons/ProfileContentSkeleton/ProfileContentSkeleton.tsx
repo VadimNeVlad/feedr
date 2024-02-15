@@ -7,15 +7,18 @@ export const ProfileContentSkeleton: React.FC = () => {
       <CardContent
         sx={{
           display: "flex",
-          alignItems: "center",
+          alignItems: { xs: "flex-start", md: "center" },
           flexDirection: "column",
         }}
       >
         <Skeleton
           variant="circular"
-          width={80}
-          height={80}
-          sx={{ mb: 2, mt: -5 }}
+          sx={{
+            width: { xs: "60px", md: "100px" },
+            height: { xs: "60px", md: "100px" },
+            mb: 2,
+            mt: { xs: -5.5, md: -7.5 },
+          }}
         />
         <Skeleton
           variant="text"

@@ -9,7 +9,7 @@ export const ProfileCountInfo: React.FC<ProfileCountInfoProps> = ({
   articlesCount,
 }) => {
   return (
-    <Card>
+    <Card sx={{ display: { xs: "none", md: "block" } }}>
       <CardContent sx={{ pt: 3 }}>
         <Box
           sx={{

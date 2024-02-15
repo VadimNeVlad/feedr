@@ -39,16 +39,16 @@ export const Profile: React.FC = () => {
           <Box
             sx={{
               width: "100%",
-              height: "170px",
+              height: { xs: "135px", md: "170px" },
               bgcolor: generateColor(user.name),
             }}
           ></Box>
-          <Container maxWidth="lg" sx={{ mt: -4, pb: 3 }}>
+          <Container maxWidth="lg" sx={{ mt: -6, pb: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <ProfileContent user={user} />
               </Grid>
-              <Grid item xs={3}>
+              <Grid item xs={12} md={3}>
                 <FollowingList
                   listType="followings"
                   followType={following}
@@ -60,7 +60,7 @@ export const Profile: React.FC = () => {
                   articlesCount={user._count.articles}
                 />
               </Grid>
-              <Grid item xs={9}>
+              <Grid item xs={12} md={9}>
                 <ArticlesList
                   articles={articles.articles}
                   articlesCount={articles._count}
