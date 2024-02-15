@@ -27,6 +27,7 @@ body {
 
 .ProseMirror {
   outline: none;
+  font-size: 18px;
 }
 
 .editor__frame {
@@ -73,5 +74,11 @@ body {
   }
   button {
     background-color: #f9f9f9;
+  }
+}
+
+@media screen and (max-width: 899px) {
+  .ProseMirror {
+    font-size: 16px;
   }
 }

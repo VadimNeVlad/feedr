@@ -40,7 +40,8 @@ export const CommentForm: React.FC<CommentFormProps> = ({
           <TextField
             multiline
             fullWidth
-            rows={2}
+            minRows={2}
+            maxRows={5}
             placeholder="Add to the discussion"
             sx={{ borderRadius: 0, outline: "none", mb: "16px" }}
             {...register("content", { required: true })}

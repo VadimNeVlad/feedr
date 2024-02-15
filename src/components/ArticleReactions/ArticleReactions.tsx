@@ -36,11 +36,12 @@ export const ArticleReactions: React.FC<ArticleReactionsProps> = ({
   };
 
   return (
-    <>
+    <Box sx={{ display: { xs: "none", sm: "block" } }}>
       <Box sx={{ textAlign: "center", pb: 1 }}>
         <IconButton
           aria-label="add to favorites"
           onClick={user ? handleFavoriteArticle : () => navigate("/login")}
+          sx={{ padding: { sm: "8px 0", md: "8px" } }}
         >
           {isFavorite ? <BookmarkIcon /> : <BookmarkBorderOutlinedIcon />}
         </IconButton>
@@ -48,11 +49,15 @@ export const ArticleReactions: React.FC<ArticleReactionsProps> = ({
       </Box>
 
       <Box sx={{ textAlign: "center" }}>
-        <IconButton aria-label="comments" onClick={handleScroll}>
+        <IconButton
+          aria-label="comments"
+          onClick={handleScroll}
+          sx={{ padding: { sm: "8px 0", md: "8px" } }}
+        >
           <CommentOutlinedIcon />
         </IconButton>
         <Typography variant="body2">{article._count.comments}</Typography>
       </Box>
-    </>
+    </Box>
   );
 };

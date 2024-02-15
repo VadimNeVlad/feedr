@@ -42,76 +42,74 @@ export const ArticleAuthor: React.FC<ArticleAuthorProps> = ({ author }) => {
   };
 
   return (
-    <>
-      <Card>
-        <Box
-          sx={{
-            width: "100%",
-            height: "20px",
-            bgcolor: generateColor(author.name),
-          }}
-        ></Box>
-        <CardHeader
-          sx={{ cursor: "pointer" }}
-          avatar={
-            <Avatar
-              src={author.image && `${IMAGE_URL}avatars/${author.image}`}
-              sx={{ width: "46px", height: "46px" }}
-            >
-              {trimFirstLetter(author.name)}
-            </Avatar>
-          }
-          titleTypographyProps={{ variant: "h6", fontWeight: 700 }}
-          title={author.name}
-          onClick={() => navigate(`/user/${author.id}`)}
-        />
-
-        <CardContent sx={{ pt: 0 }}>
-          {user?.id !== author.id && (
-            <Button
-              variant={!isFollow ? "contained" : "outlined"}
-              onClick={handleFollowUser}
-              sx={{ width: "100%", mb: 2 }}
-            >
-              {!isFollow ? "Follow" : "Unfollow"}
-            </Button>
-          )}
-
-          {author.bio && (
-            <Typography variant="body1" sx={{ mb: 2 }}>
-              {author.bio}
-            </Typography>
-          )}
-
-          {author.location && (
-            <>
-              <Typography
-                variant="subtitle2"
-                fontWeight={700}
-                textTransform="uppercase"
-                fontSize={14}
-              >
-                Location
-              </Typography>
-              <Typography variant="body1" sx={{ mb: 1 }}>
-                {author.location}
-              </Typography>
-            </>
-          )}
-
-          <Typography
-            variant="subtitle2"
-            fontWeight={700}
-            textTransform="uppercase"
-            fontSize={14}
+    <Card sx={{ display: { xs: "none", md: "block" } }}>
+      <Box
+        sx={{
+          width: "100%",
+          height: "20px",
+          bgcolor: generateColor(author.name),
+        }}
+      ></Box>
+      <CardHeader
+        sx={{ cursor: "pointer" }}
+        avatar={
+          <Avatar
+            src={author.image && `${IMAGE_URL}avatars/${author.image}`}
+            sx={{ width: "46px", height: "46px" }}
           >
-            Joined
+            {trimFirstLetter(author.name)}
+          </Avatar>
+        }
+        titleTypographyProps={{ variant: "h6", fontWeight: 700 }}
+        title={author.name}
+        onClick={() => navigate(`/user/${author.id}`)}
+      />
+
+      <CardContent sx={{ pt: 0 }}>
+        {user?.id !== author.id && (
+          <Button
+            variant={!isFollow ? "contained" : "outlined"}
+            onClick={handleFollowUser}
+            sx={{ width: "100%", mb: 2 }}
+          >
+            {!isFollow ? "Follow" : "Unfollow"}
+          </Button>
+        )}
+
+        {author.bio && (
+          <Typography variant="body1" sx={{ mb: 2 }}>
+            {author.bio}
           </Typography>
-          <Typography variant="body1">
-            {formatDate(author.createdAt, false)}
-          </Typography>
-        </CardContent>
-      </Card>
-    </>
+        )}
+
+        {author.location && (
+          <>
+            <Typography
+              variant="subtitle2"
+              fontWeight={700}
+              textTransform="uppercase"
+              fontSize={14}
+            >
+              Location
+            </Typography>
+            <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
+              {author.location}
+            </Typography>
+          </>
+        )}
+
+        <Typography
+          variant="subtitle2"
+          fontWeight={700}
+          textTransform="uppercase"
+          fontSize={14}
+        >
+          Joined
+        </Typography>
+        <Typography variant="body1" color="text.secondary">
+          {formatDate(author.createdAt, false)}
+        </Typography>
+      </CardContent>
+    </Card>
   );
 };

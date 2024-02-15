@@ -33,7 +33,7 @@ export const ArticleContent: React.FC<ArticleContentProps> = ({ article }) => {
       )}
 
       <CardHeader
-        sx={{ cursor: "pointer" }}
+        sx={{ cursor: "pointer", pb: 1 }}
         avatar={
           <Avatar
             src={
@@ -45,16 +45,22 @@ export const ArticleContent: React.FC<ArticleContentProps> = ({ article }) => {
           </Avatar>
         }
         title={article.author.name}
+        titleTypographyProps={{ fontWeight: 700, fontSize: 16 }}
         subheader={formatDate(article.createdAt)}
         onClick={() => navigate(`/user/${article.authorId}`)}
       />
 
       <CardContent>
-        <Typography variant="h4" fontWeight={700} sx={{ mb: 1 }}>
+        <Typography
+          variant="h4"
+          fontWeight={900}
+          fontSize={40}
+          sx={{ fontSize: { xs: 32, md: 40 }, mb: 2 }}
+        >
           {article.title}
         </Typography>
 
-        <Box sx={{ display: "flex", mb: 5 }}>
+        <Box sx={{ display: "flex", flexWrap: "wrap", mb: 6, gap: 1 }}>
           {article.tagList.map((tag) => (
             <ArticleTagItem key={tag.name} tag={tag} />
           ))}

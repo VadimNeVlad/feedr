@@ -37,7 +37,7 @@ export const Header: React.FC = () => {
           alignItems: "center",
           padding: "0px 15px",
           minHeight: "56px",
-          maxWidth: "1860px",
+          maxWidth: "1900px",
           margin: "0 auto",
         }}
       >

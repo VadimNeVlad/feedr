@@ -72,12 +72,12 @@ export const Article: React.FC = () => {
       {isLoading && <ArticleSkeleton />}
 
       {!isLoading && data && (
-        <Container maxWidth="lg" sx={{ mt: 11, pb: 3 }}>
+        <Container maxWidth="lg" sx={{ mt: { xs: 9, sm: 11 }, pb: 6 }}>
           <Grid container spacing={2}>
             <Grid item xs={1}>
               <ArticleReactions article={article} handleScroll={handleScroll} />
             </Grid>
-            <Grid item xs={8}>
+            <Grid item xs={12} sm={11} md={8}>
               <ArticleContent article={article} />
               <Box ref={ref}>
                 <CommentForm

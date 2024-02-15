@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
 import { ArticleActionsProps } from "../../utils/types/props";
@@ -11,7 +11,7 @@ export const ArticleActions: React.FC<ArticleActionsProps> = ({
   setOpen,
 }) => {
   return (
-    <>
+    <Box sx={{ display: { xs: "none", md: "block" } }}>
       <Link to={`/edit-article/${articleId}`}>
         <Button
           fullWidth
@@ -33,6 +33,6 @@ export const ArticleActions: React.FC<ArticleActionsProps> = ({
       >
         Delete Article
       </LoadingButton>
-    </>
+    </Box>
   );
 };
