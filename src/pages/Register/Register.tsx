@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { AuthForm } from "../../components/AuthForm/AuthForm";
 import { FormProvider, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -15,8 +15,9 @@ import "react-toastify/dist/ReactToastify.css";
 export const Register: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [pending, setPending] = useState(false);
-  const [register, { data, isSuccess, error }] = useRegisterMutation();
+
+  const [register, { data, isSuccess, isLoading, error }] =
+    useRegisterMutation();
 
   const methods = useForm<AuthData>({
     resolver: yupResolver(registerSchema),
@@ -33,13 +34,11 @@ export const Register: React.FC = () => {
     } else if (error) {
       const err = (error as FetchBaseQueryError).data as Error;
       toast.error(err.message);
-      setPending(false);
     }
   }, [isSuccess, navigate, error, methods]);
 
   const onSubmit = (data: AuthData) => {
     register(data);
-    setPending(true);
   };
 
   return (
@@ -47,7 +46,7 @@ export const Register: React.FC = () => {
       <AuthForm
         title="Register"
         text="Please fill out the form below to login"
-        isPending={pending}
+        isPending={isLoading}
         onSubmit={methods.handleSubmit(onSubmit)}
       />
 

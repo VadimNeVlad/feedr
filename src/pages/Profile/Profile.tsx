@@ -43,7 +43,7 @@ export const Profile: React.FC = () => {
               bgcolor: generateColor(user.name),
             }}
           ></Box>
-          <Container maxWidth="lg" sx={{ mt: -6, pb: 3 }}>
+          <Container maxWidth="lg" sx={{ mt: -6, pb: 3, minHeight: "100vh" }}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <ProfileContent user={user} />

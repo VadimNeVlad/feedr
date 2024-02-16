@@ -12,9 +12,11 @@ import { HeaderAuthBtns } from "./HeaderAuthBtns/HeaderAuthBtns";
 export const Header: React.FC = () => {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const { data: user, isLoading } = useGetCurrentUserQuery();
-
   const token = useSelector((state: RootState) => state.auth.token);
+  const { data: user, isLoading } = useGetCurrentUserQuery(undefined, {
+    skip: !token,
+  });
+
   const data = user && token;
 
   return (

@@ -29,13 +29,36 @@ export const AuthForm: React.FC<AuthFormProps> = ({
   } = useFormContext<AuthData>();
 
   return (
-    <>
-      <Typography variant="h3">{title}</Typography>
-      <Typography variant="subtitle1">{text}</Typography>
+    <Box
+      sx={{
+        maxWidth: 550,
+        mx: "auto",
+        padding: 2,
+        textAlign: "center",
+        pt: { xs: 4, md: 6 },
+      }}
+    >
+      <Typography
+        variant="h4"
+        sx={{ mb: { xs: 2, md: 3 }, fontSize: { xs: 28, md: 34 } }}
+      >
+        FeeD<span style={{ color: "#1976d2" }}>R</span>
+      </Typography>
+      <Typography
+        variant="h4"
+        fontWeight={700}
+        sx={{ fontSize: { xs: 28, md: 34 }, mb: 1 }}
+      >
+        {title}
+      </Typography>
+      <Typography variant="subtitle1" sx={{ mb: 1 }}>
+        {text}
+      </Typography>
 
       <form onSubmit={onSubmit}>
-        <Box className="form-field">
+        <Box sx={{ mb: 2 }}>
           <TextField
+            fullWidth
             label="Email"
             variant="outlined"
             type="text"
@@ -45,22 +68,24 @@ export const AuthForm: React.FC<AuthFormProps> = ({
         </Box>
 
         {title === "Register" && (
-          <div className="form-field">
+          <Box sx={{ mb: 2 }}>
             <TextField
+              fullWidth
               label="Full Name"
               variant="outlined"
               type="text"
               {...register("name", { required: true })}
             />
             {errors.name && <p>{errors.name?.message}</p>}
-          </div>
+          </Box>
         )}
 
-        <Box className="form-field">
+        <Box sx={{ mb: 2 }}>
           <TextField
+            fullWidth
             label="Password"
             variant="outlined"
-            type="password"
+            type={showPassword ? "text" : "password"}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
@@ -75,7 +100,14 @@ export const AuthForm: React.FC<AuthFormProps> = ({
           {errors.password && <p>{errors.password?.message}</p>}
         </Box>
 
-        <LoadingButton type="submit" variant="contained" loading={isPending}>
+        <LoadingButton
+          fullWidth
+          type="submit"
+          size="large"
+          variant="contained"
+          loading={isPending}
+          sx={{ mb: 1 }}
+        >
           {title === "Register" ? "Register" : "Login"}
         </LoadingButton>
 
@@ -84,10 +116,12 @@ export const AuthForm: React.FC<AuthFormProps> = ({
             ? "Already have an account? "
             : "Don't have an account? "}
           <Link to={title === "Register" ? "/login" : "/register"}>
-            {title === "Register" ? "Login" : "Register"}
+            <Typography variant="subtitle1" color="info.main" component="span">
+              {title === "Register" ? "Login" : "Register"}
+            </Typography>
           </Link>
         </Typography>
       </form>
-    </>
+    </Box>
   );
 };

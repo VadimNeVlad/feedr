@@ -27,7 +27,7 @@ const baseQueryWithReauth: BaseQueryFn<
   const refreshToken = localStorage.getItem("refreshToken");
   let result = await baseQuery(args, api, extraOptions);
 
-  if (result.error && result.error.status === 401) {
+  if (result.error && result.error.status === 401 && refreshToken) {
     const refreshResult = await baseQuery(
       {
         url: "auth/refresh-token",

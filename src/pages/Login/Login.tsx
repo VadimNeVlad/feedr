@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { AuthForm } from "../../components/AuthForm/AuthForm";
 import { FormProvider, useForm } from "react-hook-form";
 import { loginSchema } from "../../utils/validators/loginSchema";
@@ -16,8 +16,7 @@ export const Login: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const [pending, setPending] = useState(false);
-  const [login, { data, isSuccess, error }] = useLoginMutation();
+  const [login, { data, isSuccess, isLoading, error }] = useLoginMutation();
 
   const methods = useForm<Omit<AuthData, "name">>({
     resolver: yupResolver(loginSchema),
@@ -34,13 +33,11 @@ export const Login: React.FC = () => {
     } else if (error) {
       const err = (error as FetchBaseQueryError).data as Error;
       toast.error(err.message);
-      setPending(false);
     }
   }, [isSuccess, navigate, error, methods]);
 
   const onSubmit = (data: Omit<AuthData, "name">) => {
     login(data);
-    setPending(true);
   };
 
   return (
@@ -48,7 +45,7 @@ export const Login: React.FC = () => {
       <AuthForm
         title="Login"
         text="Login to your account"
-        isPending={pending}
+        isPending={isLoading}
         onSubmit={methods.handleSubmit(onSubmit)}
       />
 
