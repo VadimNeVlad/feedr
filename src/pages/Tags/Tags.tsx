@@ -12,7 +12,7 @@ export const Tags: React.FC = () => {
 
   return (
     <Layout>
-      <Container maxWidth="lg" sx={{ mt: 9, pb: 3 }}>
+      <Container maxWidth="lg" sx={{ mt: 9, pb: 3, minHeight: "100vh" }}>
         <Box
           sx={{
             display: "flex",
@@ -21,7 +21,11 @@ export const Tags: React.FC = () => {
             mb: 2,
           }}
         >
-          <Typography variant="h4" fontWeight={700} sx={{ mb: 0 }}>
+          <Typography
+            variant="h4"
+            fontWeight={700}
+            sx={{ fontSize: { xs: 28, md: 34 }, mb: 0, pr: 3 }}
+          >
             Tags
           </Typography>
           <SearchInput

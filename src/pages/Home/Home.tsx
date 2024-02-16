@@ -13,7 +13,10 @@ export const Home: React.FC = () => {
 
   return (
     <Layout>
-      <Container maxWidth="lg" sx={{ mt: { xs: 7, md: 9 }, pb: 3 }}>
+      <Container
+        maxWidth="lg"
+        sx={{ mt: { xs: 7, md: 9 }, pb: 3, minHeight: "100vh" }}
+      >
         <Grid container spacing={2}>
           <Grid item xs={3}>
             <Box sx={{ display: { xs: "none", md: "block" } }}>

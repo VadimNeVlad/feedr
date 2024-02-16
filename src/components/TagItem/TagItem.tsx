@@ -6,21 +6,25 @@ import { generateColor } from "../../utils/helpers/generateColor";
 
 export const TagItem: React.FC<TagItemProps> = ({ tag }) => {
   return (
-    <Grid item xs={3} key={tag.id}>
+    <Grid item xs={12} sm={6} md={3} key={tag.id}>
       <Link to={`/tag/${tag.name}`}>
         <Card>
           <CardContent>
             <Box
               sx={{
-                width: "115%",
-                height: "20px",
+                width: "2000px",
+                height: { xs: "10px", md: "20px" },
                 bgcolor: generateColor(tag.name),
                 ml: "-16px",
                 mt: "-16px",
-                mb: 3,
+                mb: { xs: 2.5, md: 3 },
               }}
             ></Box>
-            <Typography variant="h6" fontWeight={700} sx={{ mb: 2 }}>
+            <Typography
+              variant="h6"
+              fontWeight={700}
+              sx={{ mb: { xs: 1, md: 2 } }}
+            >
               #{tag.name}
             </Typography>
             <Typography variant="body2" color="text.secondary">

@@ -12,15 +12,18 @@ export const Search: React.FC = () => {
   const searchParam = new URLSearchParams(location.search).get("q");
 
   const { page, sortBy, handleNextPage } = usePaginate();
-  const { data, isLoading } = useGetArticlesQuery({
-    page,
-    sortBy,
-    q: searchParam as string,
-  });
+  const { data, isLoading } = useGetArticlesQuery(
+    {
+      page,
+      sortBy,
+      q: searchParam as string,
+    },
+    { refetchOnMountOrArgChange: true }
+  );
 
   return (
     <Layout>
-      <Container maxWidth="lg" sx={{ mt: 9, pb: 3 }}>
+      <Container maxWidth="lg" sx={{ mt: 9, pb: 3, minHeight: "100vh" }}>
         <Typography variant="h4" fontWeight={700} sx={{ mb: 2 }}>
           Search results for {searchParam}
         </Typography>

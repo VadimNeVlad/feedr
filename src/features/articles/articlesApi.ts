@@ -41,6 +41,7 @@ export const articlesApi = api.injectEndpoints({
       },
       forceRefetch({ currentArg, previousArg }) {
         if (
+          !previousArg?.q &&
           currentArg?.page === previousArg?.page &&
           currentArg?.sortBy === previousArg?.sortBy
         ) {

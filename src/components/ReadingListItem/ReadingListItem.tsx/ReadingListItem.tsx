@@ -26,11 +26,19 @@ export const ReadingListItem: React.FC<ReadingListItemProps> = ({
         <Box
           sx={{
             display: "flex",
-            alignItems: "center",
+            alignItems: "flex-start",
             justifyContent: "space-between",
           }}
         >
-          <Box sx={{ display: "flex", alignItems: "flex-start", gap: 2 }}>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "flex-start",
+              flexWrap: "wrap",
+              gap: 2,
+              pr: 3,
+            }}
+          >
             <Link to={`/user/${article.author.id}`}>
               <Avatar
                 src={
@@ -46,13 +54,25 @@ export const ReadingListItem: React.FC<ReadingListItemProps> = ({
               <Typography
                 variant="h6"
                 fontWeight={700}
-                sx={{ display: "block", mb: 0 }}
+                sx={{
+                  display: "block",
+                  mb: 1,
+                  fontSize: { xs: "18px", md: "20px" },
+                  lineHeight: { xs: "24px", md: "28px" },
+                }}
               >
                 <Link to={`/articles/${article.id}/${article.slug}`}>
                   {article.title}
                 </Link>
               </Typography>
-              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  alignItems: "center",
+                  gap: 1,
+                }}
+              >
                 <Typography variant="subtitle2" fontWeight={700}>
                   <Link to={`/user/${article.author.id}`}>
                     {article.author.name}
@@ -63,7 +83,7 @@ export const ReadingListItem: React.FC<ReadingListItemProps> = ({
                   {formatDate(article.createdAt, false)}
                 </Typography>
                 <span>•</span>
-                <Box sx={{ display: "flex" }}>
+                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
                   {article.tagList.map((tag) => (
                     <ArticleTagItem key={tag.name} tag={tag} />
                   ))}
@@ -71,7 +91,11 @@ export const ReadingListItem: React.FC<ReadingListItemProps> = ({
               </Box>
             </Box>
           </Box>
-          <Button variant="text" onClick={() => unfavoriteArticle(article.id)}>
+          <Button
+            variant="text"
+            onClick={() => unfavoriteArticle(article.id)}
+            sx={{ mt: 2 }}
+          >
             Remove
           </Button>
         </Box>

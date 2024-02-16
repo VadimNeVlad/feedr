@@ -30,23 +30,23 @@ export const Tag: React.FC = () => {
       <Container maxWidth="lg" sx={{ mt: 9, pb: 3 }}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <Card sx={{ mb: 3 }}>
+            <Card sx={{ mb: { xs: 1, md: 3 } }}>
               <CardContent>
                 <Box
                   sx={{
-                    width: "105%",
-                    height: "20px",
+                    width: "2000px",
+                    height: { xs: "10px", md: "20px" },
                     bgcolor: generateColor(tagName as string),
                     ml: "-16px",
                     mt: "-16px",
-                    mb: 3,
+                    mb: { xs: 2.5, md: 3 },
                   }}
                 ></Box>
                 <Typography
                   variant="h4"
                   fontWeight={700}
                   textTransform={"capitalize"}
-                  sx={{ mb: 2 }}
+                  sx={{ fontSize: { xs: 28, md: 34 }, mb: { xs: 1, md: 2 } }}
                 >
                   {tagName}
                 </Typography>
