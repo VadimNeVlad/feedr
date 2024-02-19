@@ -162,3 +162,7 @@ export interface ReadingListItemProps {
 export interface NavSidebarProps {
   article: Article;
 }
+
+export interface ErrorFallbackProps {
+  resetErrorBoundary: () => void;
+}

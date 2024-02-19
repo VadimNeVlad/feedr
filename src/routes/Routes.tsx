@@ -16,6 +16,7 @@ import { Tag } from "../pages/Tag/Tag";
 import { Tags } from "../pages/Tags/Tags";
 import { Search } from "../pages/Search/Search";
 import { ReadingList } from "../pages/ReadingList/ReadingList";
+import { NotFound } from "../pages/404/404";
 
 export const Routes = () => {
   const location = useLocation();
@@ -48,6 +49,7 @@ export const Routes = () => {
       <Route path="/tags" element={<Tags />} />
       <Route path="/tag/:tagName" element={<Tag />} />
       <Route path="/search" element={<Search />} />
+      <Route path="*" element={<NotFound />} />
     </RouterRoutes>
   );
 };

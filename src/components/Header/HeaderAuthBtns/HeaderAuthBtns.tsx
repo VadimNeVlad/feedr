@@ -5,15 +5,17 @@ import { Link } from "react-router-dom";
 export const HeaderAuthBtns: React.FC = () => {
   return (
     <Box>
-      <Button
-        variant="text"
-        sx={{ display: { xs: "none", sm: "inline-block" }, mr: 1 }}
-      >
-        <Link to={"/login"}>Login</Link>
-      </Button>
-      <Button variant="contained">
-        <Link to={"/register"}>Create Account</Link>
-      </Button>
+      <Link to="/login">
+        <Button
+          variant="text"
+          sx={{ display: { xs: "none", sm: "inline-block" }, mr: 1 }}
+        >
+          Login
+        </Button>
+      </Link>
+      <Link to="/register">
+        <Button variant="contained">Create Account</Button>
+      </Link>
     </Box>
   );
 };
