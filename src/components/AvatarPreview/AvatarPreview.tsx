@@ -62,7 +62,7 @@ export const AvatarPreview: React.FC<AvatarPreviewProps> = ({
             xs: generateColor(userName),
             md: generateColor(userName),
           },
-          cursor: "pointer",
+          cursor: currentUser?.id === userId ? "pointer" : "default",
         }}
       >
         {trimFirstLetter(userName)}

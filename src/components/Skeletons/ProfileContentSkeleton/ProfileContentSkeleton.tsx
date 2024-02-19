@@ -22,20 +22,17 @@ export const ProfileContentSkeleton: React.FC = () => {
         />
         <Skeleton
           variant="text"
-          sx={{ fontSize: "36px", width: "250px", mb: 1 }}
+          sx={{ fontSize: "35px", width: "250px", mb: 1 }}
         />
         <Skeleton
           variant="text"
-          sx={{ fontSize: "16px", width: "100px", mb: 3 }}
+          sx={{ fontSize: "15px", width: "100px", mb: 3 }}
         />
         <Skeleton
           variant="text"
-          sx={{ fontSize: "16px", width: "250px", mb: 3 }}
+          sx={{ fontSize: "14px", width: "250px", mb: 3 }}
         />
-        <Skeleton
-          variant="text"
-          sx={{ fontSize: "16px", width: "200px", mb: 2 }}
-        />
+        <Skeleton variant="text" sx={{ fontSize: "16px", width: "200px" }} />
       </CardContent>
     </Card>
   );

@@ -62,6 +62,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({
             label="Email"
             variant="outlined"
             type="text"
+            sx={{ bgcolor: "background.paper" }}
             {...register("email", { required: true })}
           />
 
@@ -84,6 +85,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({
               label="Full Name"
               variant="outlined"
               type="text"
+              sx={{ bgcolor: "background.paper" }}
               {...register("name", { required: true })}
             />
             {errors.name && (
@@ -114,6 +116,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({
                 </InputAdornment>
               ),
             }}
+            sx={{ bgcolor: "background.paper" }}
             {...register("password", { required: true })}
           />
           {errors.password && (

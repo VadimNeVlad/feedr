@@ -10,7 +10,7 @@ import React from "react";
 
 export const ArticleSkeleton: React.FC = () => {
   return (
-    <Container maxWidth="lg" sx={{ mt: 9, pb: 3 }}>
+    <Container maxWidth="lg" sx={{ mt: { xs: 9, sm: 11 }, pb: 3 }}>
       <Grid container spacing={2}>
         <Grid item xs={1}>
           <Box
