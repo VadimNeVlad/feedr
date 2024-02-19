@@ -64,7 +64,11 @@ export const ArticleItem: React.FC<ArticleItemProps> = ({ article }) => {
         title={article.author.name}
         titleTypographyProps={{ fontWeight: 700 }}
         subheader={formatDate(article.createdAt)}
-        onClick={() => navigate(`/user/${article.authorId}`)}
+        onClick={
+          user
+            ? () => navigate(`/user/${article.authorId}`)
+            : () => navigate("/login")
+        }
       />
 
       <CardContent sx={{ pb: 1.5 }}>

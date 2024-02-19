@@ -5,12 +5,16 @@ import { trimFirstLetter } from "../../utils/helpers/trimString";
 import { formatDate } from "../../utils/helpers/formatDate";
 import { IMAGE_URL } from "../../utils/constants/constants";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../../app/store";
 
 export const CommentItem: React.FC<CommentItemProps> = ({ comment }) => {
+  const user = useSelector((state: RootState) => state.auth.user);
+
   return (
     <Card sx={{ borderRadius: 0 }}>
       <CardContent sx={{ display: "flex", alignItems: "flex-start" }}>
-        <Link to={`/user/${comment.author.id}`}>
+        <Link to={user ? `/user/${comment.author.id}` : "/login"}>
           <Avatar
             src={
               comment.author.image &&
@@ -35,7 +39,7 @@ export const CommentItem: React.FC<CommentItemProps> = ({ comment }) => {
           }}
         >
           <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
-            <Link to={`/user/${comment.author.id}`}>
+            <Link to={user ? `/user/${comment.author.id}` : "/login"}>
               <Typography variant="subtitle2" fontWeight={700} sx={{ mr: 1 }}>
                 {comment.author.name}
               </Typography>

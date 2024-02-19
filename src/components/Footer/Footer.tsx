@@ -1,13 +1,17 @@
 import React from "react";
 import { Box, Container, Stack, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../../app/store";
 
 export const Footer: React.FC = () => {
+  const user = useSelector((state: RootState) => state.auth.user);
+
   return (
     <Box sx={{ pt: 4, pb: 3.5, bgcolor: "#e5e5e5" }}>
       <Container maxWidth="lg" sx={{ textAlign: "center" }}>
         <Typography variant="body2">
-          FeedR - Connect, Share, and Explore Together
+          FeeDR - Connect, Share, and Explore Together
         </Typography>
         <Stack
           direction="row"
@@ -27,7 +31,7 @@ export const Footer: React.FC = () => {
             </Typography>
           </Link>
           <span>•</span>
-          <Link to="/reading-list">
+          <Link to={user ? "/reading-list" : "/login"}>
             <Typography variant="body2" color="info.main">
               Reading List
             </Typography>

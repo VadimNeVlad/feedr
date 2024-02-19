@@ -64,7 +64,17 @@ export const AuthForm: React.FC<AuthFormProps> = ({
             type="text"
             {...register("email", { required: true })}
           />
-          {errors.email && <p>{errors.email?.message}</p>}
+
+          {errors.email && (
+            <Typography
+              fontSize={12}
+              color="error"
+              textAlign="left"
+              sx={{ mt: 1 }}
+            >
+              {errors.email?.message}
+            </Typography>
+          )}
         </Box>
 
         {title === "Register" && (
@@ -76,7 +86,16 @@ export const AuthForm: React.FC<AuthFormProps> = ({
               type="text"
               {...register("name", { required: true })}
             />
-            {errors.name && <p>{errors.name?.message}</p>}
+            {errors.name && (
+              <Typography
+                fontSize={12}
+                color="error"
+                textAlign="left"
+                sx={{ mt: 1 }}
+              >
+                {errors.name?.message}
+              </Typography>
+            )}
           </Box>
         )}
 
@@ -97,7 +116,16 @@ export const AuthForm: React.FC<AuthFormProps> = ({
             }}
             {...register("password", { required: true })}
           />
-          {errors.password && <p>{errors.password?.message}</p>}
+          {errors.password && (
+            <Typography
+              fontSize={12}
+              color="error"
+              textAlign="left"
+              sx={{ mt: 1 }}
+            >
+              {errors.password?.message}
+            </Typography>
+          )}
         </Box>
 
         <LoadingButton

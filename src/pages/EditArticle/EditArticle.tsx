@@ -146,6 +146,8 @@ export const EditArticle: React.FC = () => {
                 </Box>
 
                 <LoadingButton
+                  fullWidth
+                  size="large"
                   type="submit"
                   variant="contained"
                   disabled={isDisabled}

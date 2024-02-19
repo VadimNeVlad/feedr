@@ -12,8 +12,12 @@ import { Link } from "react-router-dom";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import FacebookIcon from "@mui/icons-material/Facebook";
+import { useSelector } from "react-redux";
+import { RootState } from "../../app/store";
 
 export const NavSidebar: React.FC = () => {
+  const user = useSelector((state: RootState) => state.auth.user);
+
   return (
     <Box>
       <nav style={{ width: "100%" }}>
@@ -45,7 +49,10 @@ export const NavSidebar: React.FC = () => {
             </Link>
           </ListItem>
           <ListItem disablePadding>
-            <Link to="/reading-list" style={{ width: "100%" }}>
+            <Link
+              to={user ? "/reading-list" : "/login"}
+              style={{ width: "100%" }}
+            >
               <ListItemButton sx={{ p: 0.5 }}>
                 <Box
                   component="img"

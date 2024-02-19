@@ -14,9 +14,12 @@ import { Editor } from "../Editor/Editor";
 import { IMAGE_URL } from "../../utils/constants/constants";
 import { useNavigate } from "react-router-dom";
 import { ArticleTagItem } from "../ArticleTagItem/ArticleTagItem";
+import { RootState } from "../../app/store";
+import { useSelector } from "react-redux";
 
 export const ArticleContent: React.FC<ArticleContentProps> = ({ article }) => {
   const navigate = useNavigate();
+  const user = useSelector((state: RootState) => state.auth.user);
 
   return (
     <Card sx={{ borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }}>
@@ -47,7 +50,11 @@ export const ArticleContent: React.FC<ArticleContentProps> = ({ article }) => {
         title={article.author.name}
         titleTypographyProps={{ fontWeight: 700, fontSize: 16 }}
         subheader={formatDate(article.createdAt)}
-        onClick={() => navigate(`/user/${article.authorId}`)}
+        onClick={
+          user
+            ? () => navigate(`/user/${article.authorId}`)
+            : () => navigate("/login")
+        }
       />
 
       <CardContent>

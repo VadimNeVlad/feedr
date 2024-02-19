@@ -86,6 +86,7 @@ export const AccountSettings: React.FC = () => {
 
               <LoadingButton
                 fullWidth
+                size="large"
                 type="submit"
                 variant="contained"
                 loading={isLoading}

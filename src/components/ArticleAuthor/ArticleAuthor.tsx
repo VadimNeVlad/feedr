@@ -62,14 +62,16 @@ export const ArticleAuthor: React.FC<ArticleAuthorProps> = ({ author }) => {
         }
         titleTypographyProps={{ variant: "h6", fontWeight: 700 }}
         title={author.name}
-        onClick={() => navigate(`/user/${author.id}`)}
+        onClick={
+          user ? () => navigate(`/user/${author.id}`) : () => navigate("/login")
+        }
       />
 
       <CardContent sx={{ pt: 0 }}>
         {user?.id !== author.id && (
           <Button
             variant={!isFollow ? "contained" : "outlined"}
-            onClick={handleFollowUser}
+            onClick={user ? handleFollowUser : () => navigate("/login")}
             sx={{ width: "100%", mb: 2 }}
           >
             {!isFollow ? "Follow" : "Unfollow"}

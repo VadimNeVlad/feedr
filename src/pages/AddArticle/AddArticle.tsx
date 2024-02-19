@@ -103,6 +103,8 @@ export const AddArticle: React.FC = () => {
               </Box>
 
               <LoadingButton
+                fullWidth
+                size="large"
                 type="submit"
                 variant="contained"
                 loading={isLoading}
