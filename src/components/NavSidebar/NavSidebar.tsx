@@ -27,7 +27,7 @@ export const NavSidebar: React.FC = () => {
               <ListItemButton sx={{ p: 0.5 }}>
                 <Box
                   component="img"
-                  src="/src/assets/img/homev2.svg"
+                  src="/public/homev2.svg"
                   alt="home"
                   sx={{ width: "22px", height: "22px", mr: 1.5 }}
                 />
@@ -40,7 +40,7 @@ export const NavSidebar: React.FC = () => {
               <ListItemButton sx={{ p: 0.5 }}>
                 <Box
                   component="img"
-                  src="/src/assets/img/tags.png"
+                  src="/public/tags.png"
                   alt="tags"
                   sx={{ width: "22px", height: "22px", mr: 1.5 }}
                 />
@@ -56,7 +56,7 @@ export const NavSidebar: React.FC = () => {
               <ListItemButton sx={{ p: 0.5 }}>
                 <Box
                   component="img"
-                  src="/src/assets/img/reading-list.png"
+                  src="/public/reading-list.png"
                   alt="reading list"
                   sx={{ width: "22px", height: "22px", mr: 1.5 }}
                 />
