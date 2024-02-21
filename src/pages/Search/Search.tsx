@@ -12,7 +12,7 @@ export const Search: React.FC = () => {
   const searchParam = new URLSearchParams(location.search).get("q");
 
   const { page, sortBy, handleNextPage } = usePaginate();
-  const { data, isLoading } = useGetArticlesQuery(
+  const { data, isLoading, isFetching } = useGetArticlesQuery(
     {
       page,
       sortBy,
@@ -27,7 +27,7 @@ export const Search: React.FC = () => {
         <Typography variant="h4" fontWeight={700} sx={{ mb: 2 }}>
           Search results for {searchParam}
         </Typography>
-        {data?._count === 0 ? (
+        {!isLoading && data?._count === 0 ? (
           <NoResultMessage msg="No results match that query" />
         ) : (
           <Grid container spacing={2}>
@@ -35,7 +35,7 @@ export const Search: React.FC = () => {
             <Grid item xs={12}>
               <ArticlesList
                 articles={data?.articles}
-                isLoading={isLoading}
+                isLoading={isFetching}
                 articlesCount={data?._count as number}
                 handleNextPage={handleNextPage}
               />

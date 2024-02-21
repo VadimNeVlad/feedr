@@ -59,7 +59,7 @@ export const ProfileContent: React.FC<ProfileContentProps> = ({
             <Typography
               variant="h4"
               fontWeight={700}
-              sx={{ fontSize: { xs: 26, md: 34 }, mb: 1 }}
+              sx={{ fontSize: { xs: 24, md: 34 }, mb: 1 }}
             >
               {user.name}
             </Typography>
@@ -151,7 +151,12 @@ export const ProfileContent: React.FC<ProfileContentProps> = ({
               <Link to="/user/edit-profile/profile">
                 <Button
                   variant="contained"
-                  sx={{ position: "absolute", top: 20, right: 20 }}
+                  sx={{
+                    position: "absolute",
+                    top: { xs: -16, md: 16 },
+                    right: 16,
+                    fontSize: { xs: 12, md: 14 },
+                  }}
                 >
                   Edit Profile
                 </Button>
@@ -160,7 +165,13 @@ export const ProfileContent: React.FC<ProfileContentProps> = ({
               <Button
                 variant={!isFollow ? "contained" : "outlined"}
                 onClick={handleFollowUser}
-                sx={{ position: "absolute", top: 20, right: 20 }}
+                sx={{
+                  position: "absolute",
+                  top: { xs: -16, md: 16 },
+                  right: 16,
+                  fontSize: { xs: 12, md: 14 },
+                  background: isFollow ? "#fff !important" : "inherit",
+                }}
               >
                 {!isFollow ? "Follow" : "Unfollow"}
               </Button>
