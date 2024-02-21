@@ -11,7 +11,6 @@ import {
 import { formatDate } from "../../utils/helpers/formatDate";
 import { trimFirstLetter } from "../../utils/helpers/trimString";
 import { Editor } from "../Editor/Editor";
-import { IMAGE_URL } from "../../utils/constants/constants";
 import { useNavigate } from "react-router-dom";
 import { ArticleTagItem } from "../ArticleTagItem/ArticleTagItem";
 import { RootState } from "../../app/store";
@@ -31,19 +30,14 @@ export const ArticleContent: React.FC<ArticleContentProps> = ({ article }) => {
             height: { xs: 200, sm: 250, md: 300 },
             objectFit: "cover",
           }}
-          src={article.image && `${IMAGE_URL}articles/${article.image}`}
+          src={article.image}
         />
       )}
 
       <CardHeader
         sx={{ cursor: "pointer", pb: 1 }}
         avatar={
-          <Avatar
-            src={
-              article.author.image &&
-              `${IMAGE_URL}avatars/${article.author.image}`
-            }
-          >
+          <Avatar src={article.author.image}>
             {trimFirstLetter(article.author.name)}
           </Avatar>
         }

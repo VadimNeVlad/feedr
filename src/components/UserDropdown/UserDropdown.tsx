@@ -14,7 +14,6 @@ import { logout } from "../../features/auth/authSlice";
 import { UserDropdownProps } from "../../utils/types/props";
 import { trimFirstLetter } from "../../utils/helpers/trimString";
 import { useNavigate } from "react-router-dom";
-import { IMAGE_URL } from "../../utils/constants/constants";
 
 export const UserDropdown: React.FC<UserDropdownProps> = ({ user }) => {
   const dispatch = useDispatch();
@@ -38,9 +37,7 @@ export const UserDropdown: React.FC<UserDropdownProps> = ({ user }) => {
   return (
     <>
       <IconButton onClick={handleClick}>
-        <Avatar src={user.image && `${IMAGE_URL}avatars/${user.image}`}>
-          {trimFirstLetter(user.name)}
-        </Avatar>
+        <Avatar src={user.image}>{trimFirstLetter(user.name)}</Avatar>
       </IconButton>
 
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>

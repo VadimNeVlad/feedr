@@ -3,7 +3,6 @@ import React from "react";
 import { CommentItemProps } from "../../utils/types/props";
 import { trimFirstLetter } from "../../utils/helpers/trimString";
 import { formatDate } from "../../utils/helpers/formatDate";
-import { IMAGE_URL } from "../../utils/constants/constants";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
@@ -16,10 +15,7 @@ export const CommentItem: React.FC<CommentItemProps> = ({ comment }) => {
       <CardContent sx={{ display: "flex", alignItems: "flex-start" }}>
         <Link to={user ? `/user/${comment.author.id}` : "/login"}>
           <Avatar
-            src={
-              comment.author.image &&
-              `${IMAGE_URL}avatars/${comment.author.image}`
-            }
+            src={comment.author.image}
             sx={{
               width: { xs: 22, md: 32 },
               height: { xs: 22, md: 32 },

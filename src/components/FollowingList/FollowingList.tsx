@@ -16,7 +16,11 @@ export const FollowingList: React.FC<FollowingListProps> = ({
       {followType && followType.length > 0 && (
         <>
           {size === "lg" && (
-            <Typography variant="h4" fontWeight={700} sx={{ mb: 2 }}>
+            <Typography
+              variant="h4"
+              fontWeight={700}
+              sx={{ fontSize: { xs: 28, md: 34 }, mb: 2 }}
+            >
               {followingCount} Following
             </Typography>
           )}

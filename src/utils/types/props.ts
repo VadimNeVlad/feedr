@@ -21,7 +21,7 @@ export interface AuthFormProps {
 export interface ArticleListProps {
   articles: Article[] | undefined;
   isLoading?: boolean;
-  articlesCount?: number;
+  articlesCount: number;
   handleNextPage?: () => void;
 }
 

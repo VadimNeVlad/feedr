@@ -28,7 +28,7 @@ export const Follow: React.FC = () => {
       {isLoading && <FollowSkeleton />}
 
       {!isLoading && data && (
-        <Container maxWidth="lg" sx={{ mt: 11, pb: 3 }}>
+        <Container maxWidth="lg" sx={{ mt: 11, pb: 3, minHeight: "100vh" }}>
           <FollowingList
             listType={isFollowers ? "followers" : "followings"}
             followType={isFollowers ? followers : following}

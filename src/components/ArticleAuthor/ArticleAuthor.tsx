@@ -18,7 +18,6 @@ import {
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { useNavigate } from "react-router-dom";
-import { IMAGE_URL } from "../../utils/constants/constants";
 import { useFollowUser } from "../../hooks/useFollowUser";
 import { generateColor } from "../../utils/helpers/generateColor";
 
@@ -53,14 +52,11 @@ export const ArticleAuthor: React.FC<ArticleAuthorProps> = ({ author }) => {
       <CardHeader
         sx={{ cursor: "pointer" }}
         avatar={
-          <Avatar
-            src={author.image && `${IMAGE_URL}avatars/${author.image}`}
-            sx={{ width: "46px", height: "46px" }}
-          >
+          <Avatar src={author.image} sx={{ width: "46px", height: "46px" }}>
             {trimFirstLetter(author.name)}
           </Avatar>
         }
-        titleTypographyProps={{ variant: "h6", fontWeight: 700 }}
+        titleTypographyProps={{ variant: "h6", fontWeight: 700, fontSize: 18 }}
         title={author.name}
         onClick={
           user ? () => navigate(`/user/${author.id}`) : () => navigate("/login")

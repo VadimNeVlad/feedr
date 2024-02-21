@@ -8,7 +8,6 @@ import {
   CardContent,
   Typography,
 } from "@mui/material";
-import { IMAGE_URL } from "../../../utils/constants/constants";
 import { trimFirstLetter } from "../../../utils/helpers/trimString";
 import { Link } from "react-router-dom";
 import { formatDate } from "../../../utils/helpers/formatDate";
@@ -41,10 +40,7 @@ export const ReadingListItem: React.FC<ReadingListItemProps> = ({
           >
             <Link to={`/user/${article.author.id}`}>
               <Avatar
-                src={
-                  article.author.image &&
-                  `${IMAGE_URL}avatars/${article.author.image}`
-                }
+                src={article.author.image}
                 sx={{ width: "30px", height: "30px", mt: 1 }}
               >
                 {trimFirstLetter(article.author.name)}

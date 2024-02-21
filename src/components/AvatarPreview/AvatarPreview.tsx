@@ -4,7 +4,6 @@ import { trimFirstLetter } from "../../utils/helpers/trimString";
 import { AvatarPreviewProps } from "../../utils/types/props";
 import { useUpdateUserAvatarMutation } from "../../features/users/usersApi";
 import { useForm } from "react-hook-form";
-import { IMAGE_URL } from "../../utils/constants/constants";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -44,7 +43,7 @@ export const AvatarPreview: React.FC<AvatarPreviewProps> = ({
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Avatar
-        src={preview || (avatar && `${IMAGE_URL}avatars/${avatar}`)}
+        src={preview || avatar}
         onClick={
           currentUser?.id === userId
             ? () => fileRef.current?.click()

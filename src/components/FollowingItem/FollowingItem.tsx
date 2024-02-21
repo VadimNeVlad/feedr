@@ -1,7 +1,6 @@
 import React from "react";
 import { FollowingItemProps } from "../../utils/types/props";
 import { Avatar, Box, Button, Typography } from "@mui/material";
-import { IMAGE_URL } from "../../utils/constants/constants";
 import { trimFirstLetter } from "../../utils/helpers/trimString";
 import { Link, useParams } from "react-router-dom";
 import {
@@ -46,7 +45,7 @@ export const FollowingItem: React.FC<FollowingItemProps> = ({
         alignItems: "center",
         mb: 1.5,
         ...(size === "lg" && {
-          mb: 4,
+          mb: { xs: 2, md: 4 },
         }),
       }}
     >
@@ -62,19 +61,20 @@ export const FollowingItem: React.FC<FollowingItemProps> = ({
         }}
       >
         <Avatar
-          src={
-            followTypeUser.image &&
-            `${IMAGE_URL}avatars/${followTypeUser.image}`
-          }
+          src={followTypeUser.image}
           sx={
             size === "lg"
-              ? { width: 42, height: 42, fontSize: "20px" }
+              ? {
+                  width: { xs: 32, md: 42 },
+                  height: { xs: 32, md: 42 },
+                  fontSize: { xs: "18px", md: "20px" },
+                }
               : { width: 22, height: 22, fontSize: "13px" }
           }
         >
           {trimFirstLetter(followTypeUser.name)}
         </Avatar>
-        <Box>
+        <Box sx={{ pr: 1 }}>
           <Typography
             variant={size === "lg" ? "subtitle1" : "body1"}
             fontWeight={size === "lg" ? 700 : 400}
@@ -92,6 +92,7 @@ export const FollowingItem: React.FC<FollowingItemProps> = ({
         <Button
           variant={!isFollow ? "contained" : "outlined"}
           onClick={handleFollowUser}
+          sx={{ fontSize: { xs: "12px", md: "14px" } }}
         >
           {!isFollow ? "Follow" : "Unfollow"}
         </Button>

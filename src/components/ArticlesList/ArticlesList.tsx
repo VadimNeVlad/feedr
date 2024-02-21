@@ -32,7 +32,7 @@ export const ArticlesList: React.FC<ArticleListProps> = ({
     <>
       {isLoading && <ArticlesListSkeleton />}
 
-      {!isLoading && articles && articlesCount && (
+      {!isLoading && articles && (
         <>
           {articles.length > 0 ? (
             articles.map((article) => (

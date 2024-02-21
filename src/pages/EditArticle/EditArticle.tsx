@@ -17,7 +17,6 @@ import { useForm } from "react-hook-form";
 import { Article } from "../../utils/types/articles";
 import { Editor } from "../../components/Editor/Editor";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { IMAGE_URL } from "../../utils/constants/constants";
 import { ImagePreview } from "../../components/ImagePreview/ImagePreview";
 import { useDelayedRedirect } from "../../hooks/useDelayedRedirect";
 import { useImagePreview } from "../../hooks/useImagePreview";
@@ -68,7 +67,7 @@ export const EditArticle: React.FC = () => {
   useDelayedRedirect(isSuccess, error, "Article updated successfully");
 
   useEffect(() => {
-    if (article?.image) setPreview(`${IMAGE_URL}articles/${article.image}`);
+    if (article?.image) setPreview(article.image);
     if (article?.body) setContent(article.body);
   }, [article, setPreview]);
 

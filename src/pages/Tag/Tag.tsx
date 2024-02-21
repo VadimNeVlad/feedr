@@ -27,7 +27,7 @@ export const Tag: React.FC = () => {
 
   return (
     <Layout>
-      <Container maxWidth="lg" sx={{ mt: 9, pb: 3 }}>
+      <Container maxWidth="lg" sx={{ mt: 9, pb: 3, minHeight: "100vh" }}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Card sx={{ mb: { xs: 1, md: 3 } }}>

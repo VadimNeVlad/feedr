@@ -23,7 +23,6 @@ import { RootState } from "../../app/store";
 import { Link, useNavigate } from "react-router-dom";
 import { removeTags } from "../../utils/helpers/removeTags";
 import CommentOutlinedIcon from "@mui/icons-material/CommentOutlined";
-import { IMAGE_URL } from "../../utils/constants/constants";
 import { useFavoriteArticle } from "../../hooks/useFavoriteArticle";
 import { ArticleTagItem } from "../ArticleTagItem/ArticleTagItem";
 import { limitText } from "../../utils/helpers/limitText";
@@ -52,12 +51,7 @@ export const ArticleItem: React.FC<ArticleItemProps> = ({ article }) => {
       <CardHeader
         sx={{ cursor: "pointer", pb: 0 }}
         avatar={
-          <Avatar
-            src={
-              article.author.image &&
-              `${IMAGE_URL}avatars/${article.author.image} `
-            }
-          >
+          <Avatar src={article.author.image}>
             {trimFirstLetter(article.author.name)}
           </Avatar>
         }

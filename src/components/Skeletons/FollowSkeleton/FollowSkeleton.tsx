@@ -3,10 +3,10 @@ import React from "react";
 
 export const FollowSkeleton: React.FC = () => {
   return (
-    <Container maxWidth="lg" sx={{ mt: 11, pb: 3 }}>
+    <Container maxWidth="lg" sx={{ mt: 11, pb: 3, minHeight: "100vh" }}>
       <Skeleton
         variant="text"
-        sx={{ fontSize: "32px", width: "200px", mb: 2 }}
+        sx={{ fontSize: { xs: 24, md: 28 }, width: "200px", mb: 2 }}
       />
       <Card>
         <CardContent>
@@ -17,7 +17,7 @@ export const FollowSkeleton: React.FC = () => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-between",
-                mb: 4,
+                mb: { xs: 2, md: 4 },
               }}
             >
               <Box
@@ -27,13 +27,15 @@ export const FollowSkeleton: React.FC = () => {
                   alignItems: "center",
                 }}
               >
-                <Skeleton variant="circular" width={42} height={42} />
+                <Skeleton
+                  variant="circular"
+                  sx={{ width: { xs: 32, md: 42 }, height: { xs: 32, md: 42 } }}
+                />
                 <Skeleton
                   variant="text"
                   sx={{ fontSize: "20px", width: "150px" }}
                 />
               </Box>
-              <Skeleton variant="rectangular" width={108} height={36} />
             </Box>
           ))}
         </CardContent>

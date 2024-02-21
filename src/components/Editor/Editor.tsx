@@ -19,7 +19,7 @@ export const Editor: React.FC<EditorProps> = ({
   showToolbar,
   isEditable,
 }) => {
-  const limit = 5000;
+  const limit = 8000;
   const editor = useEditor({
     extensions: [
       StarterKit,

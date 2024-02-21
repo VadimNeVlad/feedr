@@ -14,7 +14,7 @@ export const TagList: React.FC<TagslistProps> = ({
     <>
       {isLoading && <TagsListSkeleton />}
 
-      {isFetching && (
+      {isFetching && !isLoading && (
         <Box
           sx={{
             display: "flex",
