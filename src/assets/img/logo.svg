@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 50">
+  <!-- Logo text for "Feed" -->
+  <text x="10" y="45" font-family="Roboto, sans-serif" font-size="60" fill="#fff">Feed</text>
+  <!-- Letter "R" with specified color -->
+  <text x="142" y="45" font-family="Roboto, sans-serif" font-size="60" fill="rgb(25, 118, 210)">R</text>
+</svg>

@@ -20,7 +20,7 @@ export const commentsApi = api.injectEndpoints({
         method: "POST",
         body: { content },
       }),
-      invalidatesTags: ["Comment"],
+      invalidatesTags: ["Comment", "Article", "User"],
       async onQueryStarted({ articleId }, { dispatch, queryFulfilled }) {
         await queryFulfilled;
         dispatch(
