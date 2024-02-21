@@ -14,6 +14,7 @@ import { RootState } from "../../app/store";
 export const FollowingItem: React.FC<FollowingItemProps> = ({
   followTypeUser,
   size,
+  listType,
   setFollowingCount,
 }) => {
   const { id } = useParams();
@@ -29,11 +30,13 @@ export const FollowingItem: React.FC<FollowingItemProps> = ({
     if (!isFollow) {
       followUser(followTypeUser.id);
       setIsFollow(true);
-      if (currentUser?.id === id) setFollowingCount((prev) => prev! + 1);
+      if (currentUser?.id === id && listType === "followings")
+        setFollowingCount((prev) => prev! + 1);
     } else {
       unfollowUser(followTypeUser.id);
       setIsFollow(false);
-      if (currentUser?.id === id) setFollowingCount((prev) => prev! - 1);
+      if (currentUser?.id === id && listType === "followings")
+        setFollowingCount((prev) => prev! - 1);
     }
   };
 

@@ -65,7 +65,10 @@ export const ProfileContent: React.FC<ProfileContentProps> = ({
             </Typography>
 
             {folowersCount > 0 ? (
-              <Link to={`/user/${user.id}/followers`}>
+              <Link
+                to={`/user/${user.id}/followers`}
+                style={{ display: "inline-block" }}
+              >
                 <Typography variant="body1" sx={{ mb: 3 }}>
                   {folowersCount} Followers
                 </Typography>
@@ -170,7 +173,9 @@ export const ProfileContent: React.FC<ProfileContentProps> = ({
                   top: { xs: -16, md: 16 },
                   right: 16,
                   fontSize: { xs: 12, md: 14 },
-                  background: isFollow ? "#fff !important" : "inherit",
+                  background: {
+                    xs: isFollow ? "#fff !important" : "#1976d2",
+                  },
                 }}
               >
                 {!isFollow ? "Follow" : "Unfollow"}

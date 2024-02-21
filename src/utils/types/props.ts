@@ -107,6 +107,7 @@ export interface FollowingListProps {
 
 export interface FollowingItemProps {
   followTypeUser: User;
+  listType: "followers" | "followings";
   size?: "sm" | "lg";
   setFollowingCount: (count: React.SetStateAction<number | undefined>) => void;
 }
