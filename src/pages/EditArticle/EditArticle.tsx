@@ -76,7 +76,7 @@ export const EditArticle: React.FC = () => {
     formData.append("title", data.title);
     formData.append("body", content);
     formData.append("id", id || "");
-    formData.append("image", image);
+    formData.append("image", image || preview);
 
     updateArticle(formData);
   };
