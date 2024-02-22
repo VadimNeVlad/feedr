@@ -59,7 +59,7 @@ export const FollowingList: React.FC<FollowingListProps> = ({
               {size === "sm" && followType.length > 4 && (
                 <Link to={`/user/${id}/following`}>
                   <Typography variant="body2" sx={{ mt: 3 }}>
-                    See All ({followType.length})
+                    See All Followings
                   </Typography>
                 </Link>
               )}
