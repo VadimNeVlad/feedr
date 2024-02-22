@@ -16,7 +16,7 @@ export const useFollowUser = (
     [user.followers, currentUser]
   );
 
-  const [isFollow, setIsFollow] = useState<boolean>(isCurrentUserFollowing);
+  const [isFollow, setIsFollow] = useState(isCurrentUserFollowing);
 
   useEffect(() => {
     setIsFollow(isCurrentUserFollowing);

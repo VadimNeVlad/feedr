@@ -28,7 +28,7 @@ export const Routes = () => {
 
   return (
     <AnimatePresence initial={false} mode="wait">
-      <RouterRoutes location={location} key={location.pathname}>
+      <RouterRoutes>
         {/* Private routes */}
         <Route element={<PrivateRoutes />}>
           <Route path="/add-article" element={<AddArticle />} />

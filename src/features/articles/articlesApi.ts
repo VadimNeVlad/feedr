@@ -126,7 +126,7 @@ export const articlesApi = api.injectEndpoints({
         url: `articles/${id}/favorite`,
         method: "POST",
       }),
-      invalidatesTags: [{ type: "Article", id: "LIST" }],
+      invalidatesTags: ["Article"],
       async onQueryStarted(id, { dispatch, queryFulfilled }) {
         const patchResult = dispatch(
           articlesApi.util.updateQueryData("getSingleArticle", id, (draft) => {
@@ -145,7 +145,7 @@ export const articlesApi = api.injectEndpoints({
         url: `articles/${id}/favorite`,
         method: "DELETE",
       }),
-      invalidatesTags: [{ type: "Article", id: "LIST" }],
+      invalidatesTags: ["Article"],
       async onQueryStarted(id, { dispatch, queryFulfilled }) {
         const patchResult = dispatch(
           articlesApi.util.updateQueryData("getSingleArticle", id, (draft) => {
