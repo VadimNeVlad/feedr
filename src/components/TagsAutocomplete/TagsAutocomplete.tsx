@@ -19,6 +19,10 @@ export const TagsAutocomplete: React.FC<TagsAutocompleteProps> = ({
     skip: !debouncedSearchQuery,
   });
 
+  const handleSpace = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === " ") e.preventDefault();
+  };
+
   return (
     <Controller
       control={control}
@@ -54,6 +58,7 @@ export const TagsAutocomplete: React.FC<TagsAutocompleteProps> = ({
               {...params}
               label="Select Tags"
               onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={handleSpace}
             />
           )}
         />
