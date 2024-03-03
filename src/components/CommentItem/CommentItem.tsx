@@ -20,6 +20,7 @@ export const CommentItem: React.FC<CommentItemProps> = ({ comment }) => {
               width: { xs: 22, md: 32 },
               height: { xs: 22, md: 32 },
               mr: { xs: 1, md: 2 },
+              fontSize: { xs: 12, md: 20 },
             }}
           >
             {trimFirstLetter(comment.author.name)}
