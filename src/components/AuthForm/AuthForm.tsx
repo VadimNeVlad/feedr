@@ -110,7 +110,11 @@ export const AuthForm: React.FC<AuthFormProps> = ({
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
-                  <IconButton onClick={setShowPassword} edge="end">
+                  <IconButton
+                    onClick={setShowPassword}
+                    edge="end"
+                    data-testid="toggle-password"
+                  >
                     {showPassword ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
                 </InputAdornment>
