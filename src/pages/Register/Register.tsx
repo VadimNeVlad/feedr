@@ -10,7 +10,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { registerSchema } from "../../utils/validators/registerSchema";
 import { ToastContainer, toast } from "react-toastify";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-import "react-toastify/dist/ReactToastify.css";
+// import "react-toastify/dist/ReactToastify.css";
 
 export const Register: React.FC = () => {
   const navigate = useNavigate();

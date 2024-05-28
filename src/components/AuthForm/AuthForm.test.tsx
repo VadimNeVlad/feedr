@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { AuthForm } from "./AuthForm";
 import userEvent from "@testing-library/user-event";
 import { FormProvider, useForm } from "react-hook-form";
@@ -71,4 +71,33 @@ test("toggles password visibility", async () => {
   expect(passwordInput).toHaveAttribute("type", "text");
   await userEvent.click(toggleBtn);
   expect(passwordInput).toHaveAttribute("type", "password");
+});
+
+test("submits form with valid data", async () => {
+  const handleSubmit = jest.fn();
+
+  renderWithProviders(
+    <AuthForm
+      title="Login"
+      text="Login to your account"
+      isPending={false}
+      onSubmit={handleSubmit}
+    />
+  );
+
+  const emailInput = screen.getByLabelText("Email");
+  const passwordInput = screen.getByLabelText("Password");
+  const submitBtn = screen.getByRole("button", { name: /login/i });
+
+  await userEvent.type(emailInput, "test@example.com");
+  await userEvent.type(passwordInput, "password123");
+  await userEvent.click(submitBtn);
+
+  expect(emailInput).toHaveValue("test@example.com");
+  expect(passwordInput).toHaveValue("password123");
+
+  await waitFor(() => {
+    expect(handleSubmit).toHaveBeenCalledTimes(1);
+    expect(handleSubmit).toHaveBeenCalled();
+  });
 });
