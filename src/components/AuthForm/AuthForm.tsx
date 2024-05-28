@@ -142,7 +142,6 @@ export const AuthForm: React.FC<AuthFormProps> = ({
           variant="contained"
           loading={isPending}
           sx={{ mb: 1 }}
-          data-testid="submit-button"
         >
           {title === "Register" ? "Register" : "Login"}
         </LoadingButton>

@@ -1,12 +1,12 @@
 import { render, screen, waitFor } from "@testing-library/react";
-import { Register } from "./Register";
+import { Login } from "./Login";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
+import { useLoginMutation } from "../../features/auth/authApi";
 import "@testing-library/jest-dom";
-import { useRegisterMutation } from "../../features/auth/authApi";
 
 jest.mock("../../features/auth/authApi", () => ({
-  useRegisterMutation: jest.fn(() => [
+  useLoginMutation: jest.fn(() => [
     jest.fn(),
     { data: null, isSuccess: false, isLoading: false, error: null },
   ]),
@@ -28,25 +28,23 @@ jest.mock("react-redux", () => ({
 
 test("submit register form with valid data", async () => {
   const handleSubmit = jest.fn();
-  (useRegisterMutation as jest.Mock).mockReturnValue([
+  (useLoginMutation as jest.Mock).mockReturnValue([
     handleSubmit,
     { data: null, isSuccess: false, isLoading: false, error: null },
   ]);
 
   render(
     <MemoryRouter>
-      <Register />
+      <Login />
     </MemoryRouter>
   );
 
   const emailInput = screen.getByLabelText("Email");
   const passwordInput = screen.getByLabelText("Password");
-  const nameInput = screen.getByLabelText("Full Name");
-  const submitBtn = screen.getByRole("button", { name: /register/i });
+  const submitBtn = screen.getByRole("button", { name: /login/i });
 
   await userEvent.type(emailInput, "test@example.com");
   await userEvent.type(passwordInput, "test123");
-  await userEvent.type(nameInput, "test");
 
   await userEvent.click(submitBtn);
 
@@ -55,7 +53,6 @@ test("submit register form with valid data", async () => {
     expect(handleSubmit).toHaveBeenCalledWith({
       email: "test@example.com",
       password: "test123",
-      name: "test",
     });
   });
 });
