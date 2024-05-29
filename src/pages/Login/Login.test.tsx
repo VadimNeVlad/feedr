@@ -56,3 +56,33 @@ test("submit register form with valid data", async () => {
     });
   });
 });
+
+test("shows error message for invalid email", async () => {
+  render(
+    <MemoryRouter>
+      <Login />
+    </MemoryRouter>
+  );
+
+  await userEvent.type(screen.getByLabelText("Email"), "invalid-email");
+  await userEvent.click(screen.getByRole("button", { name: /login/i }));
+
+  expect(
+    await screen.findByText("Email must be a valid email")
+  ).toBeInTheDocument();
+});
+
+test("shows error message for password with length less than 6", async () => {
+  render(
+    <MemoryRouter>
+      <Login />
+    </MemoryRouter>
+  );
+
+  await userEvent.type(screen.getByLabelText("Password"), "12345");
+  await userEvent.click(screen.getByRole("button", { name: /login/i }));
+
+  expect(
+    await screen.findByText("Password must be at least 6 characters")
+  ).toBeInTheDocument();
+});
