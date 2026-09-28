@@ -1,67 +1,71 @@
-import React, { useEffect } from "react";
-import { Card, CardContent, TextField } from "@mui/material";
+import { Card, CardContent, TextField, Button } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { CommentData } from "../../utils/types/comment";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useCreateCommentMutation } from "../../features/comments/commentsApi";
-import { CommentFormProps } from "../../utils/types/props";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import { apiErrorMessage } from "../../utils/helpers/apiError";
 
-export const CommentForm: React.FC<CommentFormProps> = ({
-  articleId,
-  isFetching,
-}) => {
-  const navigate = useNavigate();
+interface CommentFormProps {
+  articleId: string;
+  isFetching?: boolean;
+}
+
+export const CommentForm = ({ articleId }: CommentFormProps) => {
   const user = useSelector((state: RootState) => state.auth.user);
-
-  const [createArticle, { isLoading, isSuccess }] = useCreateCommentMutation();
+  const [createComment, { isLoading }] = useCreateCommentMutation();
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm<CommentData>();
-
-  useEffect(() => {
-    if (isSuccess && !isFetching) {
-      reset();
+  const onSubmit = async (data: CommentData) => {
+    try {
+      await createComment({ articleId, content: data.content.trim() }).unwrap();
+      reset({ content: "" });
+    } catch (error) {
+      toast.error(apiErrorMessage(error));
     }
-  }, [isSuccess, reset, isFetching]);
-
-  const onSubmit = (data: { content: string }) => {
-    const commentData: CommentData = {
-      ...data,
-      articleId,
-    };
-
-    createArticle(commentData);
   };
-
   return (
     <Card sx={{ borderRadius: 0 }}>
-      <CardContent sx={{ pt: 0 }}>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <TextField
-            multiline
-            fullWidth
-            minRows={2}
-            maxRows={5}
-            placeholder="Add to the discussion"
-            onClick={!user ? () => navigate("/login") : undefined}
-            sx={{ borderRadius: 0, outline: "none", mb: "16px" }}
-            {...register("content", { required: true })}
-          />
-          <LoadingButton
-            type="submit"
-            variant="contained"
-            disabled={errors.content?.type === "required" || !user}
-            loading={isLoading || isFetching}
-          >
-            Submit
-          </LoadingButton>
-        </form>
+      <CardContent>
+        {user ? (
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <TextField
+              label="Add to the discussion"
+              multiline
+              fullWidth
+              minRows={2}
+              maxRows={5}
+              error={!!errors.content}
+              helperText={errors.content?.message}
+              sx={{ mb: 2 }}
+              {...register("content", {
+                validate: (value) => !!value.trim() || "Comment is required",
+                maxLength: {
+                  value: 10000,
+                  message: "Maximum 10000 characters",
+                },
+              })}
+            />
+            <LoadingButton
+              type="submit"
+              variant="contained"
+              loading={isLoading}
+            >
+              Submit
+            </LoadingButton>
+          </form>
+        ) : (
+          <Button component={Link} to="/login">
+            Log in to join the discussion
+          </Button>
+        )}
       </CardContent>
     </Card>
   );

@@ -1,10 +1,13 @@
-import React from "react";
+import { Editor } from "@tiptap/react";
 import { ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
-import { EditorToolbarProps } from "../../../utils/types/props";
 
-export const HeadingToolbarButtons: React.FC<EditorToolbarProps> = ({
+interface EditorToolbarProps {
+  editor: Editor;
+}
+
+export const HeadingToolbarButtons = ({
   editor,
-}) => {
+}: EditorToolbarProps) => {
   return (
     <ToggleButtonGroup size="small" exclusive aria-label="text alignment">
       <ToggleButton

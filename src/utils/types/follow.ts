@@ -8,6 +8,7 @@ export interface Follow {
 }
 
 export interface FollowParams {
+  page?: number;
   id: string;
   perPage?: number;
 }

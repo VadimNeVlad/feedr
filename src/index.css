@@ -1,5 +1,5 @@
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   background: rgb(245, 245, 245);
   line-height: 1.5;
 }
@@ -26,7 +26,7 @@ body {
 }
 
 .ProseMirror {
-  outline: none;
+  outline-offset: 3px;
   font-size: 18px;
 }
 
@@ -41,7 +41,7 @@ body {
 }
 
 .MuiButtonBase-root {
-  outline: none !important;
+  outline-offset: 3px;
 }
 
 .MuiMenu-list {
@@ -85,4 +85,13 @@ body {
   .editor__frame .ProseMirror {
     min-height: 200px;
   }
+}
+
+:focus-visible {
+  outline: 2px solid #1976d2;
+  outline-offset: 3px;
+}
+
+.editor__frame:focus-within {
+  border-color: #1976d2;
 }

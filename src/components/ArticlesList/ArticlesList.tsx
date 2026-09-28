@@ -1,53 +1,65 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
+import { Box, Button } from "@mui/material";
+import { useInView } from "react-intersection-observer";
+import { Article } from "../../utils/types/articles";
 import { ArticleItem } from "../ArticleItem/ArticleItem";
-import { Box, LinearProgress } from "@mui/material";
-import { ArticleListProps } from "../../utils/types/props";
+import { ReadingListItem } from "../ReadingListItem/ReadingListItem";
 import { ArticlesListSkeleton } from "../Skeletons/ArticlesListSkeleton/ArticlesListSkeleton";
 import { NoResultMessage } from "../NoResultMessage/NoResultMessage";
-import { useInView } from "react-intersection-observer";
 
-export const ArticlesList: React.FC<ArticleListProps> = ({
+export type ArticlesListVariant = "feed" | "saved";
+
+type ArticlesListProps = {
+  /** `undefined` while the page is loading. */
+  articles?: Article[];
+  isFetching: boolean;
+  showEmpty: boolean;
+  /** Present only when another page exists. */
+  onLoadMore?: () => void;
+  variant?: ArticlesListVariant;
+};
+
+const variants = {
+  feed: {
+    Item: ArticleItem,
+    empty: "There are no articles yet",
+    loadMore: "Load more articles",
+  },
+  saved: {
+    Item: ReadingListItem,
+    empty: "No saved articles yet.",
+    loadMore: "Load more saved articles",
+  },
+};
+
+export const ArticlesList = ({
   articles,
-  articlesCount,
-  isLoading,
-  handleNextPage,
-}) => {
-  const { ref, inView } = useInView({
-    threshold: 0.5,
-  });
+  isFetching,
+  showEmpty,
+  onLoadMore,
+  variant = "feed",
+}: ArticlesListProps) => {
+  const { Item, empty, loadMore } = variants[variant];
+  const { ref, inView } = useInView({ threshold: 0.5 });
 
   useEffect(() => {
-    if (
-      inView &&
-      articlesCount &&
-      articles &&
-      articles.length < articlesCount
-    ) {
-      handleNextPage?.();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [inView]);
+    if (inView && !isFetching) onLoadMore?.();
+  }, [inView, isFetching, onLoadMore]);
+
+  if (!articles) return <ArticlesListSkeleton />;
 
   return (
     <>
-      {isLoading && <ArticlesListSkeleton />}
-
-      {!isLoading && articles && (
-        <>
-          {articles.length > 0 ? (
-            articles.map((article) => (
-              <ArticleItem key={article.title} article={article} />
-            ))
-          ) : (
-            <NoResultMessage msg="There are no articles yet" />
-          )}
-
-          {articles.length < articlesCount && (
-            <Box ref={ref}>
-              <LinearProgress />
-            </Box>
-          )}
-        </>
+      {articles.map((article) => (
+        <Item key={article.id} article={article} />
+      ))}
+      {showEmpty && articles.length === 0 && <NoResultMessage msg={empty} />}
+      {onLoadMore && (
+        <Box ref={ref} sx={{ my: 2 }}>
+          <Button onClick={onLoadMore} disabled={isFetching}>
+            {loadMore}
+          </Button>
+        </Box>
       )}
     </>
   );

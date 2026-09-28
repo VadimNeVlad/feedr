@@ -6,12 +6,11 @@ import {
   Grid,
   Skeleton,
 } from "@mui/material";
-import React from "react";
 import { ProfileContentSkeleton } from "../ProfileContentSkeleton/ProfileContentSkeleton";
 import { FollowingListSkeleton } from "../FollowingListSkeleton/FollowingListSkeleton";
 import { ArticlesListSkeleton } from "../ArticlesListSkeleton/ArticlesListSkeleton";
 
-export const ProfileSkeleton: React.FC = () => {
+export const ProfileSkeleton = () => {
   return (
     <Container maxWidth="lg" sx={{ mt: { xs: 13.3, md: 17 }, pb: 3 }}>
       <Grid container spacing={2}>

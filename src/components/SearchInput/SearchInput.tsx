@@ -1,45 +1,48 @@
-import React from "react";
+import { FormEvent } from "react";
 import SearchIcon from "@mui/icons-material/Search";
-import { IconButton, TextField } from "@mui/material";
-import { SearchInputProps } from "../../utils/types/props";
+import { Box, IconButton, TextField } from "@mui/material";
 import { createSearchParams, useNavigate } from "react-router-dom";
 
-export const SearchInput: React.FC<SearchInputProps> = ({
-  placeholder,
-  inputRef,
-  isGeneralSearch = false,
-  setSearchValue,
-}) => {
+type SearchInputProps = {
+  placeholder: string;
+  /** Handles the query in place; without it the query opens the article search page. */
+  onSearch?: (query: string) => void;
+};
+
+export const SearchInput = ({ placeholder, onSearch }: SearchInputProps) => {
   const navigate = useNavigate();
 
-  const onClickHandler = () => {
-    setSearchValue?.(inputRef.current?.value as string);
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const q = String(new FormData(event.currentTarget).get("q") ?? "").trim();
 
-    if (isGeneralSearch) {
-      navigate({
-        pathname: "/search",
-        search: `?${createSearchParams({
-          q: inputRef.current?.value as string,
-        })}`,
-      });
-    }
+    if (onSearch) onSearch(q);
+    else navigate({ pathname: "/search", search: `?${createSearchParams({ q })}` });
   };
 
   return (
-    <TextField
-      inputRef={inputRef}
-      type="text"
-      placeholder={placeholder}
-      variant="outlined"
-      size="small"
-      sx={{ bgcolor: "background.paper" }}
-      InputProps={{
-        endAdornment: (
-          <IconButton type="submit" onClick={onClickHandler}>
-            <SearchIcon />
-          </IconButton>
-        ),
-      }}
-    />
+    <Box
+      component="form"
+      role="search"
+      onSubmit={handleSubmit}
+      sx={{ width: "100%" }}
+    >
+      <TextField
+        name="q"
+        type="search"
+        placeholder={placeholder}
+        inputProps={{ "aria-label": placeholder }}
+        variant="outlined"
+        size="small"
+        sx={{ bgcolor: "background.paper", width: "100%" }}
+        InputProps={{
+          endAdornment: (
+            <IconButton type="submit" aria-label="Search">
+              <SearchIcon />
+            </IconButton>
+          ),
+        }}
+      />
+    </Box>
   );
 };

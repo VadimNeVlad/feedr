@@ -1,56 +1,33 @@
-import React, { useEffect } from "react";
-import { AuthForm } from "../../components/AuthForm/AuthForm";
 import { FormProvider, useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { useRegisterMutation } from "../../features/auth/authApi";
-import { setUser } from "../../features/auth/authSlice";
-import { AuthData } from "../../utils/types/auth";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { toast } from "react-toastify";
+import { AuthForm } from "../../components/AuthForm/AuthForm";
+import { useRegisterMutation } from "../../features/auth/authApi";
+import { useStartSession } from "../../hooks/useStartSession";
+import { apiErrorMessage } from "../../utils/helpers/apiError";
 import { registerSchema } from "../../utils/validators/registerSchema";
-import { ToastContainer, toast } from "react-toastify";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-// import "react-toastify/dist/ReactToastify.css";
+import { AuthData } from "../../utils/types/auth";
 
-export const Register: React.FC = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+export const Register = () => {
+  const [register, { isLoading }] = useRegisterMutation();
+  const startSession = useStartSession();
+  const methods = useForm<AuthData>({ resolver: yupResolver(registerSchema) });
 
-  const [register, { data, isSuccess, isLoading, error }] =
-    useRegisterMutation();
-
-  const methods = useForm<AuthData>({
-    resolver: yupResolver(registerSchema),
-  });
-
-  useEffect(() => {
-    if (data) dispatch(setUser(data));
-  }, [data, dispatch]);
-
-  useEffect(() => {
-    if (isSuccess) {
-      methods.reset();
-      navigate("/");
-    } else if (error) {
-      const err = (error as FetchBaseQueryError).data as Error;
-      toast.error(err.message);
+  const onSubmit = async (data: AuthData) => {
+    try {
+      startSession(await register(data).unwrap());
+    } catch (error) {
+      toast.error(apiErrorMessage(error));
     }
-  }, [isSuccess, navigate, error, methods]);
-
-  const onSubmit = (data: AuthData) => {
-    register(data);
   };
 
   return (
     <FormProvider {...methods}>
       <AuthForm
-        title="Register"
-        text="Please fill out the form below to login"
+        mode="register"
         isPending={isLoading}
         onSubmit={methods.handleSubmit(onSubmit)}
       />
-
-      <ToastContainer />
     </FormProvider>
   );
 };

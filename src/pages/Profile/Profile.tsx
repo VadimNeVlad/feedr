@@ -1,76 +1,64 @@
-import React from "react";
 import { Box, Container, Grid } from "@mui/material";
-import { useGetUserByIdQuery } from "../../features/users/usersApi";
 import { useParams } from "react-router-dom";
+import { useGetUserByIdQuery } from "../../features/users/usersApi";
+import { useGetFollowingsQuery } from "../../features/follows/followsApi";
 import { ProfileContent } from "../../components/ProfileContent/ProfileContent";
 import { ProfileCountInfo } from "../../components/ProfileCountInfo/ProfileCountInfo";
-import { useGetArticlesByAuthorQuery } from "../../features/articles/articlesApi";
-import { ArticlesList } from "../../components/ArticlesList/ArticlesList";
 import { FollowingList } from "../../components/FollowingList/FollowingList";
-import { useGetFollowingsQuery } from "../../features/follows/followsApi";
-import { Layout } from "../../components/Layout/Layout";
 import { ProfileSkeleton } from "../../components/Skeletons/ProfileSkeleton/ProfileSkeleton";
+import { ArticleFeed } from "../../components/ArticleFeed/ArticleFeed";
+import { QueryError } from "../../components/QueryError/QueryError";
 import { generateColor } from "../../utils/helpers/generateColor";
-import { usePaginate } from "../../hooks/usePaginate";
 
-export const Profile: React.FC = () => {
-  const { id } = useParams();
-  const { page, handleNextPage } = usePaginate(false);
+export const Profile = () => {
+  const { id = "" } = useParams();
+  const user = useGetUserByIdQuery(id);
+  const following = useGetFollowingsQuery({ id, perPage: 5 });
 
-  const { data: user, isLoading: userIsLoading } = useGetUserByIdQuery(
-    id as string
-  );
+  if (user.isLoading) return <ProfileSkeleton />;
 
-  const { data: articles, isLoading: articlesIsLoading } =
-    useGetArticlesByAuthorQuery({ authorId: id as string, page });
-
-  const { data: following, isLoading: followingsIsLoading } =
-    useGetFollowingsQuery({ id: id as string, perPage: 5 });
-
-  const isLoading = userIsLoading || articlesIsLoading || followingsIsLoading;
-  const data = user && articles && following;
+  if (!user.currentData) {
+    return (
+      <Container sx={{ mt: 10, minHeight: "70vh" }}>
+        {user.isError && <QueryError error={user.error} retry={user.refetch} />}
+      </Container>
+    );
+  }
 
   return (
-    <Layout>
-      {isLoading && <ProfileSkeleton />}
-
-      {!isLoading && data && (
-        <>
-          <Box
-            sx={{
-              width: "100%",
-              height: { xs: "135px", md: "170px" },
-              bgcolor: generateColor(user.name),
-            }}
-          ></Box>
-          <Container maxWidth="lg" sx={{ mt: -6, pb: 3, minHeight: "100vh" }}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <ProfileContent user={user} />
-              </Grid>
-              <Grid item xs={12} md={3}>
-                <FollowingList
-                  listType="followings"
-                  followType={following}
-                  id={user.id}
-                  size="sm"
-                />
-                <ProfileCountInfo
-                  commentsCount={user._count.comments}
-                  articlesCount={user._count.articles}
-                />
-              </Grid>
-              <Grid item xs={12} md={9}>
-                <ArticlesList
-                  articles={articles.articles}
-                  articlesCount={articles._count}
-                  handleNextPage={handleNextPage}
-                />
-              </Grid>
-            </Grid>
-          </Container>
-        </>
-      )}
-    </Layout>
+    <>
+      <Box
+        sx={{
+          height: { xs: 135, md: 170 },
+          bgcolor: generateColor(user.currentData.name),
+        }}
+      />
+      <Container maxWidth="lg" sx={{ mt: -6, pb: 3, minHeight: "100vh" }}>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <ProfileContent user={user.currentData} />
+          </Grid>
+          <Grid item xs={12} md={3}>
+            {following.isError ? (
+              <QueryError error={following.error} retry={following.refetch} />
+            ) : (
+              <FollowingList
+                listType="followings"
+                followType={following.currentData}
+                id={id}
+                size="sm"
+              />
+            )}
+            <ProfileCountInfo
+              commentsCount={user.currentData._count.comments}
+              articlesCount={user.currentData._count.articles}
+            />
+          </Grid>
+          <Grid item xs={12} md={9}>
+            <ArticleFeed kind="author" authorId={id} />
+          </Grid>
+        </Grid>
+      </Container>
+    </>
   );
 };

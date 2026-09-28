@@ -1,26 +1,16 @@
-import React from "react";
-import { LayoutProps } from "../../utils/types/props";
+import { Suspense } from "react";
+import { Outlet } from "react-router-dom";
 import { Header } from "../Header/Header";
-import { ToastContainer } from "react-toastify";
 import { Footer } from "../Footer/Footer";
-import { motion } from "framer-motion";
-import { route } from "../../animations/route";
+import { PageLoader } from "../PageLoader/PageLoader";
 
-export const Layout: React.FC<LayoutProps> = ({ children }) => {
-  return (
-    <>
-      <Header />
-      <motion.div
-        variants={route}
-        initial="initial"
-        animate="shown"
-        exit="exit"
-      >
-        {children}
-      </motion.div>
-      <Footer />
-
-      <ToastContainer />
-    </>
-  );
-};
+/** Shared shell for routed pages: the header and footer stay mounted between navigations. */
+export const Layout = () => (
+  <>
+    <Header />
+    <Suspense fallback={<PageLoader />}>
+      <Outlet />
+    </Suspense>
+    <Footer />
+  </>
+);

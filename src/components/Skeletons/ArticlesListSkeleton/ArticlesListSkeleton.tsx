@@ -1,7 +1,6 @@
 import { Box, Card, CardContent, Skeleton } from "@mui/material";
-import React from "react";
 
-export const ArticlesListSkeleton: React.FC = () => {
+export const ArticlesListSkeleton = () => {
   return [...Array(3)].map((_, index) => (
     <Card sx={{ mb: 2 }} key={index}>
       <CardContent>

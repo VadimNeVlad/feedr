@@ -1,13 +1,16 @@
-import React from "react";
 import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
 import CommentOutlinedIcon from "@mui/icons-material/CommentOutlined";
 import { Box, Card, CardContent, Typography } from "@mui/material";
-import { ProfileCountInfoProps } from "../../utils/types/props";
 
-export const ProfileCountInfo: React.FC<ProfileCountInfoProps> = ({
+interface ProfileCountInfoProps {
+  commentsCount: number;
+  articlesCount: number;
+}
+
+export const ProfileCountInfo = ({
   commentsCount,
   articlesCount,
-}) => {
+}: ProfileCountInfoProps) => {
   return (
     <Card sx={{ display: { xs: "none", md: "block" } }}>
       <CardContent sx={{ pt: 3 }}>

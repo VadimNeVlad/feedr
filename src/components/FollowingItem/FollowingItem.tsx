@@ -1,44 +1,24 @@
-import React from "react";
-import { FollowingItemProps } from "../../utils/types/props";
+import { userPath } from "../../utils/helpers/routes";
+import { User } from "../../utils/types/user";
 import { Avatar, Box, Button, Typography } from "@mui/material";
 import { trimFirstLetter } from "../../utils/helpers/trimString";
-import { Link, useParams } from "react-router-dom";
-import {
-  useFollowUserMutation,
-  useUnfollowUserMutation,
-} from "../../features/users/usersApi";
+import { Link } from "react-router-dom";
 import { useFollowUser } from "../../hooks/useFollowUser";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 
-export const FollowingItem: React.FC<FollowingItemProps> = ({
+interface FollowingItemProps {
+  followTypeUser: User;
+  size?: "sm" | "lg";
+}
+
+export const FollowingItem = ({
   followTypeUser,
   size,
-  listType,
-  setFollowingCount,
-}) => {
-  const { id } = useParams();
-
-  const [isFollow, setIsFollow] = useFollowUser(followTypeUser);
-
-  const [followUser] = useFollowUserMutation();
-  const [unfollowUser] = useUnfollowUserMutation();
+}: FollowingItemProps) => {
+  const [isFollow, handleFollowUser, isPending] = useFollowUser(followTypeUser);
 
   const currentUser = useSelector((state: RootState) => state.auth.user);
-
-  const handleFollowUser = () => {
-    if (!isFollow) {
-      followUser(followTypeUser.id);
-      setIsFollow(true);
-      if (currentUser?.id === id && listType === "followings")
-        setFollowingCount((prev) => prev! + 1);
-    } else {
-      unfollowUser(followTypeUser.id);
-      setIsFollow(false);
-      if (currentUser?.id === id && listType === "followings")
-        setFollowingCount((prev) => prev! - 1);
-    }
-  };
 
   return (
     <Box
@@ -53,7 +33,7 @@ export const FollowingItem: React.FC<FollowingItemProps> = ({
       }}
     >
       <Link
-        to={`/user/${followTypeUser.id}`}
+        to={userPath(followTypeUser.id)}
         style={{
           display: "flex",
           alignItems: "center",
@@ -93,6 +73,8 @@ export const FollowingItem: React.FC<FollowingItemProps> = ({
 
       {size === "lg" && currentUser?.id !== followTypeUser.id && (
         <Button
+          disabled={isPending}
+          aria-pressed={isFollow}
           variant={!isFollow ? "contained" : "outlined"}
           onClick={handleFollowUser}
           sx={{ fontSize: { xs: "12px", md: "14px" } }}

@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Avatar,
   Box,
@@ -8,49 +7,36 @@ import {
   CardHeader,
   Typography,
 } from "@mui/material";
-import { ArticleAuthorProps } from "../../utils/types/props";
 import { trimFirstLetter } from "../../utils/helpers/trimString";
 import { formatDate } from "../../utils/helpers/formatDate";
-import {
-  useFollowUserMutation,
-  useUnfollowUserMutation,
-} from "../../features/users/usersApi";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useFollowUser } from "../../hooks/useFollowUser";
 import { generateColor } from "../../utils/helpers/generateColor";
+import { userPath } from "../../utils/helpers/routes";
+import { User } from "../../utils/types/user";
 
-export const ArticleAuthor: React.FC<ArticleAuthorProps> = ({ author }) => {
-  const [isFollow, setIsFollow] = useFollowUser(author);
-  const navigate = useNavigate();
+type ArticleAuthorProps = {
+  author: User;
+};
 
-  const [followUser] = useFollowUserMutation();
-  const [unfollowUser] = useUnfollowUserMutation();
-
+export const ArticleAuthor = ({ author }: ArticleAuthorProps) => {
+  const [isFollow, toggleFollow, isPending] = useFollowUser(author);
   const user = useSelector((state: RootState) => state.auth.user);
 
-  const handleFollowUser = () => {
-    if (!isFollow) {
-      followUser(author.id);
-      setIsFollow(true);
-    } else {
-      unfollowUser(author.id);
-      setIsFollow(false);
-    }
-  };
-
   return (
-    <Card sx={{ display: { xs: "none", md: "block" } }}>
+    <Card>
       <Box
         sx={{
           width: "100%",
           height: "20px",
           bgcolor: generateColor(author.name),
         }}
-      ></Box>
+      />
       <CardHeader
-        sx={{ cursor: "pointer" }}
+        component={Link}
+        to={userPath(author.id)}
         avatar={
           <Avatar src={author.image} sx={{ width: "46px", height: "46px" }}>
             {trimFirstLetter(author.name)}
@@ -58,17 +44,17 @@ export const ArticleAuthor: React.FC<ArticleAuthorProps> = ({ author }) => {
         }
         titleTypographyProps={{ variant: "h6", fontWeight: 700, fontSize: 18 }}
         title={author.name}
-        onClick={
-          user ? () => navigate(`/user/${author.id}`) : () => navigate("/login")
-        }
       />
 
       <CardContent sx={{ pt: 0 }}>
         {user?.id !== author.id && (
           <Button
+            disabled={isPending}
+            aria-pressed={isFollow}
             variant={!isFollow ? "contained" : "outlined"}
-            onClick={user ? handleFollowUser : () => navigate("/login")}
+            onClick={toggleFollow}
             sx={{ width: "100%", mb: 2 }}
+            data-testid="follow-button"
           >
             {!isFollow ? "Follow" : "Unfollow"}
           </Button>

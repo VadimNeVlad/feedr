@@ -1,34 +1,31 @@
-import React, { useRef } from "react";
-import { UserDropdown } from "../UserDropdown/UserDropdown";
 import { useSelector } from "react-redux";
 import { Box, Button, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { RootState } from "../../app/store";
 import { useGetCurrentUserQuery } from "../../features/users/usersApi";
+import { UserDropdown } from "../UserDropdown/UserDropdown";
 import { SearchInput } from "../SearchInput/SearchInput";
 import { MobileMenu } from "./MobileMenu/MobileMenu";
 import { HeaderAuthBtns } from "./HeaderAuthBtns/HeaderAuthBtns";
 
-export const Header: React.FC = () => {
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  const token = useSelector((state: RootState) => state.auth.token);
-  const { data: user, isLoading } = useGetCurrentUserQuery(undefined, {
-    skip: !token,
+export const Header = () => {
+  const sessionUser = useSelector((state: RootState) => state.auth.user);
+  const { currentData: currentUser } = useGetCurrentUserQuery(undefined, {
+    skip: !sessionUser,
   });
-
-  const data = user && token;
+  // The stored session renders immediately; the fresh profile replaces it once loaded.
+  const user = sessionUser && (currentUser ?? sessionUser);
 
   return (
     <Box
+      component="header"
       sx={{
         position: "fixed",
         top: 0,
         left: 0,
         width: "100%",
-        backgroundColor: "#fff",
-        boxShadow:
-          "0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12)",
+        bgcolor: "background.paper",
+        boxShadow: 1,
         zIndex: 20,
       }}
     >
@@ -37,43 +34,39 @@ export const Header: React.FC = () => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          padding: "0px 15px",
+          px: "15px",
           minHeight: "56px",
           maxWidth: "1900px",
-          margin: "0 auto",
+          mx: "auto",
         }}
       >
         <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
           <MobileMenu />
           <Typography variant="h5">
-            <Link to={"/"}>
-              FeeD<span style={{ color: "#1976d2" }}>R</span>
+            <Link to="/">
+              FeeD<Box component="span" sx={{ color: "primary.main" }}>R</Box>
             </Link>
           </Typography>
           <Box sx={{ display: { xs: "none", md: "block" } }}>
-            <SearchInput
-              inputRef={inputRef}
-              placeholder="Search..."
-              isGeneralSearch
-            />
+            <SearchInput placeholder="Search..." />
           </Box>
         </Box>
 
-        {data && (
+        {user ? (
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Link to={"/add-article"}>
-              <Button
-                variant="outlined"
-                sx={{ display: { xs: "none", md: "block" }, mr: 2 }}
-              >
-                Create Article
-              </Button>
-            </Link>
+            <Button
+              component={Link}
+              to="/add-article"
+              variant="outlined"
+              sx={{ display: { xs: "none", md: "block" }, mr: 2 }}
+            >
+              Create Article
+            </Button>
             <UserDropdown user={user} />
           </Box>
+        ) : (
+          <HeaderAuthBtns />
         )}
-
-        {!data && !isLoading && <HeaderAuthBtns />}
       </Box>
     </Box>
   );

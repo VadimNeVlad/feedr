@@ -1,64 +1,50 @@
 import { Autocomplete, Chip, TextField } from "@mui/material";
-import React, { useState } from "react";
-import { Controller } from "react-hook-form";
+import { useState } from "react";
+import { Controller, Control } from "react-hook-form";
 import { useGetTagsQuery } from "../../features/tags/tagsApi";
 import { useDebounce } from "../../hooks/useDebounce";
-import { TagsAutocompleteProps } from "../../utils/types/props";
+import { ArticleFormFields } from "../../utils/validators/articleSchema";
 
-export const TagsAutocomplete: React.FC<TagsAutocompleteProps> = ({
+export const TagsAutocomplete = ({
   control,
-  disabled = false,
-  defaultValues,
-  setTags,
+}: {
+  control: Control<ArticleFormFields>;
 }) => {
-  const [searchQuery, setSearchQuery] = useState("");
-
-  const debouncedSearchQuery = useDebounce(searchQuery, 500);
-
-  const { data } = useGetTagsQuery(debouncedSearchQuery, {
-    skip: !debouncedSearchQuery,
-  });
-
-  const handleSpace = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === " ") e.preventDefault();
-  };
+  const [search, setSearch] = useState("");
+  const q = useDebounce(search, 500);
+  const { currentData: data } = useGetTagsQuery({ q }, { skip: !q });
 
   return (
     <Controller
       control={control}
       name="tagList"
-      defaultValue={defaultValues || []}
-      render={({ field }) => (
+      render={({ field, fieldState }) => (
         <Autocomplete
-          {...field}
           multiple
           freeSolo
           autoSelect
-          defaultValue={[]}
           value={field.value}
-          disabled={disabled}
-          options={data?.map((option) => option.name) || []}
-          onChange={(_, value) => {
-            field.onChange(value);
-            setTags?.(value.join(","));
-          }}
-          disableCloseOnSelect
-          filterSelectedOptions
-          renderTags={(value: readonly string[], getTagProps) =>
-            value.map((option: string, index: number) => (
-              <Chip
-                variant="outlined"
-                label={option}
-                {...getTagProps({ index })}
-              />
-            ))
+          options={data?.map((t) => t.name) || []}
+          onBlur={field.onBlur}
+          onChange={(_, value) =>
+            field.onChange([
+              ...new Set(value.map((t) => t.trim()).filter(Boolean)),
+            ])
+          }
+          renderTags={(value, getProps) =>
+            value.map((tag, index) => {
+              const { key, ...props } = getProps({ index });
+
+              return <Chip key={key} label={tag} {...props} />;
+            })
           }
           renderInput={(params) => (
             <TextField
               {...params}
-              label="Select Tags"
-              onChange={(e) => setSearchQuery(e.target.value)}
-              onKeyDown={handleSpace}
+              label="Tags"
+              onChange={(e) => setSearch(e.target.value)}
+              error={!!fieldState.error}
+              helperText={fieldState.error?.message}
             />
           )}
         />

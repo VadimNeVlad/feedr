@@ -1,181 +1,162 @@
-import React, { useEffect, useState } from "react";
 import {
-  Box,
   Card,
   CardContent,
   CardHeader,
+  CircularProgress,
   TextField,
-  Typography,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
-import { User } from "../../../utils/types/user";
 import LoadingButton from "@mui/lab/LoadingButton";
 import {
   useGetCurrentUserQuery,
   useUpdateUserMutation,
 } from "../../../features/users/usersApi";
-import { useDelayedRedirect } from "../../../hooks/useDelayedRedirect";
+import { QueryError } from "../../../components/QueryError/QueryError";
+import { toast } from "react-toastify";
+import { apiErrorMessage } from "../../../utils/helpers/apiError";
+import { User } from "../../../utils/types/user";
 
-export const ProfileSettings: React.FC = () => {
-  const [characterCounts, setCharacterCounts] = useState({
-    websiteUrl: 0,
-    location: 0,
-    bio: 0,
-  });
+type ProfileFields = {
+  name: string;
+  websiteUrl: string;
+  location: string;
+  bio: string;
+};
 
-  const characterLimit = 200;
+const optionalFields = [
+  { name: "websiteUrl", label: "Website URL", limit: 2048 },
+  { name: "location", label: "Location", limit: 100 },
+  { name: "bio", label: "Bio", limit: 1000 },
+] as const;
 
-  const { data: currentUser } = useGetCurrentUserQuery();
-  const [updateUser, { isLoading, isSuccess, error }] = useUpdateUserMutation();
+export const ProfileSettings = () => {
+  const query = useGetCurrentUserQuery();
 
-  const { register, handleSubmit } = useForm<Partial<User>>();
-
-  useDelayedRedirect(isSuccess, error, "Profile updated successfully");
-
-  useEffect(() => {
-    if (currentUser) {
-      setCharacterCounts({
-        websiteUrl: currentUser.websiteUrl?.length || 0,
-        location: currentUser.location?.length || 0,
-        bio: currentUser.bio?.length || 0,
-      });
-    }
-  }, [currentUser]);
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-
-    if (value.length <= characterLimit) {
-      setCharacterCounts((prevCharacterCounts) => ({
-        ...prevCharacterCounts,
-        [name]: value.length,
-      }));
+  if (!query.currentData) {
+    if (query.isError) {
+      return <QueryError error={query.error} retry={query.refetch} />;
     }
 
-    if (value.length >= characterLimit) {
-      event.target.value = value.substring(0, characterLimit);
-    }
-  };
-
-  const onSubmit = (data: Partial<User>) => {
-    updateUser(data);
-  };
+    return <CircularProgress aria-label="Loading profile" />;
+  }
 
   return (
     <>
-      {currentUser && (
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Card sx={{ mb: 4 }}>
-            <CardHeader
-              title="User"
-              titleTypographyProps={{ variant: "h5", fontWeight: 700, mb: 1 }}
-            />
-            <CardContent>
-              <Box sx={{ mb: 4 }}>
-                <TextField
-                  fullWidth
-                  label="Name"
-                  variant="outlined"
-                  type="text"
-                  defaultValue={currentUser.name}
-                  {...register("name")}
-                />
-              </Box>
-              <Box sx={{ mb: 4 }}>
-                <TextField
-                  fullWidth
-                  label="Email"
-                  variant="outlined"
-                  type="text"
-                  defaultValue={currentUser.email}
-                  disabled
-                />
-              </Box>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader
-              title="Basic"
-              titleTypographyProps={{ variant: "h5", fontWeight: 700, mb: 1 }}
-            />
-            <CardContent>
-              <Box sx={{ mb: 4 }}>
-                <TextField
-                  fullWidth
-                  label="Website URL"
-                  variant="outlined"
-                  type="text"
-                  placeholder="https://yoursite.com"
-                  defaultValue={currentUser.websiteUrl}
-                  {...register("websiteUrl")}
-                  onChange={handleInputChange}
-                />
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                  textAlign="right"
-                  sx={{ mt: 1 }}
-                >
-                  {characterCounts.websiteUrl}/{characterLimit}
-                </Typography>
-              </Box>
-              <Box sx={{ mb: 4 }}>
-                <TextField
-                  fullWidth
-                  label="Location"
-                  variant="outlined"
-                  type="text"
-                  placeholder="Dublin, Ireland"
-                  defaultValue={currentUser.location}
-                  {...register("location")}
-                  onChange={handleInputChange}
-                />
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                  textAlign="right"
-                  sx={{ mt: 1 }}
-                >
-                  {characterCounts.location}/{characterLimit}
-                </Typography>
-              </Box>
-              <Box sx={{ mb: 4 }}>
-                <TextField
-                  multiline
-                  fullWidth
-                  rows={2}
-                  label="Bio"
-                  placeholder="A short bio..."
-                  defaultValue={currentUser.bio}
-                  sx={{ borderRadius: 0 }}
-                  {...register("bio")}
-                  onChange={handleInputChange}
-                />
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                  textAlign="right"
-                  sx={{ mt: 1 }}
-                >
-                  {characterCounts.bio}/{characterLimit}
-                </Typography>
-              </Box>
-
-              <LoadingButton
-                fullWidth
-                size="large"
-                type="submit"
-                variant="contained"
-                loading={isLoading}
-                disabled={isSuccess}
-              >
-                Save Profile Information
-              </LoadingButton>
-            </CardContent>
-          </Card>
-        </form>
-      )}
+      {query.isError && <QueryError error={query.error} retry={query.refetch} />}
+      <ProfileForm key={query.currentData.id} user={query.currentData} />
     </>
   );
 };
+
+function ProfileForm({ user }: { user: User }) {
+  const [update, { isLoading }] = useUpdateUserMutation();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    watch,
+    formState: { errors, isDirty, isSubmitting },
+  } = useForm<ProfileFields>({
+    defaultValues: profileFields(user),
+  });
+  const values = watch();
+
+  const onSubmit = async (data: ProfileFields) => {
+    if (isLoading) return;
+
+    try {
+      const result = await update({
+        name: data.name.trim(),
+        websiteUrl: data.websiteUrl.trim(),
+        location: data.location.trim(),
+        bio: data.bio.trim(),
+      }).unwrap();
+      reset(profileFields(result));
+      toast.success("Profile updated successfully");
+    } catch (error) {
+      toast.error(apiErrorMessage(error));
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Card>
+        <CardHeader title="Profile information" />
+        <CardContent>
+          <TextField
+            fullWidth
+            label="Name"
+            autoComplete="name"
+            sx={{ mb: 3 }}
+            error={!!errors.name}
+            helperText={errors.name?.message}
+            {...register("name", {
+              validate: (value) => !!value.trim() || "Name is required",
+              maxLength: { value: 100, message: "Maximum 100 characters" },
+            })}
+          />
+          <TextField
+            fullWidth
+            label="Email"
+            value={user.email ?? ""}
+            disabled
+            sx={{ mb: 3 }}
+          />
+          {optionalFields.map(({ name: field, label, limit }) => (
+            <TextField
+              key={field}
+              fullWidth
+              label={label}
+              multiline={field === "bio"}
+              minRows={field === "bio" ? 2 : undefined}
+              sx={{ mb: 3 }}
+              error={!!errors[field]}
+              helperText={
+                errors[field]?.message ||
+                `${values[field]?.length || 0}/${limit}`
+              }
+              {...register(field, {
+                maxLength: {
+                  value: limit,
+                  message: `Maximum ${limit} characters`,
+                },
+                validate: field === "websiteUrl" ? validateWebsite : undefined,
+              })}
+            />
+          ))}
+          <LoadingButton
+            fullWidth
+            type="submit"
+            variant="contained"
+            loading={isLoading || isSubmitting}
+            disabled={!isDirty}
+          >
+            Save profile information
+          </LoadingButton>
+        </CardContent>
+      </Card>
+    </form>
+  );
+}
+
+function profileFields(user: User): ProfileFields {
+  return {
+    name: user.name,
+    websiteUrl: user.websiteUrl ?? "",
+    location: user.location ?? "",
+    bio: user.bio ?? "",
+  };
+}
+
+function validateWebsite(value: string) {
+  if (!value.trim()) return true;
+
+  try {
+    return (
+      ["http:", "https:"].includes(new URL(value.trim()).protocol) ||
+      "Use an HTTP or HTTPS URL"
+    );
+  } catch {
+    return "Enter a valid website URL";
+  }
+}

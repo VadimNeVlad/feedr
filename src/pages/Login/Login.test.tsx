@@ -13,28 +13,35 @@ jest.mock("../../features/auth/authApi", () => ({
 }));
 
 jest.mock("react-toastify", () => ({
-  toast: jest.fn(),
-  ToastContainer: jest.fn(),
+  toast: { error: jest.fn(), success: jest.fn() },
 }));
+
+const mockNavigate = jest.fn();
+const mockDispatch = jest.fn();
 
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
-  useNavigate: jest.fn(),
+  useNavigate: () => mockNavigate,
 }));
 
 jest.mock("react-redux", () => ({
-  useDispatch: jest.fn(),
+  useDispatch: () => mockDispatch,
 }));
 
-test("submit register form with valid data", async () => {
-  const handleSubmit = jest.fn();
+test("submit login form with valid data and return to the requested page", async () => {
+  const session = { user: { id: "1" }, accessToken: "a", refreshToken: "r" };
+  const handleSubmit = jest.fn(() => ({ unwrap: () => Promise.resolve(session) }));
   (useLoginMutation as jest.Mock).mockReturnValue([
     handleSubmit,
     { data: null, isSuccess: false, isLoading: false, error: null },
   ]);
 
   render(
-    <MemoryRouter>
+    <MemoryRouter
+      initialEntries={[
+        { pathname: "/login", state: { from: { pathname: "/reading-list", search: "" } } },
+      ]}
+    >
       <Login />
     </MemoryRouter>
   );
@@ -54,6 +61,10 @@ test("submit register form with valid data", async () => {
       email: "test@example.com",
       password: "test123",
     });
+    expect(mockDispatch).toHaveBeenCalledWith(
+      expect.objectContaining({ payload: session }),
+    );
+    expect(mockNavigate).toHaveBeenCalledWith("/reading-list", { replace: true });
   });
 });
 

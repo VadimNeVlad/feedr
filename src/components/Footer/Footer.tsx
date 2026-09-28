@@ -1,10 +1,9 @@
-import React from "react";
 import { Box, Container, Stack, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 
-export const Footer: React.FC = () => {
+export const Footer = () => {
   const user = useSelector((state: RootState) => state.auth.user);
 
   return (
@@ -19,7 +18,7 @@ export const Footer: React.FC = () => {
           spacing={1}
           sx={{ pt: 1.5, pb: 1 }}
         >
-          <Link to="/home">
+          <Link to="/">
             <Typography variant="body2" color="info.main">
               Home
             </Typography>

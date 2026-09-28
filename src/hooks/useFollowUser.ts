@@ -1,26 +1,19 @@
-import { useEffect, useMemo, useState } from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "../app/store";
-import { User } from "../utils/types/user";
+import {
+  useFollowUserMutation,
+  useUnfollowUserMutation,
+} from "../features/users/usersApi";
+import { useMutationAction } from "./useMutationAction";
 
 export const useFollowUser = (
-  user: User
-): [boolean, (value: boolean) => void] => {
-  const currentUser = useSelector((state: RootState) => state.auth.user);
+  target: { id: string; isFollowing?: boolean },
+): [isFollowing: boolean, toggle: () => Promise<void>, isPending: boolean] => {
+  const [follow, following] = useFollowUserMutation();
+  const [unfollow, unfollowing] = useUnfollowUserMutation();
+  const isFollowing = target.isFollowing ?? false;
 
-  const isCurrentUserFollowing = useMemo(
-    () =>
-      user.followers.some((following) =>
-        currentUser ? following.followerId === currentUser.id : false
-      ),
-    [user.followers, currentUser]
+  const toggle = useMutationAction(() =>
+    (isFollowing ? unfollow(target.id) : follow(target.id)).unwrap()
   );
 
-  const [isFollow, setIsFollow] = useState(isCurrentUserFollowing);
-
-  useEffect(() => {
-    setIsFollow(isCurrentUserFollowing);
-  }, [isCurrentUserFollowing]);
-
-  return [isFollow, setIsFollow];
+  return [isFollowing, toggle, following.isLoading || unfollowing.isLoading];
 };

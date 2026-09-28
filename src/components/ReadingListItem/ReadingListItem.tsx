@@ -1,5 +1,5 @@
-import React from "react";
-import { ReadingListItemProps } from "../../../utils/types/props";
+import { userPath, articlePath } from "../../utils/helpers/routes";
+import { Article } from "../../utils/types/articles";
 import {
   Avatar,
   Box,
@@ -8,16 +8,20 @@ import {
   CardContent,
   Typography,
 } from "@mui/material";
-import { trimFirstLetter } from "../../../utils/helpers/trimString";
+import { trimFirstLetter } from "../../utils/helpers/trimString";
 import { Link } from "react-router-dom";
-import { formatDate } from "../../../utils/helpers/formatDate";
-import { ArticleTagItem } from "../../ArticleTagItem/ArticleTagItem";
-import { useUnfavoriteArticleMutation } from "../../../features/articles/articlesApi";
+import { formatDate } from "../../utils/helpers/formatDate";
+import { ArticleTagItem } from "../ArticleTagItem/ArticleTagItem";
+import { useFavoriteArticle } from "../../hooks/useFavoriteArticle";
 
-export const ReadingListItem: React.FC<ReadingListItemProps> = ({
+interface ReadingListItemProps {
+  article: Article;
+}
+
+export const ReadingListItem = ({
   article,
-}) => {
-  const [unfavoriteArticle] = useUnfavoriteArticleMutation();
+}: ReadingListItemProps) => {
+  const [, toggleFavorite, isPending] = useFavoriteArticle(article);
 
   return (
     <Card>
@@ -38,7 +42,7 @@ export const ReadingListItem: React.FC<ReadingListItemProps> = ({
               pr: 3,
             }}
           >
-            <Link to={`/user/${article.author.id}`}>
+            <Link to={userPath(article.author.id)}>
               <Avatar
                 src={article.author.image}
                 sx={{ width: "30px", height: "30px", mt: 1 }}
@@ -57,7 +61,7 @@ export const ReadingListItem: React.FC<ReadingListItemProps> = ({
                   lineHeight: { xs: "24px", md: "28px" },
                 }}
               >
-                <Link to={`/articles/${article.id}/${article.slug}`}>
+                <Link to={articlePath(article)}>
                   {article.title}
                 </Link>
               </Typography>
@@ -70,7 +74,7 @@ export const ReadingListItem: React.FC<ReadingListItemProps> = ({
                 }}
               >
                 <Typography variant="subtitle2" fontWeight={700}>
-                  <Link to={`/user/${article.author.id}`}>
+                  <Link to={userPath(article.author.id)}>
                     {article.author.name}
                   </Link>
                 </Typography>
@@ -89,7 +93,8 @@ export const ReadingListItem: React.FC<ReadingListItemProps> = ({
           </Box>
           <Button
             variant="text"
-            onClick={() => unfavoriteArticle(article.id)}
+            disabled={isPending}
+            onClick={toggleFavorite}
             sx={{ mt: 2 }}
           >
             Remove

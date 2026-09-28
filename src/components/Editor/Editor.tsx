@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { EditorToolbar } from "./EditorToolbar/EditorToolbar";
@@ -11,14 +11,20 @@ import TextAlign from "@tiptap/extension-text-align";
 import Focus from "@tiptap/extension-focus";
 import Superscript from "@tiptap/extension-superscript";
 import Subscript from "@tiptap/extension-subscript";
-import { EditorProps } from "../../utils/types/props";
 
-export const Editor: React.FC<EditorProps> = ({
+export interface EditorProps {
+  content: string;
+  showToolbar: boolean;
+  isEditable: boolean;
+  setContent?: (content: string) => void;
+}
+
+export const Editor = ({
   content,
   setContent,
   showToolbar,
   isEditable,
-}) => {
+}: EditorProps) => {
   const limit = 8000;
   const editor = useEditor({
     extensions: [
@@ -43,11 +49,20 @@ export const Editor: React.FC<EditorProps> = ({
     content,
     editable: isEditable,
     onUpdate: ({ editor }) => {
-      const isEmpty = editor.state.doc.textContent.length === 0;
+      const isEmpty = editor.state.doc.textContent.trim().length === 0;
       if (!isEmpty) setContent?.(editor.getHTML());
       else setContent?.("");
     },
   });
+
+  useEffect(() => {
+    if (
+      editor &&
+      content !== editor.getHTML() &&
+      !(content === "" && editor.isEmpty)
+    )
+      editor.commands.setContent(content, false);
+  }, [content, editor]);
 
   const percentage = editor
     ? Math.round((100 / limit) * editor.storage.characterCount.characters())

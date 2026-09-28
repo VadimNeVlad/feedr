@@ -1,8 +1,7 @@
 import { Box, Button, Card, CardContent, Typography } from "@mui/material";
-import React from "react";
 import { Link } from "react-router-dom";
 
-export const Welcome: React.FC = () => {
+export const Welcome = () => {
   return (
     <Card sx={{ display: { xs: "none", md: "block" }, mb: 3 }}>
       <CardContent>
@@ -14,18 +13,14 @@ export const Welcome: React.FC = () => {
           things.
         </Typography>
         <Box>
-          <Link to="/register">
-            <Button fullWidth variant="outlined">
-              Create Account
-            </Button>
-          </Link>
+          <Button component={Link} to="/register" fullWidth variant="outlined">
+            Create Account
+          </Button>
         </Box>
         <Box>
-          <Link to="/login">
-            <Button fullWidth variant="text">
-              Login
-            </Button>
-          </Link>
+          <Button component={Link} to="/login" fullWidth variant="text">
+            Login
+          </Button>
         </Box>
       </CardContent>
     </Card>

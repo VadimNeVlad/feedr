@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import {
   Button,
   Dialog,
@@ -6,35 +7,42 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
-import React from "react";
-import { ModalProps } from "../../utils/types/props";
 
-export const Modal: React.FC<ModalProps> = ({
-  open,
-  children,
-  title,
-  handleClose,
-  deleteAction,
-}) => {
-  return (
-    <Dialog
-      open={open}
-      onClose={handleClose}
-      aria-labelledby="alert-dialog-title"
-      aria-describedby="alert-dialog-description"
-    >
-      <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
-      <DialogContent>
-        <DialogContentText id="alert-dialog-description">
-          {children}
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
-        <Button autoFocus onClick={deleteAction}>
-          {title}
-        </Button>
-      </DialogActions>
-    </Dialog>
-  );
+type ModalProps = {
+  open: boolean;
+  title: string;
+  children: ReactNode;
+  /** Locks the dialog while the confirmed action runs. */
+  isPending?: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
 };
+
+export const Modal = ({
+  open,
+  title,
+  children,
+  isPending,
+  onClose,
+  onConfirm,
+}: ModalProps) => (
+  <Dialog
+    open={open}
+    onClose={isPending ? undefined : onClose}
+    aria-labelledby="modal-title"
+    aria-describedby="modal-description"
+  >
+    <DialogTitle id="modal-title">{title}</DialogTitle>
+    <DialogContent>
+      <DialogContentText id="modal-description">{children}</DialogContentText>
+    </DialogContent>
+    <DialogActions>
+      <Button disabled={isPending} onClick={onClose}>
+        Cancel
+      </Button>
+      <Button color="error" disabled={isPending} onClick={onConfirm}>
+        {title}
+      </Button>
+    </DialogActions>
+  </Dialog>
+);

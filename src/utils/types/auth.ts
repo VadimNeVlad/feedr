@@ -1,6 +1,7 @@
 import { User } from "./user";
 
 export interface AuthState {
+  revision: number;
   user: User | null;
   token: string | null;
 }

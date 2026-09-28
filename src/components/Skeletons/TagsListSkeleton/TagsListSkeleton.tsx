@@ -1,7 +1,6 @@
 import { Card, CardContent, Grid, Skeleton } from "@mui/material";
-import React from "react";
 
-export const TagsListSkeleton: React.FC = () => {
+export const TagsListSkeleton = () => {
   return (
     <Grid container spacing={2}>
       {[...Array(8)].map((_, index) => (

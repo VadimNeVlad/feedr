@@ -1,166 +1,134 @@
 import { api } from "../../app/services";
+import type { RootState } from "../../app/store";
+import { ARTICLES_PAGE_SIZE } from "./constants";
+import { articleListTags } from "./cacheTags";
 import {
   Article,
   ArticleData,
   ArticlesParams,
 } from "../../utils/types/articles";
 
-// for infinite scroll merge function
-let articlesPrevPage: number | undefined = 0;
-let authorArticlesPrevPage: number | undefined = 0;
-
 export const articlesApi = api.injectEndpoints({
   endpoints: (build) => ({
     getArticles: build.query<ArticleData, ArticlesParams>({
       query: ({ page = 0, sortBy = "latest", q }) => ({
         url: "articles",
-        method: "GET",
-        params: {
-          page,
-          per_page: 10,
-          sort_by: sortBy,
-          q,
-        },
+        params: { page, per_page: ARTICLES_PAGE_SIZE, sort_by: sortBy, q },
       }),
-
-      serializeQueryArgs: ({ endpointName }) => {
-        return endpointName;
-      },
-      merge: (currentCache, newCache, { arg }) => {
-        if (arg.page === 0) {
-          articlesPrevPage = 0;
-          return newCache;
-        }
-
-        if (arg.page === articlesPrevPage) {
-          return currentCache;
-        } else {
-          currentCache.articles.push(...newCache.articles);
-          articlesPrevPage = arg.page;
-        }
-      },
-      forceRefetch({ currentArg, previousArg }) {
-        if (
-          !previousArg?.q &&
-          currentArg?.page === previousArg?.page &&
-          currentArg?.sortBy === previousArg?.sortBy
-        ) {
-          return false;
-        }
-        return currentArg !== previousArg;
-      },
-      providesTags: (result) =>
-        result
-          ? [
-              ...result.articles.map(({ id }) => ({
-                type: "Article" as const,
-                id,
-              })),
-              { type: "Article", id: "LIST" },
-            ]
-          : [{ type: "Article", id: "LIST" }],
+      providesTags: (result) => articleListTags(result),
     }),
     getArticlesByAuthor: build.query<ArticleData, ArticlesParams>({
       query: ({ page = 0, authorId }) => ({
-        url: `articles/author/${authorId}`,
-        method: "GET",
-        params: {
-          page,
-          per_page: 10,
-        },
+        url: `articles/author/${encodeURIComponent(authorId || "")}`,
+        params: { page, per_page: ARTICLES_PAGE_SIZE },
       }),
-      serializeQueryArgs: ({ endpointName }) => {
-        return endpointName;
-      },
-      merge: (currentCache, newCache, { arg }) => {
-        if (arg.page === 0) {
-          authorArticlesPrevPage = 0;
-          return newCache;
-        }
-
-        if (arg.page === authorArticlesPrevPage) {
-          return currentCache;
-        } else {
-          currentCache.articles.push(...newCache.articles);
-          authorArticlesPrevPage = arg.page;
-        }
-      },
-      forceRefetch({ currentArg, previousArg }) {
-        return currentArg !== previousArg;
-      },
-      providesTags: [{ type: "Article", id: "LIST" }],
+      providesTags: (result) => articleListTags(result),
     }),
     getSingleArticle: build.query<Article, string>({
-      query: (id) => `articles/${id}`,
+      query: (id) => `articles/${encodeURIComponent(id)}`,
       providesTags: (_res, _err, id) => [{ type: "Article", id }],
     }),
-    getReadingList: build.query<ArticleData, void>({
-      query: () => "articles/user/reading-list",
-      providesTags: [{ type: "Article", id: "LIST" }],
+    getReadingList: build.query<ArticleData, { page?: number }>({
+      query: ({ page = 0 }) => ({
+        url: "articles/user/reading-list",
+        params: { page, per_page: ARTICLES_PAGE_SIZE },
+      }),
+      providesTags: (result) => articleListTags(result, "READING_LIST"),
     }),
     createArticle: build.mutation<Article, FormData>({
-      query: (body) => ({
-        url: "articles",
-        method: "POST",
-        body,
-      }),
-      invalidatesTags: [{ type: "Article", id: "LIST" }, { type: "Tag" }],
+      query: (body) => ({ url: "articles", method: "POST", body }),
+      invalidatesTags: ["Article", "Tag", "User"],
     }),
-    updateArticle: build.mutation<Article, FormData>({
-      query: (body) => ({
-        url: `articles/${body.get("id")}`,
+    updateArticle: build.mutation<Article, { id: string; body: FormData }>({
+      query: ({ id, body }) => ({
+        url: `articles/${encodeURIComponent(id)}`,
         method: "PUT",
         body,
       }),
-      invalidatesTags: ["Article", "Tag"],
+      invalidatesTags: ["Article", "Tag", "User"],
     }),
-    deleteArticle: build.mutation<Article, string>({
-      query: (slug) => ({
-        url: `articles/${slug}`,
+    deleteArticle: build.mutation<void, string>({
+      query: (id) => ({
+        url: `articles/${encodeURIComponent(id)}`,
         method: "DELETE",
       }),
-      invalidatesTags: [{ type: "Article", id: "LIST" }, { type: "Tag" }],
+      invalidatesTags: ["Article", "Tag", "User", "Comment"],
     }),
     favoriteArticle: build.mutation<Article, string>({
       query: (id) => ({
-        url: `articles/${id}/favorite`,
+        url: `articles/${encodeURIComponent(id)}/favorite`,
         method: "POST",
       }),
-      invalidatesTags: ["Article"],
-      async onQueryStarted(id, { dispatch, queryFulfilled }) {
-        const patchResult = dispatch(
-          articlesApi.util.updateQueryData("getSingleArticle", id, (draft) => {
-            draft._count.favorited += 1;
-          })
-        );
-        try {
-          await queryFulfilled;
-        } catch {
-          patchResult.undo();
-        }
-      },
+      onQueryStarted: syncFavorite,
+      invalidatesTags: [{ type: "Article", id: "READING_LIST" }],
     }),
     unfavoriteArticle: build.mutation<Article, string>({
       query: (id) => ({
-        url: `articles/${id}/favorite`,
+        url: `articles/${encodeURIComponent(id)}/favorite`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Article"],
-      async onQueryStarted(id, { dispatch, queryFulfilled }) {
-        const patchResult = dispatch(
-          articlesApi.util.updateQueryData("getSingleArticle", id, (draft) => {
-            draft._count.favorited -= 1;
-          })
-        );
-        try {
-          await queryFulfilled;
-        } catch {
-          patchResult.undo();
-        }
-      },
+      onQueryStarted: syncFavorite,
+      invalidatesTags: [{ type: "Article", id: "READING_LIST" }],
     }),
   }),
 });
+
+/**
+ * Applies the server's favorite state to every cached copy of the article instead of
+ * refetching whole feeds: a refetch would also reorder "top" feeds between loaded pages.
+ */
+async function syncFavorite(
+  id: string,
+  {
+    dispatch,
+    getState,
+    queryFulfilled,
+  }: {
+    dispatch: (action: unknown) => unknown;
+    getState: () => unknown;
+    queryFulfilled: Promise<{ data: Article }>;
+  },
+) {
+  let article: Article;
+
+  try {
+    ({ data: article } = await queryFulfilled);
+  } catch {
+    return;
+  }
+
+  const patch = (target: Article) => {
+    if (target.id !== id) return;
+
+    target.isFavorited = article.isFavorited;
+    target._count.favorited = article._count.favorited;
+  };
+
+  for (const entry of api.util.selectInvalidatedBy(getState() as RootState, [
+    { type: "Article", id },
+  ])) {
+    const { endpointName, originalArgs } = entry;
+
+    if (endpointName === "getSingleArticle") {
+      dispatch(
+        articlesApi.util.updateQueryData(endpointName, originalArgs, patch),
+      );
+    } else if (
+      endpointName === "getArticles" ||
+      endpointName === "getArticlesByAuthor" ||
+      endpointName === "getTagArticles"
+    ) {
+      // All three feeds share ArticleData; getTagArticles is injected by tagsApi into the same slice.
+      dispatch(
+        articlesApi.util.updateQueryData(
+          endpointName as "getArticles",
+          originalArgs,
+          (data) => data.articles.forEach(patch),
+        ),
+      );
+    }
+  }
+}
 
 export const {
   useGetArticlesQuery,

@@ -1,7 +1,6 @@
 import { Card, CardContent, Skeleton } from "@mui/material";
-import React from "react";
 
-export const ProfileContentSkeleton: React.FC = () => {
+export const ProfileContentSkeleton = () => {
   return (
     <Card sx={{ overflow: "initial", position: "relative" }}>
       <CardContent

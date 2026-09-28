@@ -1,46 +1,37 @@
-import React from "react";
-import { ArticleReactionsProps } from "../../utils/types/props";
 import { Box, IconButton, Typography } from "@mui/material";
 import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlined";
 import CommentOutlinedIcon from "@mui/icons-material/CommentOutlined";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
-import {
-  useFavoriteArticleMutation,
-  useUnfavoriteArticleMutation,
-} from "../../features/articles/articlesApi";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { RootState } from "../../app/store";
+import { Article } from "../../utils/types/articles";
 import { useFavoriteArticle } from "../../hooks/useFavoriteArticle";
 
-export const ArticleReactions: React.FC<ArticleReactionsProps> = ({
+type ArticleReactionsProps = {
+  article: Article;
+  onCommentsClick: () => void;
+};
+
+export const ArticleReactions = ({
   article,
-  handleScroll,
-}) => {
-  const navigate = useNavigate();
-  const [isFavorite, setIsFavorite] = useFavoriteArticle(article);
-
-  const [favoriteArticle] = useFavoriteArticleMutation();
-  const [unfavoriteArticle] = useUnfavoriteArticleMutation();
-
-  const user = useSelector((state: RootState) => state.auth.user);
-
-  const handleFavoriteArticle = () => {
-    if (!isFavorite) {
-      favoriteArticle(article.id);
-      setIsFavorite(true);
-    } else {
-      unfavoriteArticle(article.id);
-      setIsFavorite(false);
-    }
-  };
+  onCommentsClick,
+}: ArticleReactionsProps) => {
+  const [isFavorite, toggleFavorite, isPending] = useFavoriteArticle(article);
 
   return (
-    <Box sx={{ display: { xs: "none", sm: "block" } }}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: { xs: "row", sm: "column" },
+        gap: 2,
+      }}
+    >
       <Box sx={{ textAlign: "center", pb: 1 }}>
         <IconButton
-          aria-label="add to favorites"
-          onClick={user ? handleFavoriteArticle : () => navigate("/login")}
+          disabled={isPending}
+          aria-pressed={isFavorite}
+          aria-label={
+            isFavorite ? "Remove from reading list" : "Save to reading list"
+          }
+          onClick={toggleFavorite}
           sx={{ padding: { sm: "8px 0", md: "8px" } }}
         >
           {isFavorite ? <BookmarkIcon /> : <BookmarkBorderOutlinedIcon />}
@@ -50,8 +41,8 @@ export const ArticleReactions: React.FC<ArticleReactionsProps> = ({
 
       <Box sx={{ textAlign: "center" }}>
         <IconButton
-          aria-label="comments"
-          onClick={handleScroll}
+          aria-label="Go to comments"
+          onClick={onCommentsClick}
           sx={{ padding: { sm: "8px 0", md: "8px" } }}
         >
           <CommentOutlinedIcon />

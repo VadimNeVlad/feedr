@@ -1,58 +1,92 @@
-import { Routes as RouterRoutes, Route, useLocation } from "react-router-dom";
-import { Home } from "../pages/Home/Home";
+import {
+  Routes as RouterRoutes,
+  Route,
+  useLocation,
+  Navigate,
+} from "react-router-dom";
+import { ComponentType, lazy, Suspense, useEffect } from "react";
 import PrivateRoutes from "./PrivateRoutes";
-import { Login } from "../pages/Login/Login";
-import { Register } from "../pages/Register/Register";
-import { AddArticle } from "../pages/AddArticle/AddArticle";
-import { Article } from "../pages/Article/Article";
-import { EditArticle } from "../pages/EditArticle/EditArticle";
-import { useEffect } from "react";
-import { Profile } from "../pages/Profile/Profile";
-import { Follow } from "../pages/Follow/Follow";
-import { EditProfile } from "../pages/EditProfile/EditProfile";
-import { ProfileSettings } from "../pages/EditProfile/ProfileSettings/ProfileSettings";
-import { AccountSettings } from "../pages/EditProfile/AccountSettings/AccountSettings";
-import { Tag } from "../pages/Tag/Tag";
-import { Tags } from "../pages/Tags/Tags";
-import { Search } from "../pages/Search/Search";
-import { ReadingList } from "../pages/ReadingList/ReadingList";
-import { NotFound } from "../pages/404/404";
-import { AnimatePresence } from "framer-motion";
+import { Layout } from "../components/Layout/Layout";
+import { PageLoader } from "../components/PageLoader/PageLoader";
+
+/** Lazily loads a page module that uses a named export. */
+const lazyPage = <K extends string>(
+  load: () => Promise<Record<K, ComponentType>>,
+  name: K,
+) => lazy(() => load().then((module) => ({ default: module[name] })));
+
+const Home = lazyPage(() => import("../pages/Home/Home"), "Home");
+const Login = lazyPage(() => import("../pages/Login/Login"), "Login");
+const Register = lazyPage(
+  () => import("../pages/Register/Register"),
+  "Register",
+);
+const AddArticle = lazyPage(
+  () => import("../pages/AddArticle/AddArticle"),
+  "AddArticle",
+);
+const Article = lazyPage(() => import("../pages/Article/Article"), "Article");
+const EditArticle = lazyPage(
+  () => import("../pages/EditArticle/EditArticle"),
+  "EditArticle",
+);
+const Profile = lazyPage(() => import("../pages/Profile/Profile"), "Profile");
+const Follow = lazyPage(() => import("../pages/Follow/Follow"), "Follow");
+const EditProfile = lazyPage(
+  () => import("../pages/EditProfile/EditProfile"),
+  "EditProfile",
+);
+const ProfileSettings = lazyPage(
+  () => import("../pages/EditProfile/ProfileSettings/ProfileSettings"),
+  "ProfileSettings",
+);
+const AccountSettings = lazyPage(
+  () => import("../pages/EditProfile/AccountSettings/AccountSettings"),
+  "AccountSettings",
+);
+const Tag = lazyPage(() => import("../pages/Tag/Tag"), "Tag");
+const Tags = lazyPage(() => import("../pages/Tags/Tags"), "Tags");
+const Search = lazyPage(() => import("../pages/Search/Search"), "Search");
+const ReadingList = lazyPage(
+  () => import("../pages/ReadingList/ReadingList"),
+  "ReadingList",
+);
+const NotFound = lazyPage(() => import("../pages/404/404"), "NotFound");
 
 export const Routes = () => {
   const location = useLocation();
 
   useEffect(() => {
     window.scrollTo({ top: 0 });
-  }, [location]);
+  }, [location.pathname, location.search]);
 
   return (
-    <AnimatePresence initial={false} mode="wait">
+    <Suspense fallback={<PageLoader />}>
       <RouterRoutes>
-        {/* Private routes */}
-        <Route element={<PrivateRoutes />}>
-          <Route path="/add-article" element={<AddArticle />} />
-          <Route path="/edit-article/:id" element={<EditArticle />} />
+        <Route element={<Layout />}>
+          <Route element={<PrivateRoutes />}>
+            <Route path="/add-article" element={<AddArticle />} />
+            <Route path="/edit-article/:id" element={<EditArticle />} />
+            <Route path="/user/edit-profile" element={<EditProfile />}>
+              <Route index element={<Navigate to="profile" replace />} />
+              <Route path="profile" element={<ProfileSettings />} />
+              <Route path="account" element={<AccountSettings />} />
+            </Route>
+            <Route path="/reading-list" element={<ReadingList />} />
+          </Route>
+          <Route path="/" element={<Home />} />
           <Route path="/user/:id" element={<Profile />} />
           <Route path="/user/:id/following" element={<Follow />} />
           <Route path="/user/:id/followers" element={<Follow />} />
-          <Route path="/user/edit-profile" element={<EditProfile />}>
-            <Route index path="*" element={<ProfileSettings />} />
-            <Route path="account" element={<AccountSettings />} />
-          </Route>
-          <Route path="/reading-list" element={<ReadingList />} />
+          <Route path="/articles/:id/:slug" element={<Article />} />
+          <Route path="/tags" element={<Tags />} />
+          <Route path="/tag/:tagName" element={<Tag />} />
+          <Route path="/search" element={<Search />} />
         </Route>
-
-        {/* Public routes */}
-        <Route path="/" element={<Home />} />
-        <Route path="/articles/:id/:slug" element={<Article />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/tags" element={<Tags />} />
-        <Route path="/tag/:tagName" element={<Tag />} />
-        <Route path="/search" element={<Search />} />
         <Route path="*" element={<NotFound />} />
       </RouterRoutes>
-    </AnimatePresence>
+    </Suspense>
   );
 };

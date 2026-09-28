@@ -1,5 +1,4 @@
-import React from "react";
-import { EditorToolbarProps } from "../../../utils/types/props";
+import { Editor } from "@tiptap/react";
 import { Divider, Paper, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import LinkIcon from "@mui/icons-material/Link";
 import UndoIcon from "@mui/icons-material/Undo";
@@ -25,7 +24,11 @@ import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 import { HeadingToolbarButtons } from "../HeadingToolbarButtons/HeadingToolbarButtons";
 
-export const EditorToolbar: React.FC<EditorToolbarProps> = ({ editor }) => {
+interface EditorToolbarProps {
+  editor: Editor;
+}
+
+export const EditorToolbar = ({ editor }: EditorToolbarProps) => {
   if (!editor) null;
 
   return (

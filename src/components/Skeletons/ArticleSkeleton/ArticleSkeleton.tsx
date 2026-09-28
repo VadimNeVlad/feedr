@@ -6,9 +6,8 @@ import {
   Grid,
   Skeleton,
 } from "@mui/material";
-import React from "react";
 
-export const ArticleSkeleton: React.FC = () => {
+export const ArticleSkeleton = () => {
   return (
     <Container maxWidth="lg" sx={{ mt: { xs: 9, sm: 11 }, pb: 3 }}>
       <Grid container spacing={2}>
