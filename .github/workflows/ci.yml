@@ -109,7 +109,7 @@ jobs:
         run: docker run --name frontend-ci -d -p 8080:8080 feedr-frontend:ci
 
       - name: Check health endpoint
-        run: curl --fail http://localhost:8080/healthz --retry 10 --retry-delay 1 --retry-connrefused
+        run: curl --fail http://localhost:8080/healthz --retry 10 --retry-delay 1 -retry-all-error
 
       - name: Check SPA fallback
         run: curl --fail http://localhost:8080/tag/node.js
