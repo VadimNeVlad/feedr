@@ -19,7 +19,7 @@
     "@fontsource/roboto": "^5.0.8",
     "@hookform/resolvers": "^3.3.4",
     "@mui/icons-material": "^5.15.3",
-    "@mui/lab": "^5.0.0-alpha.159",
+    "@mui/lab": "^6.0.0-dev.20240529-082515-213b5e33ab",
     "@mui/material": "^5.15.3",
     "@reduxjs/toolkit": "^2.0.1",
     "@tiptap/extension-character-count": "^2.1.15",
