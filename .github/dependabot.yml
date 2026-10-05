@@ -16,7 +16,27 @@ updates:
       prefix: build
       prefix-development: build
       include: scope
+    # A dependency joins the first matching group, so families must come before the catch-all groups.
+    # Families have no update-types: their majors arrive as one PR instead of conflicting single bumps.
     groups:
+      tiptap:
+        patterns: ["@tiptap/*"]
+      mui:
+        patterns: ["@mui/*", "@emotion/*"]
+      react:
+        patterns: ["react", "react-dom", "@types/react", "@types/react-dom"]
+      redux:
+        patterns: ["@reduxjs/toolkit", "react-redux"]
+      vite:
+        patterns: ["vite", "@vitejs/*"]
+      jest:
+        patterns: ["jest", "babel-jest", "jest-environment-jsdom", "@types/jest"]
+      babel:
+        patterns: ["@babel/*"]
+      testing-library:
+        patterns: ["@testing-library/*"]
+      eslint:
+        patterns: ["eslint", "eslint-plugin-*", "@typescript-eslint/*"]
       production-dependencies:
         dependency-type: production
         update-types: [minor, patch]
@@ -30,8 +50,8 @@ updates:
       interval: weekly
       day: monday
       time: "09:00"
-    cooldown:
-      default-days: 7
+    # No cooldown: base image rebuilds are mostly security fixes, and Dependabot security
+    # updates do not cover Docker images, so a delay would only keep CI red.
     commit-message:
       prefix: build
       include: scope
