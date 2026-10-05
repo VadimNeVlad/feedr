@@ -1,11 +1,14 @@
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
-import React from "react";
-import { SortingButtonsProps } from "../../utils/types/props";
 
-export const SortingButtons: React.FC<SortingButtonsProps> = ({
+interface SortingButtonsProps {
+  value: string;
+  handleSortChange: (value: string) => void;
+}
+
+export const SortingButtons = ({
   value,
   handleSortChange,
-}) => {
+}: SortingButtonsProps) => {
   return (
     <ToggleButtonGroup
       value={value}

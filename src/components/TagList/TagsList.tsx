@@ -1,15 +1,20 @@
-import React from "react";
-import { TagslistProps } from "../../utils/types/props";
+import { Tag } from "../../utils/types/tag";
 import { TagItem } from "../TagItem/TagItem";
 import { Box, CircularProgress, Grid } from "@mui/material";
 import { NoResultMessage } from "../NoResultMessage/NoResultMessage";
 import { TagsListSkeleton } from "../Skeletons/TagsListSkeleton/TagsListSkeleton";
 
-export const TagList: React.FC<TagslistProps> = ({
+interface TagslistProps {
+  tags: Tag[] | undefined;
+  isLoading?: boolean;
+  isFetching?: boolean;
+}
+
+export const TagList = ({
   tags,
   isLoading,
   isFetching,
-}) => {
+}: TagslistProps) => {
   return (
     <>
       {isLoading && <TagsListSkeleton />}

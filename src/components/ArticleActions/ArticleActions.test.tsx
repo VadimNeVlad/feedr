@@ -4,87 +4,45 @@ import { MemoryRouter } from "react-router-dom";
 import { ArticleActions } from "./ArticleActions";
 import "@testing-library/jest-dom";
 
-const mockProps = {
-  articleId: "article123",
-  isDeleting: false,
-  deleteArticleSuccess: false,
-  setOpen: jest.fn(),
+const renderActions = (isDeleting = false) => {
+  const onDelete = jest.fn();
+
+  render(
+    <MemoryRouter>
+      <ArticleActions
+        articleId="article123"
+        isDeleting={isDeleting}
+        onDelete={onDelete}
+      />
+    </MemoryRouter>,
+  );
+
+  return onDelete;
 };
 
-test("renders ArticleActions component correctly", () => {
-  render(
-    <MemoryRouter>
-      <ArticleActions {...mockProps} />
-    </MemoryRouter>
-  );
+test("links to the edit page", () => {
+  renderActions();
 
-  expect(
-    screen.getByRole("link", { name: /edit article/i })
-  ).toBeInTheDocument();
-  expect(
-    screen.getByRole("button", { name: /delete article/i })
-  ).toBeInTheDocument();
-});
-
-test("redirect to correct page when edit button is clicked", async () => {
-  render(
-    <MemoryRouter>
-      <ArticleActions {...mockProps} />
-    </MemoryRouter>
-  );
-
-  const editLink = screen.getByRole("link", { name: /edit article/i });
-  expect(editLink).toHaveAttribute(
+  expect(screen.getByRole("link", { name: /edit article/i })).toHaveAttribute(
     "href",
-    `/edit-article/${mockProps.articleId}`
+    "/edit-article/article123",
   );
 });
 
-test("calls setOpen function when Delete Article button is clicked", async () => {
-  render(
-    <MemoryRouter>
-      <ArticleActions {...mockProps} />
-    </MemoryRouter>
-  );
+test("asks for delete confirmation when Delete Article is clicked", async () => {
+  const onDelete = renderActions();
 
-  await userEvent.click(
-    screen.getByRole("button", { name: /delete article/i })
-  );
-  expect(mockProps.setOpen).toHaveBeenCalledTimes(1);
+  await userEvent.click(screen.getByRole("button", { name: /delete article/i }));
+
+  expect(onDelete).toHaveBeenCalledTimes(1);
 });
 
-test("disables 'Delete Article' button when deletion is ongoing", async () => {
-  render(
-    <MemoryRouter>
-      <ArticleActions {...mockProps} isDeleting />
-    </MemoryRouter>
+test("disables both actions while deletion is in progress", () => {
+  renderActions(true);
+
+  expect(screen.getByRole("button", { name: /delete article/i })).toBeDisabled();
+  expect(screen.getByRole("link", { name: /edit article/i })).toHaveAttribute(
+    "aria-disabled",
+    "true",
   );
-
-  expect(
-    screen.getByRole("button", { name: /delete article/i })
-  ).toBeDisabled();
-});
-
-test("disables 'Delete Article' button when deletion is ongoing", async () => {
-  render(
-    <MemoryRouter>
-      <ArticleActions {...mockProps} isDeleting />
-    </MemoryRouter>
-  );
-
-  expect(
-    screen.getByRole("button", { name: /delete article/i })
-  ).toBeDisabled();
-});
-
-test("disables 'Delete Article' button when deletion is successful", async () => {
-  render(
-    <MemoryRouter>
-      <ArticleActions {...mockProps} deleteArticleSuccess />
-    </MemoryRouter>
-  );
-
-  expect(
-    screen.getByRole("button", { name: /delete article/i })
-  ).toBeDisabled();
 });

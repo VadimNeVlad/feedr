@@ -1,13 +1,17 @@
+import { tagPath } from "../../utils/helpers/routes";
+import { Tag } from "../../utils/types/tag";
 import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
-import React from "react";
 import { Link } from "react-router-dom";
-import { TagItemProps } from "../../utils/types/props";
 import { generateColor } from "../../utils/helpers/generateColor";
 
-export const TagItem: React.FC<TagItemProps> = ({ tag }) => {
+interface TagItemProps {
+  tag: Tag;
+}
+
+export const TagItem = ({ tag }: TagItemProps) => {
   return (
-    <Grid item xs={12} sm={6} md={3} key={tag.id}>
-      <Link to={`/tag/${tag.name}`}>
+    <Grid item xs={12} sm={6} md={3}>
+      <Link to={tagPath(tag.name)}>
         <Card>
           <CardContent>
             <Box

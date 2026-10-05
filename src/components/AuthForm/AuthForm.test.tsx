@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import { AuthForm } from "./AuthForm";
 import userEvent from "@testing-library/user-event";
@@ -6,27 +7,22 @@ import { AuthData } from "../../utils/types/auth";
 import { BrowserRouter } from "react-router-dom";
 import "@testing-library/jest-dom";
 
-const Wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const Wrapper = ({ children }: { children: ReactNode }) => {
   const methods = useForm<AuthData>();
   return <FormProvider {...methods}>{children}</FormProvider>;
 };
 
-const renderWithProviders = (ui: React.ReactNode) => {
+const renderWithProviders = (ui: ReactNode) => {
   return render(
     <BrowserRouter>
       <Wrapper>{ui}</Wrapper>
-    </BrowserRouter>
+    </BrowserRouter>,
   );
 };
 
 test("render login form correctly", () => {
   renderWithProviders(
-    <AuthForm
-      title="Login"
-      text="Login to your account"
-      isPending={false}
-      onSubmit={() => {}}
-    />
+    <AuthForm mode="login" isPending={false} onSubmit={() => {}} />,
   );
 
   expect(screen.getByRole("heading", { name: "Login" })).toBeInTheDocument();
@@ -38,12 +34,7 @@ test("render login form correctly", () => {
 
 test("render register form correctly", () => {
   renderWithProviders(
-    <AuthForm
-      title="Register"
-      text="Please fill out the form below to login"
-      isPending={false}
-      onSubmit={() => {}}
-    />
+    <AuthForm mode="register" isPending={false} onSubmit={() => {}} />,
   );
 
   expect(screen.getByRole("heading", { name: "Register" })).toBeInTheDocument();
@@ -55,12 +46,7 @@ test("render register form correctly", () => {
 
 test("toggles password visibility", async () => {
   renderWithProviders(
-    <AuthForm
-      title="Login"
-      text="Login to your account"
-      isPending={false}
-      onSubmit={() => {}}
-    />
+    <AuthForm mode="login" isPending={false} onSubmit={() => {}} />,
   );
 
   const passwordInput = screen.getByLabelText("Password");
@@ -74,15 +60,10 @@ test("toggles password visibility", async () => {
 });
 
 test("submits form with valid data", async () => {
-  const handleSubmit = jest.fn();
+  const handleSubmit = jest.fn((event) => event.preventDefault());
 
   renderWithProviders(
-    <AuthForm
-      title="Login"
-      text="Login to your account"
-      isPending={false}
-      onSubmit={handleSubmit}
-    />
+    <AuthForm mode="login" isPending={false} onSubmit={handleSubmit} />,
   );
 
   const emailInput = screen.getByLabelText("Email");
@@ -98,6 +79,5 @@ test("submits form with valid data", async () => {
 
   await waitFor(() => {
     expect(handleSubmit).toHaveBeenCalledTimes(1);
-    expect(handleSubmit).toHaveBeenCalled();
   });
 });

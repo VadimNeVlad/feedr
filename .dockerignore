@@ -1,0 +1,31 @@
+# Dependencies and build output are recreated inside the image
+node_modules
+dist
+coverage
+
+# Secrets and local environment; Vite would bake VITE_* values into the bundle
+.env
+.env.*
+
+# VCS, CI and editor metadata
+.git
+.gitignore
+.github
+.vscode
+.idea
+.claude
+*.log
+.DS_Store
+
+# Not needed to build the app
+integration
+jest.config.cjs
+babel.config.cjs
+.eslintrc.cjs
+.prettierrc.json
+vercel.json
+README.md
+
+# Docker files themselves
+Dockerfile*
+.dockerignore

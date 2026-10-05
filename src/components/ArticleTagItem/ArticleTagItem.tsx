@@ -1,20 +1,22 @@
-import React from "react";
 import { Link } from "react-router-dom";
-import { ArticleTagItemProps } from "../../utils/types/props";
 import { Button } from "@mui/material";
+import { Tag } from "../../utils/types/tag";
 import { generateColor } from "../../utils/helpers/generateColor";
+import { tagPath } from "../../utils/helpers/routes";
 
-export const ArticleTagItem: React.FC<ArticleTagItemProps> = ({ tag }) => {
-  return (
-    <Link to={`/tag/${tag.name}`} key={tag.name}>
-      <Button
-        variant="outlined"
-        size="small"
-        color="inherit"
-        sx={{ fontSize: 12, color: generateColor(tag.name) }}
-      >
-        #{tag.name}
-      </Button>
-    </Link>
-  );
+type ArticleTagItemProps = {
+  tag: Pick<Tag, "name">;
 };
+
+export const ArticleTagItem = ({ tag }: ArticleTagItemProps) => (
+  <Button
+    component={Link}
+    to={tagPath(tag.name)}
+    variant="outlined"
+    size="small"
+    color="inherit"
+    sx={{ fontSize: 12, color: generateColor(tag.name) }}
+  >
+    #{tag.name}
+  </Button>
+);

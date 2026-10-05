@@ -1,8 +1,10 @@
 import { Card, CardContent, Typography } from "@mui/material";
-import React from "react";
-import { NoResultMessageProps } from "../../utils/types/props";
 
-export const NoResultMessage: React.FC<NoResultMessageProps> = ({ msg }) => {
+interface NoResultMessageProps {
+  msg: string;
+}
+
+export const NoResultMessage = ({ msg }: NoResultMessageProps) => {
   return (
     <Card
       sx={{

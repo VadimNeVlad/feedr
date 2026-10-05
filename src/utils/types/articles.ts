@@ -1,5 +1,5 @@
 import { Tag } from "./tag";
-import { User } from "./user";
+import { UserSummary } from "./user";
 
 export interface Article {
   id: string;
@@ -7,12 +7,12 @@ export interface Article {
   title: string;
   body: string;
   tagList: Tag[];
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string | Date;
+  updatedAt: string | Date;
   image: string;
-  author: User;
+  author: UserSummary;
   authorId: string;
-  favorited: User[];
+  isFavorited: boolean;
   _count: {
     comments: number;
     favorited: number;

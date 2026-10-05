@@ -1,31 +1,14 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-
-export const usePaginate = (withSortingBtns = true) => {
-  const navigate = useNavigate();
-  const searchParams = new URLSearchParams(window.location.search);
-
-  const [page, setPage] = useState(0);
-  const [sortBy, setSortBy] = useState(searchParams.get("sortBy") || "latest");
-
-  const handleNextPage = () => setPage((prev) => prev + 1);
-
+import { useSearchParams } from "react-router-dom";
+export const usePaginate = () => {
+  const [params, setParams] = useSearchParams();
+  const requested = params.get("sortBy");
+  const sortBy =
+    requested === "oldest" || requested === "top" ? requested : "latest";
   const handleSortChange = (value: string) => {
-    setPage(0);
-    setSortBy(value);
-    navigate(value === "latest" ? "" : `?sortBy=${value}`);
+    const next = new URLSearchParams(params);
+    if (value === "latest") next.delete("sortBy");
+    else next.set("sortBy", value);
+    setParams(next);
   };
-
-  useEffect(() => {
-    if (!withSortingBtns) {
-      setPage(0);
-    }
-  }, [withSortingBtns, page]);
-
-  return {
-    page,
-    sortBy,
-    handleNextPage,
-    handleSortChange,
-  };
+  return { sortBy, handleSortChange };
 };

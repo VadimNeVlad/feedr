@@ -1,7 +1,6 @@
 import { Box, Card, CardContent, Container, Skeleton } from "@mui/material";
-import React from "react";
 
-export const FollowSkeleton: React.FC = () => {
+export const FollowSkeleton = () => {
   return (
     <Container maxWidth="lg" sx={{ mt: 11, pb: 3, minHeight: "100vh" }}>
       <Skeleton

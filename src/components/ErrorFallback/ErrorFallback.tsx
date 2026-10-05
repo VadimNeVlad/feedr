@@ -1,10 +1,12 @@
 import { Box, Button, Typography } from "@mui/material";
-import React from "react";
-import { ErrorFallbackProps } from "../../utils/types/props";
 
-export const ErrorFallback: React.FC<ErrorFallbackProps> = ({
+interface ErrorFallbackProps {
+  resetErrorBoundary: () => void;
+}
+
+export const ErrorFallback = ({
   resetErrorBoundary,
-}) => {
+}: ErrorFallbackProps) => {
   return (
     <Box
       sx={{

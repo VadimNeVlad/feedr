@@ -1,7 +1,6 @@
 import { Box, Card, CardContent, Skeleton } from "@mui/material";
-import React from "react";
 
-export const FollowingListSkeleton: React.FC = () => {
+export const FollowingListSkeleton = () => {
   return (
     <Card sx={{ mb: 2 }}>
       <CardContent>

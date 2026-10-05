@@ -1,4 +1,6 @@
 import React from "react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import { BrowserRouter } from "react-router-dom";
@@ -17,8 +19,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
           onReset={() => window.location.reload()}
         >
           <App />
+          <ToastContainer />
         </ErrorBoundary>
       </BrowserRouter>
     </Provider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );

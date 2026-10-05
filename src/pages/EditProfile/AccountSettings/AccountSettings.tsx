@@ -1,28 +1,20 @@
-import React from "react";
-import {
-  useChangePasswordMutation,
-  useGetCurrentUserQuery,
-} from "../../../features/users/usersApi";
-import { useDelayedRedirect } from "../../../hooks/useDelayedRedirect";
+import { useChangePasswordMutation } from "../../../features/users/usersApi";
 import { ChangePasswordData } from "../../../utils/types/user";
 import { useForm } from "react-hook-form";
-import {
-  Box,
-  Card,
-  CardContent,
-  CardHeader,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Card, CardContent, CardHeader, TextField } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { changePasswordSchema } from "../../../utils/validators/changePasswordSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { logout } from "../../../features/auth/authSlice";
+import { toast } from "react-toastify";
+import { apiErrorMessage } from "../../../utils/helpers/apiError";
 
-export const AccountSettings: React.FC = () => {
-  const { data: currentUser } = useGetCurrentUserQuery();
-  const [changePassword, { isLoading, isSuccess, error }] =
-    useChangePasswordMutation();
-
+export const AccountSettings = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [change, { isLoading }] = useChangePasswordMutation();
   const {
     register,
     handleSubmit,
@@ -30,74 +22,56 @@ export const AccountSettings: React.FC = () => {
   } = useForm<ChangePasswordData>({
     resolver: yupResolver(changePasswordSchema),
   });
-
-  useDelayedRedirect(isSuccess, error, "Password changed successfully");
-
-  const onSubmit = (data: ChangePasswordData) => {
-    changePassword(data);
+  const onSubmit = async (data: ChangePasswordData) => {
+    try {
+      await change(data).unwrap();
+      dispatch(logout());
+      toast.success("Password changed. Please log in again.");
+      navigate("/login");
+    } catch (error) {
+      toast.error(apiErrorMessage(error));
+    }
   };
-
   return (
-    <>
-      {currentUser && (
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Card sx={{ mb: 4 }}>
-            <CardHeader
-              title="Set new password"
-              titleTypographyProps={{ variant: "h5", fontWeight: 700, mb: 1 }}
-            />
-            <CardContent>
-              <Box sx={{ mb: 4 }}>
-                <TextField
-                  fullWidth
-                  label="Current password"
-                  variant="outlined"
-                  type="password"
-                  {...register("currentPassword")}
-                />
-                <Typography fontSize={12} color="error" sx={{ mt: 1 }}>
-                  {errors.currentPassword?.message}
-                </Typography>
-              </Box>
-              <Box sx={{ mb: 4 }}>
-                <TextField
-                  fullWidth
-                  label="New password"
-                  variant="outlined"
-                  type="password"
-                  {...register("newPassword")}
-                />
-                <Typography fontSize={12} color="error" sx={{ mt: 1 }}>
-                  {errors.newPassword?.message}
-                </Typography>
-              </Box>
-              <Box sx={{ mb: 4 }}>
-                <TextField
-                  fullWidth
-                  label="Confirm new password"
-                  variant="outlined"
-                  type="password"
-                  {...register("confirmPassword")}
-                />
-                <Typography fontSize={12} color="error" sx={{ mt: 1 }}>
-                  {errors.confirmPassword?.message}
-                </Typography>
-              </Box>
-
-              <LoadingButton
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Card>
+        <CardHeader title="Set new password" />
+        <CardContent>
+          {(["currentPassword", "newPassword", "confirmPassword"] as const).map(
+            (field) => (
+              <TextField
+                key={field}
                 fullWidth
-                size="large"
-                type="submit"
-                variant="contained"
-                loading={isLoading}
-                disabled={isSuccess}
-              >
-                Set New Password
-              </LoadingButton>
-            </CardContent>
-          </Card>
-        </form>
-      )}
-    </>
+                type="password"
+                label={
+                  {
+                    currentPassword: "Current password",
+                    newPassword: "New password",
+                    confirmPassword: "Confirm new password",
+                  }[field]
+                }
+                autoComplete={
+                  field === "currentPassword"
+                    ? "current-password"
+                    : "new-password"
+                }
+                sx={{ mb: 3 }}
+                error={!!errors[field]}
+                helperText={errors[field]?.message}
+                {...register(field)}
+              />
+            ),
+          )}
+          <LoadingButton
+            fullWidth
+            type="submit"
+            variant="contained"
+            loading={isLoading}
+          >
+            Set new password
+          </LoadingButton>
+        </CardContent>
+      </Card>
+    </form>
   );
 };

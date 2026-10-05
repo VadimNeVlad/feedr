@@ -1,26 +1,52 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
-export const useImagePreview = (ref: React.RefObject<HTMLInputElement>) => {
-  const [preview, setPreview] = useState("");
-  const [image, setImage] = useState<string | File>("");
+export const useImagePreview = (
+  ref: React.RefObject<HTMLInputElement>,
+  initialImage = "",
+) => {
+  const [preview, setPreview] = useState(initialImage);
+  const [image, setImage] = useState<File | "">("");
   const [isEdit, setIsEdit] = useState(false);
 
-  const handlePreview = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const target = e.target as HTMLInputElement;
-    const file: File = (target.files as FileList)[0];
-    const urlImage = URL.createObjectURL(file);
+  useEffect(
+    () => () => {
+      if (preview.startsWith("blob:")) URL.revokeObjectURL(preview);
+    },
+    [preview],
+  );
 
-    setPreview(urlImage);
-    setImage(file);
-    setIsEdit(true);
-  };
+  const handlePreview = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0];
 
-  const handleClearPreview = () => {
+      if (!file) return;
+
+      if (
+        !["image/jpeg", "image/png", "image/gif", "image/webp"].includes(
+          file.type,
+        ) ||
+        file.size > 5 * 1024 * 1024
+      ) {
+        toast.error("Choose a JPEG, PNG, GIF or WebP image up to 5 MiB.");
+        event.target.value = "";
+        return;
+      }
+
+      setPreview(URL.createObjectURL(file));
+      setImage(file);
+      setIsEdit(true);
+    },
+    [],
+  );
+
+  const handleClearPreview = useCallback(() => {
     if (ref.current) ref.current.value = "";
+
     setPreview("");
     setImage("");
     setIsEdit(true);
-  };
+  }, [ref]);
 
   return {
     preview,
@@ -28,6 +54,5 @@ export const useImagePreview = (ref: React.RefObject<HTMLInputElement>) => {
     isEdit,
     handlePreview,
     handleClearPreview,
-    setPreview,
   };
 };

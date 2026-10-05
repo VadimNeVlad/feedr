@@ -1,7 +1,5 @@
-import React from "react";
+import { FormEventHandler } from "react";
 import { useFormContext } from "react-hook-form";
-import { AuthFormProps } from "../../utils/types/props";
-import { AuthData } from "../../utils/types/auth";
 import {
   Box,
   IconButton,
@@ -13,16 +11,38 @@ import { Link } from "react-router-dom";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { AuthData } from "../../utils/types/auth";
 import { useToggle } from "../../hooks/useToggle";
 
-export const AuthForm: React.FC<AuthFormProps> = ({
-  title,
-  text,
-  isPending,
-  onSubmit,
-}) => {
-  const [showPassword, setShowPassword] = useToggle();
+type AuthMode = "login" | "register";
 
+type AuthFormProps = {
+  mode: AuthMode;
+  isPending: boolean;
+  onSubmit: FormEventHandler<HTMLFormElement>;
+};
+
+const copy = {
+  login: {
+    title: "Login",
+    text: "Login to your account",
+    switchText: "Don't have an account? ",
+    switchLink: { to: "/register", label: "Register" },
+    passwordAutoComplete: "current-password",
+  },
+  register: {
+    title: "Register",
+    text: "Create your account",
+    switchText: "Already have an account? ",
+    switchLink: { to: "/login", label: "Login" },
+    passwordAutoComplete: "new-password",
+  },
+};
+
+export const AuthForm = ({ mode, isPending, onSubmit }: AuthFormProps) => {
+  const [showPassword, toggleShowPassword] = useToggle();
+  const { title, text, switchText, switchLink, passwordAutoComplete } =
+    copy[mode];
   const {
     register,
     formState: { errors },
@@ -42,9 +62,12 @@ export const AuthForm: React.FC<AuthFormProps> = ({
         variant="h4"
         sx={{ mb: { xs: 2, md: 3 }, fontSize: { xs: 28, md: 34 } }}
       >
-        FeeD<span style={{ color: "#1976d2" }}>R</span>
+        <Link to="/">
+          FeeD<Box component="span" sx={{ color: "primary.main" }}>R</Box>
+        </Link>
       </Typography>
       <Typography
+        component="h1"
         variant="h4"
         fontWeight={700}
         sx={{ fontSize: { xs: 28, md: 34 }, mb: 1 }}
@@ -55,85 +78,54 @@ export const AuthForm: React.FC<AuthFormProps> = ({
         {text}
       </Typography>
 
-      <form onSubmit={onSubmit}>
-        <Box sx={{ mb: 2 }}>
+      <form noValidate onSubmit={onSubmit}>
+        <TextField
+          fullWidth
+          label="Email"
+          type="email"
+          autoComplete="email"
+          error={!!errors.email}
+          helperText={errors.email?.message}
+          sx={{ mb: 2, bgcolor: "background.paper" }}
+          {...register("email")}
+        />
+
+        {mode === "register" && (
           <TextField
             fullWidth
-            label="Email"
-            variant="outlined"
-            type="text"
-            sx={{ bgcolor: "background.paper" }}
-            {...register("email", { required: true })}
+            label="Full Name"
+            autoComplete="name"
+            error={!!errors.name}
+            helperText={errors.name?.message}
+            sx={{ mb: 2, bgcolor: "background.paper" }}
+            {...register("name")}
           />
-
-          {errors.email && (
-            <Typography
-              fontSize={12}
-              color="error"
-              textAlign="left"
-              sx={{ mt: 1 }}
-            >
-              {errors.email?.message}
-            </Typography>
-          )}
-        </Box>
-
-        {title === "Register" && (
-          <Box sx={{ mb: 2 }}>
-            <TextField
-              fullWidth
-              label="Full Name"
-              variant="outlined"
-              type="text"
-              sx={{ bgcolor: "background.paper" }}
-              {...register("name", { required: true })}
-            />
-            {errors.name && (
-              <Typography
-                fontSize={12}
-                color="error"
-                textAlign="left"
-                sx={{ mt: 1 }}
-              >
-                {errors.name?.message}
-              </Typography>
-            )}
-          </Box>
         )}
 
-        <Box sx={{ mb: 2 }}>
-          <TextField
-            fullWidth
-            label="Password"
-            variant="outlined"
-            type={showPassword ? "text" : "password"}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    onClick={setShowPassword}
-                    edge="end"
-                    data-testid="toggle-password"
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-            sx={{ bgcolor: "background.paper" }}
-            {...register("password", { required: true })}
-          />
-          {errors.password && (
-            <Typography
-              fontSize={12}
-              color="error"
-              textAlign="left"
-              sx={{ mt: 1 }}
-            >
-              {errors.password?.message}
-            </Typography>
-          )}
-        </Box>
+        <TextField
+          fullWidth
+          label="Password"
+          type={showPassword ? "text" : "password"}
+          autoComplete={passwordAutoComplete}
+          error={!!errors.password}
+          helperText={errors.password?.message}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  onClick={toggleShowPassword}
+                  edge="end"
+                  data-testid="toggle-password"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+          sx={{ mb: 2, bgcolor: "background.paper" }}
+          {...register("password")}
+        />
 
         <LoadingButton
           fullWidth
@@ -143,16 +135,14 @@ export const AuthForm: React.FC<AuthFormProps> = ({
           loading={isPending}
           sx={{ mb: 1 }}
         >
-          {title === "Register" ? "Register" : "Login"}
+          {title}
         </LoadingButton>
 
         <Typography variant="subtitle1">
-          {title === "Register"
-            ? "Already have an account? "
-            : "Don't have an account? "}
-          <Link to={title === "Register" ? "/login" : "/register"}>
+          {switchText}
+          <Link to={switchLink.to}>
             <Typography variant="subtitle1" color="info.main" component="span">
-              {title === "Register" ? "Login" : "Register"}
+              {switchLink.label}
             </Typography>
           </Link>
         </Typography>

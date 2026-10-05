@@ -3,6 +3,9 @@ import { AuthData, AuthResponse } from "../../utils/types/auth";
 
 export const authApi = api.injectEndpoints({
   endpoints: (build) => ({
+    endSession: build.mutation<void, void>({
+      query: () => ({ url: "auth/logout", method: "POST" }),
+    }),
     register: build.mutation<AuthResponse, AuthData>({
       query: (body) => ({
         url: "auth/register",
@@ -20,4 +23,5 @@ export const authApi = api.injectEndpoints({
   }),
 });
 
-export const { useRegisterMutation, useLoginMutation } = authApi;
+export const { useRegisterMutation, useLoginMutation, useEndSessionMutation } =
+  authApi;

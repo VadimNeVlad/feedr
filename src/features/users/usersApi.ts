@@ -1,5 +1,8 @@
 import { api } from "../../app/services";
 import { ChangePasswordData, User } from "../../utils/types/user";
+import { Follow } from "../../utils/types/follow";
+
+type UpdateProfile = Pick<User, "name" | "websiteUrl" | "location" | "bio">;
 
 export const usersApi = api.injectEndpoints({
   endpoints: (build) => ({
@@ -11,13 +14,13 @@ export const usersApi = api.injectEndpoints({
       query: (id) => `user/${id}`,
       providesTags: (_result, _err, id) => [{ type: "User", id }],
     }),
-    updateUser: build.mutation<User, Partial<User>>({
+    updateUser: build.mutation<User, Partial<UpdateProfile>>({
       query: (body) => ({
         url: "user",
         method: "PUT",
         body,
       }),
-      invalidatesTags: ["User"],
+      invalidatesTags: ["User", "Article", "Comment", "Follow"],
     }),
     updateUserAvatar: build.mutation<User, FormData>({
       query: (body) => ({
@@ -25,36 +28,28 @@ export const usersApi = api.injectEndpoints({
         method: "PUT",
         body,
       }),
-      invalidatesTags: ["User", "Article"],
+      invalidatesTags: ["User", "Article", "Comment", "Follow"],
     }),
     changePassword: build.mutation<void, ChangePasswordData>({
-      query: (body) => ({
+      query: ({ currentPassword, newPassword }) => ({
         url: "user/change-password",
         method: "PUT",
-        body,
+        body: { currentPassword, newPassword },
       }),
     }),
-    followUser: build.mutation<User, string>({
+    followUser: build.mutation<Follow, string>({
       query: (id) => ({
         url: `user/${id}/follow`,
         method: "POST",
       }),
-      invalidatesTags: (result) => [
-        { type: "User", id: result?.id },
-        { type: "Follow" },
-      ],
+      invalidatesTags: ["User", "Follow"],
     }),
-    unfollowUser: build.mutation<User, string>({
+    unfollowUser: build.mutation<{ count: number }, string>({
       query: (id) => ({
         url: `user/${id}/follow`,
         method: "DELETE",
       }),
-      invalidatesTags: (result) => [
-        { type: "User", id: result?.id },
-        {
-          type: "Follow",
-        },
-      ],
+      invalidatesTags: ["User", "Follow"],
     }),
   }),
 });
