@@ -23,7 +23,7 @@
     "@mui/material": "^5.15.3",
     "@reduxjs/toolkit": "^2.0.1",
     "@tiptap/extension-character-count": "^2.1.15",
-    "@tiptap/extension-code-block-lowlight": "^2.1.15",
+    "@tiptap/extension-code-block-lowlight": "^3.31.3",
     "@tiptap/extension-focus": "^2.1.15",
     "@tiptap/extension-highlight": "^2.1.15",
     "@tiptap/extension-link": "^2.1.15",
